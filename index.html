@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="https://ui-avatars.com/api/?name=MC&background=E3000F&color=FFCC00&size=180">
+    <title>Sistema Multi Coisa's - E-commerce e PDV</title>
+    <style>
+        /* ==========================================================================
+           1. VARIÁVEIS E RESET (Design System Premium)
+           ========================================================================== */
+        :root {
+            --primary: #E3000F;        
+            --primary-dark: #B3000C;
+            --secondary: #FFCC00;      
+            --secondary-dark: #E6B800;
+            --bg-body: #F7F9FC;        
+            --bg-card: #FFFFFF;
+            --text-main: #1A1D20;
+            --text-muted: #6B7280;
+            --success: #10B981;        
+            --danger: #EF4444;
+            --info: #3B82F6;
+            --whatsapp: #25D366;
+            --radius-sm: 8px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+            --shadow-md: 0 8px 24px rgba(0,0,0,0.08);
+            --shadow-hover: 0 12px 32px rgba(0,0,0,0.12);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --nav-height: 65px;
+            --sidebar-width: 260px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+        body { background-color: var(--bg-body); color: var(--text-main); line-height: 1.6; padding-bottom: 95px; -webkit-font-smoothing: antialiased; display: flex; flex-direction: column; min-height: 100vh; overflow-x: hidden;}
+
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #D1D5DB; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #9CA3AF; }
+
+        /* ==========================================================================
+           2. HEADER E NAVEGAÇÃO SUPERIOR (GLASSMORPHISM)
+           ========================================================================== */
+        header { background-color: rgba(227, 0, 15, 0.95); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: white; padding: 0.8rem 1rem; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-sm); transition: background-color 0.3s; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .header-content { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem; }
+        .logo-wrapper { display: flex; justify-content: space-between; align-items: center; }
+        
+        .logo { font-size: 1.6rem; font-weight: 900; color: var(--secondary); cursor: pointer; display: flex; align-items: center; gap: 0.6rem; text-shadow: 0 2px 4px rgba(0,0,0,0.15); transition: var(--transition); letter-spacing: -0.5px; }
+        .logo:hover { transform: scale(1.02); }
+        .logo img { height: 38px; object-fit: contain; max-width: 160px; transition: var(--transition); filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
+        .logo svg { fill: var(--secondary); width: 30px; height: 30px; }
+        
+        .search-bar { width: 100%; padding: 0.9rem 1.4rem; border-radius: 30px; border: 1px solid transparent; outline: none; font-size: 0.95rem; background: rgba(255,255,255,0.9); box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); transition: var(--transition); }
+        .search-bar:focus { background: #FFF; box-shadow: 0 0 0 4px rgba(255, 204, 0, 0.3); transform: translateY(-1px); border-color: var(--secondary); }
+
+        .desktop-nav { display: none; align-items: center; gap: 1.8rem; }
+        .desktop-nav button { background: none; border: none; color: white; cursor: pointer; font-size: 0.95rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; transition: var(--transition); opacity: 0.9; }
+        .desktop-nav button:hover { color: var(--secondary); opacity: 1; transform: translateY(-2px); }
+        .desktop-nav button svg { transition: var(--transition); width: 20px; height: 20px; }
+        .desktop-nav button:hover svg { transform: scale(1.15); }
+        
+        .cart-icon-wrapper { position: relative; display: flex; align-items: center; gap: 5px;}
+        .cart-icon-wrapper img.custom-logo-cart { height: 24px; width: 24px; object-fit: contain; filter: brightness(0) invert(1); transition: var(--transition); }
+        .badge-count { position: absolute; top: -8px; right: -10px; background: var(--secondary); color: var(--primary-dark); font-weight: 900; font-size: 0.75rem; min-width: 22px; height: 22px; border-radius: 11px; display: flex; align-items: center; justify-content: center; padding: 0 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.2); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .badge-count.pop { transform: scale(1.5) rotate(5deg); }
+
+        /* ==========================================================================
+           3. NAVEGAÇÃO INFERIOR FLUTUANTE (MOBILE PREMIUM APP STYLE)
+           ========================================================================== */
+        .mobile-bottom-nav { 
+            position: fixed; 
+            bottom: 15px; 
+            left: 15px; 
+            width: calc(100% - 30px); 
+            background: rgba(255, 255, 255, 0.95); 
+            backdrop-filter: blur(15px); 
+            -webkit-backdrop-filter: blur(15px); 
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15); 
+            border-radius: 35px; 
+            display: flex; 
+            justify-content: space-around; 
+            align-items: center; 
+            height: var(--nav-height); 
+            z-index: 1000; 
+            border: 1px solid rgba(255,255,255,0.6); 
+        }
+        .bottom-nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #9CA3AF; font-size: 0.7rem; font-weight: 500; cursor: pointer; width: 33.33%; transition: var(--transition); position: relative; }
+        .bottom-nav-item svg { width: 22px; height: 22px; margin-bottom: 4px; fill: currentColor; transition: var(--transition); }
+        .bottom-nav-item:hover svg { transform: translateY(-4px) scale(1.1); color: var(--primary); }
+        .bottom-nav-item.active { color: var(--primary); font-weight: 700; }
+        .bottom-nav-item.active svg { transform: translateY(-3px); }
+
+        /* ==========================================================================
+           4. LAYOUT PRINCIPAL E BOTÕES PREMIUM
+           ========================================================================== */
+        main.public-main { max-width: 1200px; margin: 0 auto; padding: 1.5rem 1rem; flex-grow: 1; width: 100%; }
+        .view { display: none; opacity: 0; }
+        .view.active { display: block; animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        .btn { padding: 0.85rem 1.6rem; border: none; border-radius: 30px; cursor: pointer; font-weight: 700; font-size: 0.95rem; transition: var(--transition); text-align: center; display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; width: 100%; letter-spacing: 0.3px; }
+        .btn:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+        .btn:active { transform: scale(0.96) translateY(0); box-shadow: var(--shadow-sm); }
+        .btn svg { width: 18px; height: 18px; fill: currentColor; }
+        
+        .btn-primary { background-color: var(--secondary); color: var(--primary-dark); box-shadow: 0 4px 10px rgba(255, 204, 0, 0.25); }
+        .btn-primary:hover { background-color: var(--secondary-dark); }
+        .btn-danger { background-color: var(--danger); color: white; box-shadow: 0 4px 10px rgba(227, 0, 15, 0.2); }
+        .btn-success { background-color: var(--success); color: white; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2); }
+        .btn-whatsapp { background-color: var(--whatsapp); color: white; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.25); }
+        .btn-outline { background: transparent; border: 2px solid #E5E7EB; color: var(--text-main); }
+        .btn-outline:hover { background: #F3F4F6; border-color: #D1D5DB; box-shadow: none; transform: translateY(-1px); }
+
+        .section-title { font-size: 1.35rem; font-weight: 800; color: var(--text-main); margin: 3rem 0 1.5rem 0; text-transform: uppercase; position: relative; display: inline-block; letter-spacing: 0.5px; }
+        .section-title::after { content: ''; position: absolute; left: 0; bottom: -6px; width: 40px; height: 4px; background: var(--primary); border-radius: 4px; transition: width 0.4s ease; }
+        .section-title:hover::after { width: 100%; }
+
+        /* ==========================================================================
+           5. BANNERS ANIMADOS (KEN BURNS)
+           ========================================================================== */
+        .top-bar { background: var(--secondary); color: var(--primary-dark); font-weight: 800; font-size: 0.8rem; text-align: center; padding: 0.6rem 1rem; position: relative; z-index: 102; letter-spacing: 0.5px; text-transform: uppercase; }
+        .top-bar span { display: inline-block; animation: pulseText 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulseText { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+
+        .slider-container { position: relative; border-radius: var(--radius-md); overflow: hidden; margin-bottom: 2.5rem; box-shadow: var(--shadow-md); background: #000; height: 280px; }
+        .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 1.2s ease-in-out; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 2rem; color: white; overflow: hidden; }
+        .slide-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center; transition: transform 7s ease-out; z-index: 0; transform: scale(1); }
+        .slide::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.5) 100%); z-index: 1; }
+        .slide.active { opacity: 1; z-index: 2; }
+        .slide.active .slide-bg { transform: scale(1.08); }
+        .slide-content { position: relative; z-index: 3; }
+        .slide-content h2 { font-size: 2rem; color: #FFF; margin-bottom: 0.5rem; text-shadow: 0 4px 12px rgba(0,0,0,0.6); font-weight: 900; line-height: 1.1; transform: translateY(20px); opacity: 0; transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s; }
+        .slide-content p { font-size: 1.05rem; color: var(--secondary); text-shadow: 0 2px 8px rgba(0,0,0,0.8); font-weight: 600; transform: translateY(20px); opacity: 0; transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.5s; }
+        .slide.active .slide-content h2, .slide.active .slide-content p { transform: translateY(0); opacity: 1; }
+
+        /* ==========================================================================
+           6. VITRINE DE PRODUTOS (MICRO-INTERAÇÕES)
+           ========================================================================== */
+        .grid-produtos { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px; }
+        .card-produto { background: var(--bg-card); border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; cursor: pointer; position: relative; border: 2px solid transparent; transition: var(--transition); }
+        .card-produto:hover { box-shadow: var(--shadow-hover); transform: translateY(-6px); border-color: rgba(227, 0, 15, 0.15); z-index: 2; }
+        
+        .card-produto.in-cart { border-color: var(--success); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.15); }
+        
+        .card-img { width: 100%; aspect-ratio: 1; position: relative; background: #fff; padding: 1.5rem; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .card-img img { width: 100%; height: 100%; object-fit: contain; transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1); mix-blend-mode: multiply; }
+        .card-produto:hover .card-img img { transform: scale(1.12); }
+        
+        .card-body { padding: 1.2rem; display: flex; flex-direction: column; flex-grow: 1; background: #FAFAFA; border-top: 1px solid #F3F4F6; }
+        .card-price { font-size: 1.35rem; font-weight: 900; color: var(--text-main); line-height: 1; margin-bottom: 0.4rem; transition: color 0.3s; letter-spacing: -0.5px;}
+        .card-produto:hover .card-price { color: var(--primary); }
+        .card-title { font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 0.8rem; flex-grow: 1; font-weight: 500; }
+        
+        .btn-quick-add { background: var(--bg-card); color: var(--primary); border: 1px solid #E5E7EB; border-radius: 50%; width: 40px; height: 40px; position: absolute; bottom: 12px; right: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.05); z-index: 2; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .card-produto:hover .btn-quick-add { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 6px 15px rgba(227, 0, 15, 0.3); }
+        .btn-quick-add:hover { transform: scale(1.15) rotate(5deg) !important; }
+        .btn-quick-add.added { background: var(--success); color: white; border-color: var(--success); box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3); }
+        .btn-quick-add svg { width: 18px; height: 18px; fill: currentColor; transition: var(--transition); }
+        .btn-quick-add:disabled { background: #F3F4F6; color: #9CA3AF; border-color: #E5E7EB; cursor: not-allowed; box-shadow: none; transform: none !important; }
+        
+        .tag-stock { font-size: 0.7rem; font-weight: 700; color: var(--success); display: flex; align-items: center; gap: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .tag-stock.out { color: var(--danger); }
+        .tag-stock.in-cart-text { color: var(--info); }
+
+        /* ==========================================================================
+           7. QUEM SOMOS E ANIMAÇÕES ESPECIAIS
+           ========================================================================== */
+        .about-section { background: white; border-radius: var(--radius-md); padding: 3rem 2rem; box-shadow: var(--shadow-md); margin: 4rem 0; text-align: center; border-top: 4px solid var(--primary); border-bottom: 1px solid #EEE; }
+        .about-section h3 { color: var(--primary); font-size: 1.8rem; margin-bottom: 1rem; font-weight: 900; }
+        .about-section p { color: var(--text-muted); font-size: 1.05rem; line-height: 1.7; margin-bottom: 1rem; max-width: 800px; margin-left: auto; margin-right: auto; font-weight: 400; }
+
+        .marquee-wrapper { width: 100%; overflow: hidden; padding: 1rem 0 3rem 0; position: relative; }
+        .marquee-wrapper::before, .marquee-wrapper::after { content: ''; position: absolute; top: 0; width: 60px; height: 100%; z-index: 2; pointer-events: none; }
+        .marquee-wrapper::before { left: 0; background: linear-gradient(to right, var(--bg-body) 0%, transparent 100%); }
+        .marquee-wrapper::after { right: 0; background: linear-gradient(to left, var(--bg-body) 0%, transparent 100%); }
+        .marquee-track { display: flex; width: max-content; gap: 2rem; animation: scroll-left 40s linear infinite; padding: 10px 0; }
+        .marquee-track:hover { animation-play-state: paused; }
+        @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(calc(-50% - 1rem)); } }
+
+        .depoimento-card { flex: 0 0 340px; background: var(--bg-card); padding: 2rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1px solid rgba(0,0,0,0.05); position: relative; display: flex; flex-direction: column; gap: 15px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: default; }
+        .depoimento-card:hover { transform: scale(1.03) translateY(-8px); box-shadow: var(--shadow-hover); border-color: rgba(255,204,0,0.5); z-index: 10; }
+        .dep-header { display: flex; align-items: center; gap: 15px; }
+        .dep-img { width: 55px; height: 55px; border-radius: 50%; object-fit: cover; border: 2px solid transparent; box-shadow: var(--shadow-sm); transition: var(--transition); }
+        .depoimento-card:hover .dep-img { transform: scale(1.1); border-color: var(--secondary); }
+        .dep-nome { font-weight: 800; color: var(--text-main); font-size: 1.05rem; }
+        .dep-estrelas { color: var(--secondary); font-size: 0.9rem; letter-spacing: 2px; }
+        .dep-texto { font-size: 0.95rem; color: var(--text-muted); font-style: italic; line-height: 1.6; position: relative; z-index: 1; }
+        .quote-icon { position: absolute; top: 15px; right: 20px; font-size: 4rem; color: var(--secondary); opacity: 0.15; font-family: Georgia, serif; line-height: 1; transition: var(--transition); }
+        .depoimento-card:hover .quote-icon { opacity: 0.3; transform: rotate(10deg) scale(1.1); color: var(--primary); }
+
+        .scroll-container { display: flex; overflow-x: auto; gap: 1.5rem; padding-bottom: 2rem; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding-top: 10px; margin: 0 -1rem; padding-left: 1rem; padding-right: 1rem; }
+        .scroll-container::-webkit-scrollbar { display: none; }
+        .loja-card { flex: 0 0 85%; max-width: 350px; scroll-snap-align: center; background: var(--bg-card); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1px solid rgba(0,0,0,0.05); display: flex; flex-direction: column; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); border-left: 6px solid var(--primary); }
+        .loja-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-hover); }
+        .loja-content { padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; position: relative; z-index: 2; background: var(--bg-card); }
+        .loja-title { color: var(--primary); font-size: 1.1rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 5px; font-weight: 800;}
+        .loja-title svg { width: 18px; fill: var(--primary); }
+        .map-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #F3F4F6; padding: 0.9rem 1rem; border-radius: 30px; color: var(--text-main); text-decoration: none; font-weight: 700; font-size: 0.9rem; transition: var(--transition); width: 100%; margin-top: auto; }
+        .map-btn svg { width: 18px; fill: var(--primary); transition: var(--transition); }
+        .loja-card:hover .map-btn { background: var(--primary); color: white; box-shadow: 0 6px 15px rgba(227,0,15,0.25); }
+        .loja-card:hover .map-btn svg { fill: white; transform: translateX(3px); }
+
+        /* ==========================================================================
+           8. RODAPÉ INSTITUCIONAL COM CADEADO NINJA
+           ========================================================================== */
+        .site-footer { background: #111827; color: #F9FAFB; padding: 4rem 1.5rem 1.5rem 1.5rem; margin-top: 3rem; position: relative; border-top: 4px solid var(--primary); }
+        .footer-content { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 2.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 2.5rem; margin-bottom: 1.5rem; }
+        .footer-brand { font-size: 1.8rem; font-weight: 900; color: #FFF; display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1rem; }
+        .footer-brand img { height: 45px; filter: brightness(0) invert(1); }
+        .footer-brand svg { fill: #FFF; width: 32px; height: 32px; }
+        .footer-desc { font-size: 0.95rem; color: #9CA3AF; line-height: 1.7; max-width: 400px; }
+        .footer-links-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .footer-links-grid a { color: #D1D5DB; text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: var(--transition); display: flex; align-items: center; gap: 8px; }
+        .footer-links-grid a svg { transition: transform 0.3s; fill: currentColor; }
+        .footer-links-grid a:hover { color: var(--secondary); transform: translateX(5px); }
+        
+        .footer-bottom { position: relative; max-width: 1200px; margin: 0 auto; text-align: center; font-size: 0.85rem; color: #6B7280; padding: 0.5rem 0; display: flex; justify-content: center; align-items: center;}
+        
+        /* O CADEADO SECRETO (NINJA) - Fica ao lado dos direitos autorais */
+        .secret-login-btn { opacity: 0.2; cursor: pointer; transition: all 0.3s; padding: 10px; display: flex; align-items: center; justify-content: center; margin-left: 10px;}
+        .secret-login-btn svg { width: 16px; height: 16px; fill: #FFF; }
+        .secret-login-btn:hover { opacity: 1; transform: scale(1.3); filter: drop-shadow(0 0 8px rgba(255,204,0,0.6)); }
+        .secret-login-btn:hover svg { fill: var(--secondary); }
+
+        /* ==========================================================================
+           9. ERP ADMINISTRATIVO (LAYOUT CORPORATIVO SÓBRIO)
+           ========================================================================== */
+        #view-admin { display: none; background: #F3F4F6; min-height: 100vh; }
+        #view-admin.active { display: flex; flex-direction: column; }
+        .erp-header { background: #111827; color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-sm); z-index: 10; position: sticky; top:0;}
+        .erp-header-logo { font-size: 1.2rem; font-weight: 800; color: #FFF; display: flex; align-items: center; gap: 12px; letter-spacing: -0.5px;}
+        .erp-header-logo svg { fill: var(--secondary); width: 24px; height: 24px; }
+        
+        .erp-layout { display: flex; flex-grow: 1; flex-direction: column; }
+        .erp-sidebar { background: #FFFFFF; width: 100%; border-bottom: 1px solid #E5E7EB; display: flex; overflow-x: auto; padding: 0.5rem; scroll-snap-type: x mandatory;}
+        .erp-nav-btn { flex: 0 0 auto; scroll-snap-align: start; padding: 0.8rem 1.2rem; border: none; background: transparent; color: #4B5563; font-weight: 600; cursor: pointer; border-radius: 8px; margin-right: 5px; display: flex; align-items: center; gap: 8px; transition: var(--transition); white-space: nowrap; font-size: 0.9rem;}
+        .erp-nav-btn svg { width: 18px; height: 18px; fill: currentColor; transition: transform 0.2s;}
+        .erp-nav-btn.active { background: #EEF2FF; color: var(--info); box-shadow: inset 3px 0 0 var(--info); }
+        .erp-nav-btn:hover:not(.active) { background: #F3F4F6; color: var(--text-main); }
+        .erp-nav-btn:hover svg { transform: scale(1.1); }
+        
+        .erp-content { flex-grow: 1; padding: 1.5rem; max-width: 100%; overflow-x: hidden; }
+        .erp-panel { background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); padding: 1.5rem; margin-bottom: 1.5rem; border: 1px solid #E5E7EB; }
+        .erp-panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid #E5E7EB; padding-bottom: 1rem; flex-wrap: wrap; gap: 10px;}
+        .erp-panel-header h3 { color: var(--text-main); font-size: 1.25rem; font-weight: 800; margin:0; display:flex; align-items:center; gap:8px;}
+        .erp-panel-header h3 svg { fill: var(--primary); width:22px; height:22px; }
+
+        .form-grid { display: grid; grid-template-columns: 1fr; gap: 1.2rem; margin-bottom: 1.2rem; }
+        .form-group { margin-bottom: 1.2rem; flex-grow: 1; }
+        .form-group label { display: block; font-weight: 600; font-size: 0.85rem; margin-bottom: 0.5rem; color: #374151; }
+        .form-group input:not([type="file"]):not([type="color"]), .form-group textarea, .form-group select { width: 100%; padding: 0.7rem; border: 1px solid #CCC; border-radius: 6px; font-size: 0.95rem; background: #FAFAFA; transition: var(--transition); color: #111827; }
+        .form-group input[type="color"] { width: 100%; height: 45px; border: 1px solid #D1D5DB; border-radius: 8px; cursor: pointer; padding: 2px;}
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--info); outline: none; background: #FFF; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15); }
+        
+        .express-entry-box { background: #F0FDF4; border: 1px solid #BBF7D0; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);}
+        .express-entry-box .form-group { margin-bottom: 0; }
+        
+        .table-responsive { overflow-x: auto; width: 100%; border-radius: 8px; border: 1px solid #E5E7EB; }
+        .data-table { width: 100%; border-collapse: collapse; min-width: 600px; background: white; }
+        .data-table th, .data-table td { padding: 1rem 1.2rem; text-align: left; border-bottom: 1px solid #E5E7EB; vertical-align: middle; font-size: 0.9rem; color: #374151; }
+        .data-table th { background: #F9FAFB; font-weight: 700; color: #6B7280; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.5px; }
+        .data-table tr:last-child td { border-bottom: none; }
+        .data-table tr:hover td { background: #F3F4F6; }
+        
+        .badge { padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; display: inline-block; letter-spacing: 0.3px; }
+        .badge-success { background: #DEF7EC; color: #046C4E; }
+        .badge-danger { background: #FDE8E8; color: #C81E1E; }
+        .badge-warning { background: #FEF3C7; color: #B43403; }
+
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.2rem; margin-bottom: 2rem; }
+        .kpi-card { background: #FFF; padding: 1.5rem; border-radius: 12px; border: 1px solid #E5E7EB; box-shadow: 0 2px 4px rgba(0,0,0,0.02); transition: var(--transition); position: relative; overflow: hidden; }
+        .kpi-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+        .kpi-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--info); }
+        .kpi-card h4 { font-size: 0.8rem; color: #6B7280; text-transform: uppercase; margin-bottom: 0.5rem; font-weight: 700; letter-spacing: 0.5px; }
+        .kpi-card .value { font-size: 2rem; font-weight: 900; color: #111827; letter-spacing: -0.5px; }
+
+        .pdv-container { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+        .pdv-cart { background: #F9FAFB; border: 1px solid #E5E7EB; border-radius: 12px; padding: 1.5rem; }
+        .pdv-total { font-size: 2.2rem; font-weight: 900; color: var(--success); text-align: right; border-top: 2px dashed #D1D5DB; margin-top: 1rem; padding-top: 1rem; letter-spacing: -1px; }
+
+        .file-upload-wrapper { position: relative; overflow: hidden; display: inline-block; width: 100%; }
+        .file-upload-btn { background: #F9FAFB; border: 2px dashed #D1D5DB; color: #6B7280; padding: 1.2rem; width: 100%; border-radius: 8px; text-align: center; font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 0.95rem; }
+        .file-upload-wrapper input[type=file] { font-size: 100px; position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; height: 100%; }
+        .file-upload-wrapper:hover .file-upload-btn { background: #EFF6FF; border-color: var(--info); color: var(--info); }
+        .img-preview-box { width: 100%; max-width: 200px; height: 120px; border-radius: 8px; object-fit: contain; margin-top: 10px; display: none; border: 1px solid #E5E7EB; background: #fff; padding: 5px; }
+
+        .admin-action-btn { padding: 0.5rem; border-radius: 8px; border: none; cursor: pointer; transition: var(--transition); display: inline-flex; align-items: center; justify-content: center; gap: 4px; font-weight: 600; background: transparent; color: #6B7280; }
+        .admin-action-btn:hover { background: #F3F4F6; color: var(--info); }
+        .admin-action-btn svg { width: 18px; height: 18px; fill: currentColor; }
+        .admin-action-btn.delete:hover { background: #FEF2F2; color: var(--danger); }
+
+        /* ==========================================================================
+           10. MODAIS, TOASTS E EFEITOS
+           ========================================================================== */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(17, 24, 39, 0.7); z-index: 3000; justify-content: center; align-items: flex-end; overflow-y: auto; padding: 1rem; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+        .erp-modal { background: #FFF; width: 100%; max-width: 650px; border-radius: 20px 20px 0 0; box-shadow: 0 20px 40px rgba(0,0,0,0.2); margin: auto; position: relative; animation: slideUpModal 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; display: flex; flex-direction: column; max-height: 90vh;}
+        .erp-modal-header { padding: 1.5rem; border-bottom: 1px solid #E5E7EB; display: flex; justify-content: space-between; align-items: center; background: #FFF; border-radius: 20px 20px 0 0; }
+        .erp-modal-header h3 { margin: 0; font-size: 1.25rem; color: #111827; font-weight: 800; }
+        .erp-modal-close { background: #F3F4F6; border: none; width: 32px; height: 32px; border-radius: 16px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #6B7280; transition: all 0.2s; }
+        .erp-modal-close svg { width: 16px; height: 16px; fill: currentColor; }
+        .erp-modal-close:hover { background: #FEE2E2; color: var(--danger); transform: rotate(90deg); }
+        .erp-modal-body { padding: 1.5rem; overflow-y: auto; flex-grow: 1; }
+        .erp-modal-footer { padding: 1.2rem 1.5rem; border-top: 1px solid #E5E7EB; display: flex; justify-content: flex-end; gap: 1rem; background: #F9FAFB; }
+        @keyframes slideUpModal { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        /* FOMO ANIMADO REALISTA */
+        .social-proof-toast { position: fixed; bottom: 90px; left: 15px; width: calc(100% - 30px); max-width: 380px; background: rgba(255,255,255,0.98); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 50px; padding: 8px 20px 8px 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 12px; z-index: 2000; border: 3px solid var(--secondary); opacity: 0; pointer-events: none; transform: translateY(20px) scale(0.9); transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .social-proof-toast.show { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+        .social-proof-img { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid transparent; padding: 0;}
+        .social-proof-text { font-size: 0.85rem; color: #1F2937; line-height: 1.3; font-weight: 500; }
+        
+        #toast { visibility: hidden; min-width: 250px; background-color: #111827; color: #FFF; text-align: center; border-radius: 30px; padding: 14px 24px; position: fixed; z-index: 4000; left: 50%; bottom: 20px; transform: translateX(-50%); box-shadow: 0 10px 25px rgba(0,0,0,0.2); font-weight: 600; font-size: 0.95rem;}
+        #toast.show { visibility: visible; animation: toastSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1), fadeout 0.3s 2.8s forwards; }
+        @keyframes toastSlideUp { from { bottom: 0; opacity: 0; } to { bottom: 20px; opacity: 1; } }
+        @keyframes fadeout { to { opacity: 0; bottom: 0; transform: translateX(-50%) translateY(20px); } }
+
+        /* Utilitários Extras */
+        .detalhe-container { background: var(--bg-card); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); padding: 2rem; margin-bottom: 2rem; border: 1px solid rgba(0,0,0,0.03); }
+        .detalhe-img { width: 100%; height: 350px; object-fit: contain; border-radius: 12px; margin-bottom: 2rem; background: #fff; padding: 1.5rem; border: 1px solid #F3F4F6; }
+        .detalhe-info h1 { font-size: 1.8rem; color: var(--text-main); margin-bottom: 0.5rem; font-weight: 900; letter-spacing: -0.5px;}
+        .detalhe-info .preco { font-size: 2.5rem; font-weight: 900; color: var(--primary); margin-bottom: 1rem; letter-spacing: -1px;}
+        .detalhe-info .desc { font-size: 1.05rem; color: #4B5563; white-space: pre-line; border-top: 1px solid #E5E7EB; padding-top: 1.5rem; margin-top: 1.5rem; margin-bottom: 2rem; line-height: 1.7; }
+        .sticky-buy { position: fixed; bottom: var(--nav-height); left: 0; width: 100%; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding: 1rem; box-shadow: 0 -4px 20px rgba(0,0,0,0.08); z-index: 90; border-top: 1px solid rgba(0,0,0,0.05); display: flex; gap: 1rem; padding-bottom: calc(1rem + env(safe-area-inset-bottom)); }
+
+        .checkout-box { background: #FFF; border: 1px solid #E5E7EB; padding: 2rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); }
+        .cart-list { background: transparent; margin-bottom: 2rem; }
+        .cart-item { display: flex; gap: 1.5rem; padding: 1.5rem; border-radius: 12px; background: #FFF; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.03); border: 1px solid #F3F4F6; }
+        .cart-item img { width: 90px; height: 90px; object-fit: contain; border: 1px solid #F3F4F6; border-radius: 8px; padding: 5px; }
+        .cart-item-info { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; }
+        .qtd-control { display: inline-flex; align-items: center; border: 1px solid #D1D5DB; border-radius: 8px; overflow: hidden; margin-top: 0.8rem; background: #FFF; }
+        .qtd-control button { background: transparent; border: none; width: 35px; height: 35px; font-weight: bold; cursor: pointer; color: var(--text-main); transition: background 0.2s; font-size: 1.2rem; }
+        .qtd-control button:hover { background: #F3F4F6; color: var(--primary); }
+        .qtd-control span { width: 40px; text-align: center; font-weight: 700; font-size: 0.95rem; border-left: 1px solid #E5E7EB; border-right: 1px solid #E5E7EB; line-height: 35px; color: var(--text-main); }
+
+        @media (min-width: 768px) {
+            body { padding-bottom: 0; }
+            .mobile-bottom-nav { display: none; }
+            .desktop-nav { display: flex; }
+            .header-content { flex-direction: row; justify-content: space-between; align-items: center; }
+            .search-bar { max-width: 400px; }
+            .slider-container { height: 450px; border-radius: 24px; }
+            .slide-content h2 { font-size: 3.5rem; }
+            .grid-produtos { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 24px; }
+            .footer-content { flex-direction: row; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 3rem;}
+            .footer-brand, .footer-links-grid { justify-content: flex-start; margin: 0; }
+            .footer-links-grid { gap: 2rem; display: flex; }
+            .site-footer { padding: 4rem 2rem 2rem; }
+            
+            /* Ajustes ERP Desktop */
+            .erp-modal { border-radius: 16px; align-self: center; transform: translateY(20px); margin: 5vh auto;}
+            .erp-modal.open { transform: translateY(0); }
+            .erp-layout { flex-direction: row; }
+            .erp-sidebar { width: var(--sidebar-width); flex-direction: column; border-right: 1px solid #E5E7EB; border-bottom: none; height: calc(100vh - 70px); position: sticky; top: 70px; padding: 1.5rem 1rem; background: #F9FAFB; }
+            .erp-nav-btn { margin-right: 0; margin-bottom: 8px; justify-content: flex-start; padding: 1rem 1.2rem; border-radius: 8px; }
+            .erp-nav-btn.active { background: #FFF; box-shadow: 0 1px 3px rgba(0,0,0,0.1); color: var(--primary); border-left: 3px solid var(--primary); }
+            .form-grid { grid-template-columns: 1fr 1fr; }
+            .pdv-container { grid-template-columns: 2fr 1fr; gap: 2rem; }
+            .detalhe-container { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; padding: 3rem; }
+            .sticky-buy { position: static; box-shadow: none; padding: 0; border: none; margin-top: 2rem; background: transparent; backdrop-filter: none; }
+            .social-proof-toast { bottom: 30px; left: -400px; width: auto; max-width: 400px;}
+            @keyframes popupBounce { 0% { left: -400px; opacity: 0; transform: scale(0.9); } 70% { left: 35px; opacity: 1; transform: scale(1.05); } 100% { left: 30px; opacity: 1; transform: scale(1); } }
+            #toast { bottom: 30px; }
+            .secret-login-btn { right: 20px; }
+        }
+        
+        /* Utilitários de ícones SVG inlines */
+        .icon-svg { width: 20px; height: 20px; fill: currentColor; display: inline-block; vertical-align: middle; }
+    </style>
+</head>
+<body>
+
+    <!-- BARRA DE ANÚNCIO DINÂMICA -->
+    <div class="top-bar" id="public-topbar">
+        <span id="ui-top-bar-text">⏳ Lojas Abertas! Escolha os seus produtos, separe para retirada e garanta o presente! 🎁</span>
+    </div>
+
+    <!-- HEADER / TOP NAV -->
+    <header id="public-header">
+        <div class="header-content">
+            <div class="logo-wrapper">
+                <div class="logo" id="ui-main-logo" onclick="navigate('vitrine')">
+                    <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 2L1 12h3v9h6v-6h4v6h6v-9h3L12 2zm0 2.84L19.5 12h-1.5v7h-2v-6H8v6H6v-7H4.5L12 4.84z"/></svg>
+                    Multi Coisa's
+                </div>
+                
+                <div class="desktop-nav">
+                    <button class="cart-icon-wrapper" onclick="navigate('carrinho')">
+                        <span id="ui-cart-icon-desktop">
+                            <svg class="icon-svg" viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                        </span>
+                        Sacola
+                        <div class="badge-count cart-badge">0</div>
+                    </button>
+                    <button onclick="navigate('perfil')">
+                        <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                        Perfil
+                    </button>
+                </div>
+            </div>
+            <input type="text" id="inputBusca" class="search-bar" placeholder="Buscar produtos, presentes, marcas..." onkeyup="filtrarVitrine()">
+        </div>
+    </header>
+
+    <!-- MAIN PÚBLICO (E-COMMERCE) -->
+    <main class="public-main" id="public-main">
+        
+        <!-- VITRINE PRINCIPAL -->
+        <section id="view-vitrine" class="view active">
+            <div class="slider-container" id="hero-slider"></div>
+
+            <h2 class="section-title">Nossos Produtos</h2>
+            <div id="grid-produtos" class="grid-produtos"></div>
+            <div id="msg-sem-produto" style="display:none; text-align:center; padding: 4rem 2rem; color: var(--text-muted); font-size: 1.1rem; background: var(--bg-card); border-radius: var(--radius-lg); margin-top: 1rem;">Nenhum produto encontrado para esta busca.</div>
+
+            <section class="about-section">
+                <div class="about-bg" id="ui-about-bg"></div>
+                <div class="about-content">
+                    <h3 id="ui-about-title">A sua Loja 24h</h3>
+                    <p id="ui-about-text1">A melhor loja da região.</p>
+                    <p id="ui-about-text2">Compre online e retire na loja.</p>
+                </div>
+            </section>
+
+            <h2 class="section-title">Onde Nos Encontrar</h2>
+            <div id="scroll-lojas" class="scroll-container"></div>
+
+            <h2 class="section-title">O Que Dizem os Nossos Clientes</h2>
+            <div class="marquee-wrapper">
+                <div class="marquee-track" id="track-depoimentos"></div>
+            </div>
+        </section>
+
+        <!-- DETALHES DO PRODUTO -->
+        <section id="view-produto" class="view">
+            <button class="btn btn-outline" style="width: auto; margin-bottom: 1.5rem; padding: 0.6rem 1.2rem; font-size: 0.9rem;" onclick="navigate('vitrine')">
+                <svg class="icon-svg" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg> Voltar
+            </button>
+            <div id="container-produto" class="detalhe-container"></div>
+        </section>
+
+        <!-- SACOLA E CHECKOUT -->
+        <section id="view-carrinho" class="view">
+            <h2 class="section-title" style="margin-top:0;">Sua Sacola</h2>
+            
+            <div id="carrinho-vazio" style="text-align: center; padding: 4rem 2rem; display: none; background: var(--bg-card); border-radius: var(--radius-lg); border: 1px dashed #D1D5DB;">
+                <svg style="width:80px; fill:#E5E7EB; margin-bottom:1rem;" viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                <p style="color: var(--text-muted); margin-bottom: 2rem; font-size: 1.1rem;">A sua sacola está vazia no momento.</p>
+                <button class="btn btn-primary" style="width:auto; padding: 1rem 2rem;" onclick="navigate('vitrine')">Ir às Compras</button>
+            </div>
+
+            <div id="carrinho-cheio" style="display:none;">
+                <div class="cart-list" id="lista-itens-carrinho"></div>
+                
+                <div class="checkout-box">
+                    <div style="background: #ECFDF5; color: #046C4E; padding: 16px; border-radius: 8px; margin-bottom: 1.5rem; font-size: 0.95rem; font-weight: 600; border: 1px solid #A7F3D0; display: flex; align-items: flex-start; gap: 12px;">
+                        <svg style="width:24px; height:24px; fill:currentColor; flex-shrink: 0; margin-top: 2px;" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                        <div>Lojas Abertas 24h online! Reserve agora os seus produtos e levante comodamente quando a loja física abrir.</div>
+                    </div>
+                    
+                    <h3 style="margin-bottom: 1.5rem; color: var(--text-main); font-weight: 800; font-size: 1.4rem;">Resumo do Pedido</h3>
+                    
+                    <div style="display:flex; justify-content:space-between; align-items:center; font-size:1.6rem; font-weight:900; border-bottom:2px dashed #E5E7EB; padding-bottom:1.5rem; margin-bottom:1.5rem;">
+                        <span style="color: #6B7280; font-size: 1.2rem;">Total a Pagar:</span>
+                        <span id="carrinho-total-valor" style="color: var(--primary); letter-spacing:-1px;">R$ 0,00</span>
+                    </div>
+                    
+                    <div class="form-group" style="margin-bottom:1.5rem;">
+                        <label style="font-size: 0.95rem; margin-bottom: 8px; font-weight: 700;">Local de Levantamento *</label>
+                        <select id="checkout-loja" style="background:#F9FAFB; padding:1rem; width:100%; border:1px solid #D1D5DB; border-radius:8px; font-size:1rem; cursor:pointer;"></select>
+                    </div>
+                    <div style="display: flex; gap: 15px; margin-bottom:2rem;">
+                        <div style="flex: 1;">
+                            <label style="display:block; font-weight:700; font-size:0.95rem; margin-bottom:8px;">Data *</label>
+                            <input type="date" id="checkout-data" style="background:#F9FAFB; width:100%; padding:1rem; border:1px solid #D1D5DB; border-radius:8px; font-size:1rem;">
+                        </div>
+                        <div style="flex: 1;">
+                            <label style="display:block; font-weight:700; font-size:0.95rem; margin-bottom:8px;">Hora *</label>
+                            <input type="time" id="checkout-hora" style="background:#F9FAFB; width:100%; padding:1rem; border:1px solid #D1D5DB; border-radius:8px; font-size:1rem;">
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-whatsapp" onclick="finalizarPedido()" style="font-size: 1.15rem; padding: 1.2rem; border-radius: 12px; display:flex; justify-content:center; gap:10px;">
+                        <svg class="icon-svg" style="width:24px; height:24px;" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+                        Concluir Reserva no WhatsApp
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW: PERFIL -->
+        <section id="view-perfil" class="view">
+            <div style="background: var(--bg-card); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); max-width: 500px; margin: 2rem auto; padding: 3rem 2rem; text-align: center; border: 1px solid #E5E7EB;">
+                
+                <div id="perfil-step-1">
+                    <div style="background: #EFF6FF; width: 90px; height: 90px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
+                        <svg class="icon-svg" style="width: 45px; height: 45px; fill: var(--info);"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                    </div>
+                    <h2 style="color: var(--text-main); margin-bottom: 0.5rem; font-size: 1.8rem; font-weight: 800;">Bem-vindo(a)!</h2>
+                    <p style="color: var(--text-muted); margin-bottom: 2.5rem; font-size: 1.05rem;">Identifique-se para gerir as suas compras e agilizar os seus próximos pedidos na loja.</p>
+                    
+                    <button class="btn btn-primary" style="font-size: 1.1rem; padding: 1.2rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(227,0,15,0.2);" onclick="document.getElementById('perfil-step-1').style.display='none'; document.getElementById('perfil-step-2').style.display='block';">
+                        Entrar com Email ou WhatsApp
+                    </button>
+                </div>
+
+                <div id="perfil-step-2" style="display: none; text-align: left;">
+                    <button class="btn btn-outline" style="width:auto; padding: 0.5rem; border:none; margin-bottom:1rem;" onclick="document.getElementById('perfil-step-2').style.display='none'; document.getElementById('perfil-step-1').style.display='block';">← Voltar</button>
+                    <h2 style="color: var(--text-main); margin-bottom: 1.5rem; font-size: 1.5rem; font-weight: 800;">Criar Perfil / Entrar</h2>
+                    
+                    <div style="display:flex; justify-content:center; margin-bottom: 2rem;">
+                        <div style="position:relative;">
+                            <img id="avatar-preview" src="https://ui-avatars.com/api/?name=C&background=E3000F&color=fff&size=120" style="border-radius:50%; width:100px; height:100px; border: 4px solid var(--secondary); object-fit: cover; box-shadow: var(--shadow-sm);">
+                            <div style="position:absolute; bottom:0; right:0; background:var(--success); width:24px; height:24px; border-radius:50%; border:3px solid #fff;"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1.2rem;"><label style="font-weight:700;">E-mail *</label><input type="email" id="cli-email" style="width:100%; padding:1rem; border:1px solid #D1D5DB; border-radius:8px; background:#F9FAFB;"></div>
+                    <div class="form-group" style="margin-bottom: 1.2rem;"><label style="font-weight:700;">Nome Completo *</label><input type="text" id="cli-nome" style="width:100%; padding:1rem; border:1px solid #D1D5DB; border-radius:8px; background:#F9FAFB;" onkeyup="atualizarAvatar()"></div>
+                    <div class="form-group" style="margin-bottom: 2rem;"><label style="font-weight:700;">WhatsApp (com DDD) *</label><input type="tel" id="cli-zap" style="width:100%; padding:1rem; border:1px solid #D1D5DB; border-radius:8px; background:#F9FAFB;"></div>
+                    
+                    <button class="btn btn-primary" onclick="salvarPerfil()" style="font-size: 1.1rem; padding: 1.2rem; border-radius: 12px; width: 100%;">Confirmar e Aceder</button>
+                </div>
+
+                <div id="perfil-logged-state" style="display: none; padding-top: 1rem;">
+                    <img id="avatar-logged" src="" style="border-radius:50%; width:120px; height:120px; border: 4px solid var(--success); object-fit: cover; margin-bottom: 1.5rem; box-shadow: var(--shadow-md);">
+                    <h2 id="logged-name" style="color: var(--text-main); margin-bottom: 0.5rem; font-size: 1.8rem; font-weight: 900; letter-spacing: -0.5px;">Nome</h2>
+                    <p id="logged-email" style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 1.05rem;">Email</p>
+                    <div style="display: inline-flex; align-items: center; gap: 8px; color: #046C4E; font-weight: bold; margin-bottom: 2.5rem; background: #DEF7EC; padding: 8px 20px; border-radius: 30px; font-size: 0.95rem;">
+                        <svg class="icon-svg" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+                        Zap: <span id="logged-zap"></span>
+                    </div>
+                    <button class="btn btn-outline" style="width: 100%; border-radius: 12px; padding: 1rem; color: #6B7280; border-color: #D1D5DB;" onclick="deslogarPerfil()">Sair da Conta</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW: LOGIN ERP -->
+        <section id="view-login" class="view">
+            <div style="background: var(--bg-card); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); max-width: 400px; margin: 4rem auto; padding: 3rem 2rem; text-align: center; border-top: 8px solid var(--primary);">
+                <div style="background: #FEE2E2; width: 60px; height: 60px; border-radius: 15px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
+                    <svg class="icon-svg" style="width: 30px; height: 30px; fill: var(--primary);"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+                </div>
+                <h2 style="color: var(--text-main); margin-bottom: 2rem; font-size: 1.5rem;">Acesso Gerencial</h2>
+                <div style="margin-bottom: 1.2rem; text-align: left;"><label style="font-weight:600; font-size:0.85rem; color:#6B7280; display:block; margin-bottom:8px;">Utilizador</label><input type="text" id="login-user" value="admin" style="width:100%; padding:1rem; border:1px solid #D1D5DB; border-radius:8px; background:#F9FAFB;"></div>
+                <div style="margin-bottom: 2rem; text-align: left;"><label style="font-weight:600; font-size:0.85rem; color:#6B7280; display:block; margin-bottom:8px;">Senha</label><input type="password" id="login-pass" value="123" style="width:100%; padding:1rem; border:1px solid #D1D5DB; border-radius:8px; background:#F9FAFB;"></div>
+                <button class="btn btn-primary" style="padding:1.2rem; font-size:1.1rem; border-radius:12px; width:100%;" onclick="efetuarLogin()">Entrar no Sistema</button>
+                <button class="btn btn-outline" style="margin-top:1rem; border:none; color:#9CA3AF;" onclick="navigate('vitrine')">Voltar à Loja</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- ==========================================================================
+         VIEW: ERP ADMINISTRATIVO (ECRÃ CHEIO)
+         ========================================================================== -->
+    <section id="view-admin" class="view" style="padding:0; margin:0; max-width:none;">
+        <header style="background: #111827; color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 10; position: sticky; top:0;">
+            <div style="font-size: 1.3rem; font-weight: 900; color: #FFF; display: flex; align-items: center; gap: 12px; letter-spacing: -0.5px;">
+                <div style="background: var(--primary); padding: 6px; border-radius: 8px;"><svg class="icon-svg" style="fill: #FFF;"><path d="M12 2L1 12h3v9h6v-6h4v6h6v-9h3L12 2zm0 2.84L19.5 12h-1.5v7h-2v-6H8v6H6v-7H4.5L12 4.84z"/></svg></div>
+                Gestão ERP
+            </div>
+            <button class="btn-outline" style="padding: 0.5rem 1.2rem; border-radius: 20px; font-weight:bold; border: 1px solid #374151; color: #D1D5DB; width: auto;" onclick="efetuarLogout()">Encerrar Sessão</button>
+        </header>
+
+        <div style="display: flex; flex-grow: 1; flex-direction: column;">
+            <!-- Menu Lateral ERP (Mobile: Horizontal Scroll) -->
+            <div style="background: #1F2937; padding: 0.5rem; display: flex; overflow-x: auto; gap: 0.5rem; scroll-snap-type: x mandatory;">
+                <button class="erp-nav-btn active" id="tab-dashboard" onclick="abrirAbaAdmin('dashboard')"><svg class="icon-svg"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg> Visão Geral</button>
+                <button class="erp-nav-btn" id="tab-pdv" onclick="abrirAbaAdmin('pdv')"><svg class="icon-svg"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg> PDV Caixa</button>
+                <button class="erp-nav-btn" id="tab-produtos" onclick="abrirAbaAdmin('produtos')"><svg class="icon-svg"><path d="M20 6h-4V4c0-1.1-.9-2-2-2h-4C8.9 2 8 2.9 8 4v2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM10 4h4v2h-4V4zm10 16H4V8h16v12z"/></svg> Produtos & Stock</button>
+                <button class="erp-nav-btn" id="tab-lojas" onclick="abrirAbaAdmin('lojas')"><svg class="icon-svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg> Lojas Físicas</button>
+                <button class="erp-nav-btn" id="tab-depoimentos" onclick="abrirAbaAdmin('depoimentos')"><svg class="icon-svg"><path d="M21 6h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1zm-4 6V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1z"/></svg> Avaliações</button>
+                <button class="erp-nav-btn" id="tab-config" onclick="abrirAbaAdmin('config')"><svg class="icon-svg"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.06-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.73,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.06,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.49-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg> Aparência (CMS)</button>
+            </div>
+
+            <!-- Conteúdo ERP -->
+            <div style="padding: 1.5rem; max-width: 1400px; margin: 0 auto; width: 100%;">
+                
+                <!-- ABA: ANALYTICS -->
+                <div id="aba-dashboard" class="aba-conteudo">
+                    <div style="background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); padding: 2rem; margin-bottom: 1.5rem; border: 1px solid #E5E7EB;">
+                        <h3 style="margin-bottom: 1.5rem; color: #111827; font-size: 1.3rem;">Desempenho Geral</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
+                            <div style="background: #FFF; padding: 1.5rem; border-radius: 12px; border: 1px solid #E5E7EB; border-left: 5px solid var(--success); box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+                                <h4 style="font-size: 0.85rem; color: #6B7280; text-transform: uppercase; margin-bottom: 0.5rem; font-weight: 700;">Faturamento Global</h4>
+                                <div id="kpi-receita" style="font-size: 2.2rem; font-weight: 900; color: #111827; letter-spacing: -1px;">R$ 0,00</div>
+                            </div>
+                            <div style="background: #FFF; padding: 1.5rem; border-radius: 12px; border: 1px solid #E5E7EB; border-left: 5px solid var(--info); box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+                                <h4 style="font-size: 0.85rem; color: #6B7280; text-transform: uppercase; margin-bottom: 0.5rem; font-weight: 700;">Itens Vendidos</h4>
+                                <div id="kpi-itens" style="font-size: 2.2rem; font-weight: 900; color: #111827;">0</div>
+                            </div>
+                        </div>
+
+                        <h3 style="margin-bottom: 1.5rem; color: #111827; font-size: 1.1rem; border-top: 1px solid #E5E7EB; padding-top: 2rem;">Últimas Transações (Todas as origens)</h3>
+                        <div style="overflow-x: auto; border: 1px solid #E5E7EB; border-radius: 8px;">
+                            <table class="data-table" style="width: 100%; border-collapse: collapse; min-width: 600px;">
+                                <thead><tr><th style="background:#F9FAFB; padding:1rem; color:#6B7280; font-size:0.8rem; text-transform:uppercase;">Data/Hora</th><th style="background:#F9FAFB; padding:1rem; color:#6B7280; font-size:0.8rem; text-transform:uppercase;">Produto</th><th style="background:#F9FAFB; padding:1rem; color:#6B7280; font-size:0.8rem; text-transform:uppercase;">Qtd</th><th style="background:#F9FAFB; padding:1rem; color:#6B7280; font-size:0.8rem; text-transform:uppercase;">Valor Total</th></tr></thead>
+                                <tbody id="tabela-vendas"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ABA: PDV CAIXA RÁPIDO -->
+                <div id="aba-pdv" class="aba-conteudo" style="display:none;">
+                    <div style="display: grid; grid-template-columns: 1fr; gap: 1.5rem;">
+                        <div style="background: white; border-radius: 12px; padding: 2rem; border: 1px solid #E5E7EB;">
+                            <h3 style="margin-bottom: 1.5rem; display:flex; align-items:center; gap:10px;"><svg class="icon-svg" style="fill:var(--info);"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg> Caixa Rápido (PDV Balcão)</h3>
+                            
+                            <!-- Bipagem / Busca -->
+                            <div style="display:flex; gap:10px; margin-bottom: 2rem;">
+                                <input type="text" id="pdv-busca" placeholder="Passe o leitor de código de barras ou digite o nome do produto..." style="flex-grow:1; padding:1.2rem; border:2px solid #D1D5DB; border-radius:8px; font-size:1.1rem; background:#F9FAFB;" onkeypress="if(event.key === 'Enter') buscarProdutoPDV()">
+                                <button style="background: var(--info); color: white; border: none; padding: 0 2rem; border-radius: 8px; font-weight: bold; cursor: pointer; transition: background 0.3s;" onclick="buscarProdutoPDV()">Lançar</button>
+                            </div>
+                            
+                            <!-- Tabela do Cupom -->
+                            <div style="border: 1px solid #E5E7EB; border-radius: 8px; overflow: hidden; margin-bottom: 2rem;">
+                                <table style="width: 100%; border-collapse: collapse;">
+                                    <thead><tr><th style="background:#F9FAFB; padding:1rem; text-align:left; color:#6B7280; font-size:0.85rem; text-transform:uppercase;">Produto</th><th style="background:#F9FAFB; padding:1rem; text-align:left; color:#6B7280; font-size:0.85rem; text-transform:uppercase;">Qtd</th><th style="background:#F9FAFB; padding:1rem; text-align:left; color:#6B7280; font-size:0.85rem; text-transform:uppercase;">Subtotal</th><th style="background:#F9FAFB; padding:1rem;"></th></tr></thead>
+                                    <tbody id="tabela-pdv-itens"></tbody>
+                                </table>
+                            </div>
+                            
+                            <!-- Fechamento -->
+                            <div style="background: #F8F9FA; padding: 2rem; border-radius: 12px; border: 1px dashed #D1D5DB;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                                    <span style="font-size: 1.2rem; color: #4B5563; font-weight: 600;">Total a Cobrar:</span>
+                                    <span id="pdv-total-valor" style="font-size: 3rem; font-weight: 900; color: var(--success); letter-spacing: -2px; line-height: 1;">R$ 0,00</span>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                    <button style="background: transparent; border: 2px solid #D1D5DB; color: #4B5563; padding: 1.2rem; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1.1rem; transition: background 0.3s;" onclick="limparPDV()">Cancelar Cupom</button>
+                                    <button style="background: var(--success); border: none; color: white; padding: 1.2rem; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1.1rem; box-shadow: 0 4px 12px rgba(16,185,129,0.3); transition: transform 0.2s;" onclick="finalizarVendaPDV()">💰 Confirmar Pagamento</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ABA: PRODUTOS (ESTOQUE) -->
+                <div id="aba-produtos" class="aba-conteudo" style="display:none;">
+                    <div style="background: white; border-radius: 12px; padding: 2rem; border: 1px solid #E5E7EB;">
+                        
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem; flex-wrap: wrap; gap: 1rem;">
+                            <h3 style="font-size: 1.4rem;">Gestão de Catálogo e Estoque</h3>
+                            <button style="background: var(--info); color: white; padding: 0.8rem 1.5rem; border-radius: 8px; font-weight: bold; border: none; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 10px rgba(59,130,246,0.3); transition: transform 0.2s;" onclick="abrirModalProduto()">
+                                <svg class="icon-svg" style="fill:white;"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg> Cadastrar Novo
+                            </button>
+                        </div>
+
+                        <!-- CADASTRO EXPRESSO DA PRATELEIRA -->
+                        <div style="background: #F0FDF4; border: 1px solid #BBF7D0; padding: 1.5rem; border-radius: 12px; margin-bottom: 2.5rem; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
+                            <div style="font-weight: 800; color: #046C4E; margin-bottom: 10px; display: flex; align-items: center; gap: 5px;"><svg class="icon-svg"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg> Registo Rápido de Balcão</div>
+                            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                                <input type="text" id="exp-nome" placeholder="O que vai vender?" style="flex: 3; min-width: 200px; padding: 1rem; border: 1px solid #A7F3D0; border-radius: 8px; font-size: 1rem;" onkeypress="if(event.key === 'Enter') document.getElementById('exp-preco').focus()">
+                                <input type="number" id="exp-preco" step="0.01" placeholder="Preço" style="flex: 1; min-width: 100px; padding: 1rem; border: 1px solid #A7F3D0; border-radius: 8px; font-size: 1rem;" onkeypress="if(event.key === 'Enter') document.getElementById('exp-estoque').focus()">
+                                <input type="number" id="exp-estoque" placeholder="Qtd Estoque" style="flex: 1; min-width: 100px; padding: 1rem; border: 1px solid #A7F3D0; border-radius: 8px; font-size: 1rem;" onkeypress="if(event.key === 'Enter') cadastroExpresso()">
+                                <button style="flex: 1; min-width: 120px; background: #059669; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: background 0.3s;" onclick="cadastroExpresso()">Guardar Rápido</button>
+                            </div>
+                        </div>
+
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1rem;">
+                            <h4 style="color: #4B5563;">Inventário Atual</h4>
+                            <button style="background:transparent; border:1px solid #D1D5DB; color:#4B5563; padding:0.5rem 1rem; border-radius:6px; font-weight:600; cursor:pointer;" onclick="baixarRelatorioCSV()">Baixar Planilha (CSV)</button>
+                        </div>
+                        <div style="overflow-x: auto; border: 1px solid #E5E7EB; border-radius: 8px;">
+                            <table class="data-table" style="width: 100%; border-collapse: collapse; min-width: 700px;">
+                                <thead><tr><th style="background:#F9FAFB; padding:1rem; color:#6B7280; font-size:0.8rem; text-transform:uppercase;">Identificação do Produto</th><th style="background:#F9FAFB; padding:1rem; color:#6B7280; font-size:0.8rem; text-transform:uppercase;">Preço Loja</th><th style="background:#F9FAFB; padding:1rem; color:#6B7280; font-size:0.8rem; text-transform:uppercase;">Estoque Real</th><th style="background:#F9FAFB; padding:1rem; color:#6B7280; font-size:0.8rem; text-transform:uppercase;">Ações</th></tr></thead>
+                                <tbody id="tabela-estoque-admin"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ABA: LOJAS -->
+                <div id="aba-lojas" class="aba-conteudo" style="display:none;">
+                    <div style="background: white; border-radius: 12px; padding: 2rem; border: 1px solid #E5E7EB;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem; flex-wrap: wrap; gap: 1rem;">
+                            <h3 style="font-size: 1.4rem;">Endereços e Pontos de Retirada</h3>
+                            <button style="background: var(--info); color: white; padding: 0.8rem 1.5rem; border-radius: 8px; font-weight: bold; border: none; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 10px rgba(59,130,246,0.3);" onclick="abrirModalLoja()">
+                                <svg class="icon-svg" style="fill:white;"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg> Adicionar Local
+                            </button>
+                        </div>
+                        <p style="color: #6B7280; margin-bottom: 2rem;">Estes são os locais que o seu cliente verá na vitrine e poderá escolher para ir buscar o produto no momento do fecho do carrinho.</p>
+                        <div id="lista-adm-lojas" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;"></div>
+                    </div>
+                </div>
+
+                <!-- ABA: DEPOIMENTOS -->
+                <div id="aba-depoimentos" class="aba-conteudo" style="display:none;">
+                    <div style="background: white; border-radius: 12px; padding: 2rem; border: 1px solid #E5E7EB;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem; flex-wrap: wrap; gap: 1rem;">
+                            <h3 style="font-size: 1.4rem;">Prova Social (Opiniões)</h3>
+                            <button style="background: var(--success); color: white; padding: 0.8rem 1.5rem; border-radius: 8px; font-weight: bold; border: none; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 10px rgba(16,185,129,0.3);" onclick="abrirModalDepoimento()">
+                                <svg class="icon-svg" style="fill:white;"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg> Inserir Avaliação
+                            </button>
+                        </div>
+                        <p style="color: #6B7280; margin-bottom: 2rem;">As avaliações ficam rodando automaticamente num carrossel no final da página inicial para gerar confiança a novos compradores.</p>
+                        <div id="lista-adm-deps" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;"></div>
+                    </div>
+                </div>
+
+                <!-- ABA: CONFIGURAÇÕES DA LOJA (CMS VISUAL) -->
+                <div id="aba-config" class="aba-conteudo" style="display:none;">
+                    <div style="background: white; border-radius: 12px; padding: 2rem; border: 1px solid #E5E7EB; margin-bottom: 2rem;">
+                        <h3 style="font-size: 1.4rem; margin-bottom: 2rem; color: #111827;">🎨 Identidade e Comunicação</h3>
+                        
+                        <div style="background: #F9FAFB; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem; border: 1px solid #E5E7EB;">
+                            <h4 style="margin-bottom: 1.5rem; color: #374151;">Marca e Cores</h4>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                                <div><label style="display:block; font-weight:600; font-size:0.9rem; margin-bottom:8px;">Nome da Loja</label><input type="text" id="cfg-nome" style="width:100%; padding:0.8rem; border:1px solid #D1D5DB; border-radius:8px;"></div>
+                                <div><label style="display:block; font-weight:600; font-size:0.9rem; margin-bottom:8px;">WhatsApp para Receber Pedidos</label><input type="tel" id="cfg-zap" style="width:100%; padding:0.8rem; border:1px solid #D1D5DB; border-radius:8px;"></div>
+                                <div><label style="display:block; font-weight:600; font-size:0.9rem; margin-bottom:8px;">Cor Primária (Topo e Botões)</label><input type="color" id="cfg-cor-pri" style="width:100%; height:45px; border:1px solid #D1D5DB; border-radius:8px; cursor:pointer; padding:2px;"></div>
+                                <div><label style="display:block; font-weight:600; font-size:0.9rem; margin-bottom:8px;">Cor Secundária (Destaques)</label><input type="color" id="cfg-cor-sec" style="width:100%; height:45px; border:1px solid #D1D5DB; border-radius:8px; cursor:pointer; padding:2px;"></div>
+                            </div>
+                            
+                            <div style="margin-top: 1.5rem;">
+                                <label style="display:block; font-weight:600; font-size:0.9rem; margin-bottom:8px;">Logomarca (Fundo Transparente ou Branco)</label>
+                                <div style="display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap;">
+                                    <div style="position: relative; overflow: hidden; display: inline-block; flex: 1; min-width: 200px;">
+                                        <div style="background: #FFF; border: 2px dashed #D1D5DB; color: #4B5563; padding: 0.8rem; border-radius: 8px; text-align: center; font-weight: bold; cursor: pointer; transition: all 0.3s;">📸 Fazer Upload de Logo</div>
+                                        <input type="file" accept="image/*" style="font-size: 100px; position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; height: 100%;" onchange="processarImagem(this, 'preview-logo', 'cfg-logo-b64')">
+                                    </div>
+                                    <button style="background:transparent; border:1px solid #D1D5DB; color:#EF4444; padding:0.8rem 1.5rem; border-radius:8px; font-weight:bold; cursor:pointer;" onclick="removerLogo()">Remover Logo Atual</button>
+                                </div>
+                                <input type="hidden" id="cfg-logo-b64">
+                                <div style="margin-top: 1rem; background:#E5E7EB; padding:10px; border-radius:8px; display:inline-block;"><img id="preview-logo" style="max-height:60px; object-fit:contain; display:none;"></div>
+                            </div>
+                        </div>
+
+                        <div style="background: #F9FAFB; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem; border: 1px solid #E5E7EB;">
+                            <h4 style="margin-bottom: 1.5rem; color: #374151;">Textos Estratégicos</h4>
+                            <div style="margin-bottom: 1.5rem;"><label style="display:block; font-weight:600; font-size:0.9rem; margin-bottom:8px;">Barra Fixa de Promoção (Topo do site)</label><input type="text" id="cfg-topbar" style="width:100%; padding:0.8rem; border:1px solid #D1D5DB; border-radius:8px;"></div>
+                            <hr style="border:0; border-top:1px solid #D1D5DB; margin: 2rem 0;">
+                            <h5 style="margin-bottom: 1rem; color: #4B5563;">Área "Quem Somos" (Aparece a meio do site)</h5>
+                            <div style="margin-bottom: 1rem;"><label style="display:block; font-weight:600; font-size:0.9rem; margin-bottom:8px;">Título principal</label><input type="text" id="cfg-about-title" style="width:100%; padding:0.8rem; border:1px solid #D1D5DB; border-radius:8px;"></div>
+                            <div style="margin-bottom: 1rem;"><label style="display:block; font-weight:600; font-size:0.9rem; margin-bottom:8px;">Primeiro Parágrafo (Destaque)</label><textarea id="cfg-about-p1" rows="2" style="width:100%; padding:0.8rem; border:1px solid #D1D5DB; border-radius:8px;"></textarea></div>
+                            <div style="margin-bottom: 1rem;"><label style="display:block; font-weight:600; font-size:0.9rem; margin-bottom:8px;">Segundo Parágrafo (Detalhes de funcionamento)</label><textarea id="cfg-about-p2" rows="3" style="width:100%; padding:0.8rem; border:1px solid #D1D5DB; border-radius:8px;"></textarea></div>
+                        </div>
+
+                        <button style="background: var(--primary); color: white; width: 100%; padding: 1.2rem; font-size: 1.1rem; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 15px rgba(227,0,15,0.3); transition: transform 0.2s;" onclick="salvarConfiguracoesGlobais()">💾 Aplicar Alterações Visuais e de Textos</button>
+                    </div>
+
+                    <div style="background: white; border-radius: 12px; padding: 2rem; border: 1px solid #E5E7EB;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; flex-wrap: wrap; gap: 1rem;">
+                            <h3 style="font-size: 1.4rem;">Banners Rotativos (Carrossel Inicial)</h3>
+                            <button style="background: #111827; color: white; padding: 0.8rem 1.5rem; border-radius: 8px; font-weight: bold; border: none; cursor: pointer; display: flex; align-items: center; gap: 8px;" onclick="abrirModalBanner()">
+                                <svg class="icon-svg" style="fill:white;"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg> Adicionar Novo Slide
+                            </button>
+                        </div>
+                        <p style="color: #6B7280; margin-bottom: 2rem;">Pode manter até 5 banners a rodar com efeito "zoom". Tamanho ideal de imagem: Paisagem (ex: 1200x600).</p>
+                        <div id="lista-adm-banners" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;"></div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </section>
+
+    <!-- RODAPÉ INSTITUCIONAL (FOOTER) -->
+    <footer class="site-footer" id="public-footer">
+        <div class="footer-content">
+            <div>
+                <div class="footer-brand" id="footer-logo-container" style="font-size: 1.8rem; font-weight: 900; color: #FFF; display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1rem;">
+                    Multi Coisa's
+                </div>
+                <p style="font-size: 0.95rem; color: #9CA3AF; line-height: 1.7; max-width: 400px;">A sua loja completa de beleza, utilidades e presentes no coração de São Miguel/RN.</p>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <a href="#" onclick="navigate('vitrine')" style="color: #D1D5DB; text-decoration: none; font-weight: 500; display: flex; align-items: center; gap: 8px; transition: color 0.3s;"><svg class="icon-svg"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg> Página Inicial</a>
+                <a href="#" onclick="navigate('carrinho')" style="color: #D1D5DB; text-decoration: none; font-weight: 500; display: flex; align-items: center; gap: 8px; transition: color 0.3s;"><svg class="icon-svg"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg> Minha Sacola</a>
+                <a href="#" onclick="navigate('perfil')" style="color: #D1D5DB; text-decoration: none; font-weight: 500; display: flex; align-items: center; gap: 8px; transition: color 0.3s;"><svg class="icon-svg"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg> Perfil do Cliente</a>
+            </div>
+        </div>
+        <div style="position: relative; max-width: 1200px; margin: 0 auto; text-align: center; font-size: 0.85rem; color: #6B7280; padding: 1rem 0;">
+            &copy; 2026. Todos os direitos reservados.
+            <!-- O CADEADO NINJA ESTÁ AQUI. ALINHADO DIREITA, OPACIDADE 20% -->
+            <a href="#" id="btn-secret-admin" title="Área Restrita" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); opacity: 0.2; cursor: pointer; text-decoration: none; padding: 10px; transition: all 0.3s;">
+                <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: #FFF;"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+            </a>
+        </div>
+    </footer>
+
+    <!-- ==========================================================================
+         MODAIS DE EDIÇÃO (OVERLAYS NATIVOS FLUIDOS)
+         ========================================================================== -->
+    
+    <!-- MODAL: PRODUTO -->
+    <div style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(17,24,39,0.7); z-index: 3000; justify-content: center; align-items: center; padding: 1rem; backdrop-filter: blur(4px);" id="erp-prod-modal-overlay">
+        <div style="background: #FFF; width: 100%; max-width: 600px; border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto; display: flex; flex-direction: column; animation: slideUpModal 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;" id="erp-prod-modal">
+            <div style="padding: 1.5rem; border-bottom: 1px solid #E5E7EB; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: #FFF; z-index: 10;">
+                <h3 id="erp-modal-title" style="margin: 0; color: #111827; font-size: 1.25rem;">Produto</h3>
+                <button style="background: #F3F4F6; border: none; width: 32px; height: 32px; border-radius: 16px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #6B7280; transition: all 0.2s;" onclick="fecharModalProduto()">
+                    <svg viewBox="0 0 24 24" style="width: 18px; fill: currentColor;"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                </button>
+            </div>
+            <div style="padding: 1.5rem; flex-grow: 1;">
+                <input type="hidden" id="erp-prod-id">
+                <div style="margin-bottom: 1.2rem;"><label style="display:block; font-weight:600; font-size:0.9rem; margin-bottom:0.5rem; color:#374151;">Nome completo *</label><input type="text" id="erp-prod-nome" style="width: 100%; padding: 0.8rem 1rem; border: 1px solid #D1D5DB; border-radius: 8px; background: #F9FAFB;"></div>
+                <div style="display: flex; gap: 1rem; margin-bottom: 1.2rem;">
+                    <div style="flex:1"><label style="display:block; font-weight:600; font-size:0.9rem; margin-bottom:0.5rem; color:#374151;">Preço Loja (R$) *</label><input type="number" id="erp-prod-preco" step="0.01" style="width: 100%; padding: 0.8rem 1rem; border: 1px solid #D1D5DB; border-radius: 8px; background: #F9FAFB;"></div>
+                    <div style="flex:1"><label style="display:block; font-weight:600; font-size:0.9rem; margin-bottom:0.5rem; color:#374151;">Estoque Físico *</label><input type="number" id="erp-prod-estoque" style="width: 100%; padding: 0.8rem 1rem; border: 1px solid #D1D5DB; border-radius: 8px; background: #F9FAFB;"></div>
+                </div>
+                <div style="margin-bottom: 1.2rem;">
+                    <label style="display:block; font-weight:600; font-size:0.9rem; margin-bottom:0.5rem; color:#374151;">Fotografia do Produto</label>
+                    <div style="position: relative; overflow: hidden; display: inline-block; width: 100%;">
+                        <div style="background: #F9FAFB; border: 2px dashed #D1D5DB; color: #6B7280; padding: 1.2rem; border-radius: 8px; text-align: center; font-weight: 600; cursor: pointer;">📸 Abrir Câmera ou Galeria</div>
+                        <input type="file" accept="image/*" capture="environment" style="font-size: 100px; position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; height: 100%;" onchange="processarImagem(this, 'erp-preview-img', 'erp-prod-img-b64')">
+                    </div>
+                    <input type="hidden" id="erp-prod-img-b64">
+                    <img id="erp-preview-img" style="width: 100px; height: 100px; border-radius: 8px; object-fit: contain; margin-top: 10px; display: none; border: 1px solid #E5E7EB; background: #fff; padding: 4px;">
+                </div>
+                <div style="margin-bottom: 1rem;"><label style="display:block; font-weight:600; font-size:0.9rem; margin-bottom:0.5rem; color:#374151;">Descrição Técnica / Comercial</label><textarea id="erp-prod-desc" rows="4" style="width: 100%; padding: 0.8rem 1rem; border: 1px solid #D1D5DB; border-radius: 8px; background: #F9FAFB; resize: vertical;"></textarea></div>
+            </div>
+            <div style="padding: 1.5rem; border-top: 1px solid #E5E7EB; display: flex; justify-content: flex-end; gap: 1rem; background: #F9FAFB; border-radius: 0 0 16px 16px; position: sticky; bottom: 0;">
+                <button style="background: transparent; border: 1px solid #D1D5DB; padding: 0.8rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight:600; color:#4B5563;" onclick="fecharModalProduto()">Cancelar</button>
+                <button style="background: var(--primary); color: white; border: none; padding: 0.8rem 2rem; border-radius: 8px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 10px rgba(227,0,15,0.2);" onclick="salvarEdicaoProdutoERP()">Gravar Produto</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: LOJA -->
+    <div style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(17,24,39,0.7); z-index: 3000; justify-content: center; align-items: center; padding: 1rem; backdrop-filter: blur(4px);" id="erp-loja-modal-overlay">
+        <div style="background: #FFF; width: 100%; max-width: 500px; border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto; display: flex; flex-direction: column; animation: slideUpModal 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
+            <div style="padding: 1.5rem; border-bottom: 1px solid #E5E7EB; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: #FFF; z-index: 10;">
+                <h3 id="erp-modal-loja-title" style="margin: 0; color: #111827; font-size: 1.25rem;">Endereço da Loja</h3>
+                <button style="background: #F3F4F6; border: none; width: 32px; height: 32px; border-radius: 16px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #6B7280; transition: all 0.2s;" onclick="fecharModalLoja()">
+                    <svg viewBox="0 0 24 24" style="width: 18px; fill: currentColor;"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                </button>
+            </div>
+            <div style="padding: 1.5rem; flex-grow: 1;">
+                <input type="hidden" id="erp-loja-id">
+                <div style="margin-bottom: 1.2rem;"><label style="display:block; font-weight:600; font-size:0.9rem; margin-bottom:0.5rem; color:#374151;">Nome da Unidade *</label><input type="text" id="erp-loja-nome" placeholder="Ex: Matriz - Centro" style="width: 100%; padding: 0.8rem 1rem; border: 1px solid #D1D5DB; border-radius: 8px; background: #F9FAFB;"></div>
+                <div style="margin-bottom: 1.2rem;"><label style="display:block; font-weight:600; font-size:0.9rem; margin-bottom:0.5rem; color:#374151;">Endereço e Referências *</label><textarea id="erp-loja-end" rows="3" style="width: 100%; padding: 0.8rem 1rem; border: 1px solid #D1D5DB; border-radius: 8px; background: #F9FAFB; resize: vertical;"></textarea></div>
+                <div style="margin-bottom: 1.2rem;">
+                    <label style="display:block; font-weight:600; font-size:0.9rem; margin-bottom:0.5rem; color:#374151;">Foto da Fachada (Atrai Clientes)</label>
+                    <div style="position: relative; overflow: hidden; display: inline-block; width: 100%;">
+                        <div style="background: #F9FAFB; border: 2px dashed #D1D5DB; color: #6B7280; padding: 1.2rem; border-radius: 8px; text-align: center; font-weight: 600; cursor: pointer;">📸 Escolher Foto</div>
+                        <input type="file" accept="image/*" capture="environment" style="font-size: 100px; position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; height: 100%;" onchange="processarImagem(this, 'erp-preview-loja-img', 'erp-loja-img-b64')">
+                    </div>
+                    <input type="hidden" id="erp-loja-img-b64">
+                    <img id="erp-preview-loja-img" style="width: 100%; max-height: 150px; border-radius: 8px; object-fit: cover; margin-top: 10px; display: none; border: 1px solid #E5E7EB;">
+                </div>
+            </div>
+            <div style="padding: 1.5rem; border-top: 1px solid #E5E7EB; display: flex; justify-content: flex-end; gap: 1rem; background: #F9FAFB; border-radius: 0 0 16px 16px; position: sticky; bottom: 0;">
+                <button style="background: transparent; border: 1px solid #D1D5DB; padding: 0.8rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight:600; color:#4B5563;" onclick="fecharModalLoja()">Cancelar</button>
+                <button style="background: var(--info); color: white; border: none; padding: 0.8rem 2rem; border-radius: 8px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 10px rgba(59,130,246,0.3);" onclick="salvarLojaERP()">Guardar Loja</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: DEPOIMENTO -->
+    <div style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(17,24,39,0.7); z-index: 3000; justify-content: center; align-items: center; padding: 1rem; backdrop-filter: blur(4px);" id="erp-dep-modal-overlay">
+        <div style="background: #FFF; width: 100%; max-width: 500px; border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto; display: flex; flex-direction: column; animation: slideUpModal 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
+            <div style="padding: 1.5rem; border-bottom: 1px solid #E5E7EB; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: #FFF; z-index: 10;">
+                <h3 id="erp-modal-dep-title" style="margin: 0; color: #111827; font-size: 1.25rem;">Avaliação do Cliente</h3>
+                <button style="background: #F3F4F6; border: none; width: 32px; height: 32px; border-radius: 16px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #6B7280; transition: all 0.2s;" onclick="fecharModalDepoimento()">
+                    <svg viewBox="0 0 24 24" style="width: 18px; fill: currentColor;"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                </button>
+            </div>
+            <div style="padding: 1.5rem; flex-grow: 1;">
+                <input type="hidden" id="erp-dep-id">
+                <div style="margin-bottom: 1.2rem;"><label style="display:block; font-weight:600; font-size:0.9rem; margin-bottom:0.5rem; color:#374151;">Nome do Cliente *</label><input type="text" id="erp-dep-nome" style="width: 100%; padding: 0.8rem 1rem; border: 1px solid #D1D5DB; border-radius: 8px; background: #F9FAFB;"></div>
+                <div style="margin-bottom: 1.2rem;"><label style="display:block; font-weight:600; font-size:0.9rem; margin-bottom:0.5rem; color:#374151;">Mensagem escrita *</label><textarea id="erp-dep-texto" rows="3" style="width: 100%; padding: 0.8rem 1rem; border: 1px solid #D1D5DB; border-radius: 8px; background: #F9FAFB; resize: vertical;"></textarea></div>
+                <div style="margin-bottom: 1.2rem;">
+                    <label style="display:block; font-weight:600; font-size:0.9rem; margin-bottom:0.5rem; color:#374151;">Rosto do Cliente (Se vazio, gera avatar)</label>
+                    <div style="position: relative; overflow: hidden; display: inline-block; width: 100%;">
+                        <div style="background: #F9FAFB; border: 2px dashed #D1D5DB; color: #6B7280; padding: 1.2rem; border-radius: 8px; text-align: center; font-weight: 600; cursor: pointer;">📸 Escolher Foto</div>
+                        <input type="file" accept="image/*" style="font-size: 100px; position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; height: 100%;" onchange="processarImagem(this, 'erp-preview-dep-img', 'erp-dep-img-b64')">
+                    </div>
+                    <input type="hidden" id="erp-dep-img-b64">
+                    <img id="erp-preview-dep-img" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin: 10px auto 0; display: none; border: 2px solid var(--secondary);">
+                </div>
+            </div>
+            <div style="padding: 1.5rem; border-top: 1px solid #E5E7EB; display: flex; justify-content: flex-end; gap: 1rem; background: #F9FAFB; border-radius: 0 0 16px 16px; position: sticky; bottom: 0;">
+                <button style="background: transparent; border: 1px solid #D1D5DB; padding: 0.8rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight:600; color:#4B5563;" onclick="fecharModalDepoimento()">Cancelar</button>
+                <button style="background: var(--info); color: white; border: none; padding: 0.8rem 2rem; border-radius: 8px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 10px rgba(59,130,246,0.3);" onclick="salvarDepoimentoERP()">Publicar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: BANNER -->
+    <div style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(17,24,39,0.7); z-index: 3000; justify-content: center; align-items: center; padding: 1rem; backdrop-filter: blur(4px);" id="erp-banner-modal-overlay">
+        <div style="background: #FFF; width: 100%; max-width: 650px; border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto; display: flex; flex-direction: column; animation: slideUpModal 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
+            <div style="padding: 1.5rem; border-bottom: 1px solid #E5E7EB; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: #FFF; z-index: 10;">
+                <h3 id="erp-modal-banner-title" style="margin: 0; color: #111827; font-size: 1.25rem;">Carrossel Principal</h3>
+                <button style="background: #F3F4F6; border: none; width: 32px; height: 32px; border-radius: 16px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #6B7280; transition: all 0.2s;" onclick="fecharModalBanner()">
+                    <svg viewBox="0 0 24 24" style="width: 18px; fill: currentColor;"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                </button>
+            </div>
+            <div style="padding: 1.5rem; flex-grow: 1;">
+                <input type="hidden" id="erp-banner-id"> 
+                <div style="margin-bottom: 1.2rem;"><label style="display:block; font-weight:600; font-size:0.9rem; margin-bottom:0.5rem; color:#374151;">Título a flutuar na imagem</label><input type="text" id="erp-banner-title" placeholder="Ex: Grande Queima" style="width: 100%; padding: 0.8rem 1rem; border: 1px solid #D1D5DB; border-radius: 8px; background: #F9FAFB;"></div>
+                <div style="margin-bottom: 1.2rem;"><label style="display:block; font-weight:600; font-size:0.9rem; margin-bottom:0.5rem; color:#374151;">Subtítulo de apoio</label><input type="text" id="erp-banner-text" placeholder="Ex: Aproveite as ofertas." style="width: 100%; padding: 0.8rem 1rem; border: 1px solid #D1D5DB; border-radius: 8px; background: #F9FAFB;"></div>
+                <div style="margin-bottom: 1.2rem;">
+                    <label style="display:block; font-weight:600; font-size:0.9rem; margin-bottom:0.5rem; color:#374151;">Imagem do Banner * (Paisagem 1200x500)</label>
+                    <div style="position: relative; overflow: hidden; display: inline-block; width: 100%;">
+                        <div style="background: #F9FAFB; border: 2px dashed #D1D5DB; color: #6B7280; padding: 1.2rem; border-radius: 8px; text-align: center; font-weight: 600; cursor: pointer;">📸 Escolher Foto Larga</div>
+                        <input type="file" accept="image/*" style="font-size: 100px; position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; height: 100%;" onchange="processarImagem(this, 'erp-preview-banner-img', 'erp-banner-img-b64')">
+                    </div>
+                    <input type="hidden" id="erp-banner-img-b64">
+                    <img id="erp-preview-banner-img" style="width: 100%; max-height: 200px; border-radius: 8px; object-fit: cover; margin-top: 10px; display: none; border: 1px solid #E5E7EB;">
+                </div>
+            </div>
+            <div style="padding: 1.5rem; border-top: 1px solid #E5E7EB; display: flex; justify-content: flex-end; gap: 1rem; background: #F9FAFB; border-radius: 0 0 16px 16px; position: sticky; bottom: 0;">
+                <button style="background: transparent; border: 1px solid #D1D5DB; padding: 0.8rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight:600; color:#4B5563;" onclick="fecharModalBanner()">Cancelar</button>
+                <button style="background: var(--info); color: white; border: none; padding: 0.8rem 2rem; border-radius: 8px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 10px rgba(59,130,246,0.3);" onclick="salvarBannerERP()">Gravar Slide</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST DE SISTEMA -->
+    <div id="toast">Notificação de Sistema</div>
+
+    <!-- ==========================================================================
+         JAVASCRIPT - ARQUITETURA LIMPA E MODULAR
+         ========================================================================== -->
+    <script>
+        /* --- ESTADO GLOBAL E DATABASE --- */
+        let state = { 
+            isLogged: false, 
+            cliente: null, 
+            produtos: [], 
+            vendas: [], 
+            carrinho: [], 
+            lojas: [], 
+            depoimentos: [], 
+            pdvCart: [],
+            config: {
+                nomeLoja: "Multi Coisa's", telefone: "558433532646", corPrimaria: "#E3000F", corSecundaria: "#FFCC00", logoUrl: "",
+                topBar: "⏳ Lojas Abertas! Garanta o presente perfeito! 🎁",
+                aboutTitle: "A sua Loja 24h em São Miguel",
+                aboutP1: "✨ Transformando lares há mais de 14 anos! Encontre os melhores presentes, eletrodomésticos e utensílios a qualquer hora do dia ou da noite.",
+                aboutP2: "A Multi Coisa's nunca fecha no seu telemóvel. Explore o nosso catálogo, escolha os seus presentes com calma, garanta a sua reserva na sacola e levante comodamente numa das nossas lojas físicas. <strong>Aqui, você é de casa!</strong>",
+                banners: [
+                    { img: "https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f?auto=format&fit=crop&w=1200", title: "Dia das Mães Multi Coisa's", text: "⏳ Escolha os seus produtos e garanta o presente perfeito! 🎁" },
+                    { img: "https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=1200", title: "Sua Cozinha Completa", text: "As melhores Airfryers e Utensílios estão aqui." }
+                ]
+            }
+        };
+
+        const FOMO_PROFILES = [ { nome: "Maria", foto: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=100" }, { nome: "João", foto: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=100" } ];
+        const DEFAULT_SVG_LOGO = `<svg viewBox="0 0 24 24"><path d="M12 2L1 12h3v9h6v-6h4v6h6v-9h3L12 2zm0 2.84L19.5 12h-1.5v7h-2v-6H8v6H6v-7H4.5L12 4.84z"/></svg>`;
+        const DEFAULT_SVG_BAG = `<svg viewBox="0 0 24 24" style="width:24px;fill:currentColor;"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>`;
+
+        /* --- UTILITÁRIOS (Compressão, Moeda, Toasts, Storage) --- */
+        function processarImagem(input, previewId, hiddenId) {
+            const file = input.files[0]; if (!file) return;
+            const reader = new FileReader();
+            reader.onload = e => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    let w = img.width, h = img.height; const maxW = 1200, maxH = 1200; 
+                    if (w > h) { if (w > maxW) { h *= maxW / w; w = maxW; } } else { if (h > maxH) { w *= maxH / h; h = maxH; } }
+                    canvas.width = w; canvas.height = h;
+                    canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                    const b64 = canvas.toDataURL('image/jpeg', 0.8);
+                    const hiddenEl = document.getElementById(hiddenId); if(hiddenEl) hiddenEl.value = b64;
+                    const prevEl = document.getElementById(previewId); if(prevEl) { prevEl.src = b64; prevEl.style.display = 'block'; }
+                }
+                img.src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
+
+        function formatarMoeda(v) { const n = parseFloat(v); if(isNaN(n)) return "R$ 0,00"; return n.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); }
+        function escapeHTML(s) { return (s||'').toString().replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+        function showToast(m) { const t = document.getElementById("toast"); if(!t) return; t.innerText = m; t.className = "show"; setTimeout(() => { t.className = t.className.replace("show", ""); }, 2800); }
+
+        function sincronizarStorage() { 
+            try { 
+                localStorage.setItem('mc_erp_produtos', JSON.stringify(state.produtos)); localStorage.setItem('mc_erp_vendas', JSON.stringify(state.vendas)); localStorage.setItem('mc_carrinho', JSON.stringify(state.carrinho)); localStorage.setItem('mc_config', JSON.stringify(state.config)); localStorage.setItem('mc_lojas', JSON.stringify(state.lojas)); localStorage.setItem('mc_depoimentos', JSON.stringify(state.depoimentos));
+            } catch(e) { console.error("Armazenamento cheio", e); } 
+        }
+
+        /* --- INICIALIZAÇÃO (Carregamento Mocks) --- */
+        window.onload = () => {
+            const CONFIG_VERSION = 'v19_mobile_premium';
+            if(localStorage.getItem('mc_version') !== CONFIG_VERSION) {
+                state.produtos = [
+                    { id: 1, nome: "Fritadeira Airfryer 4L Preto/Inox", sku: "AF4L", preco: 389.90, estoque: 6, imagem: "https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=400", descricao: "Timer de 60 min, controle até 200ºC." },
+                    { id: 2, nome: "Secador de Cabelo Profissional 2000W", sku: "SEC", preco: 159.00, estoque: 8, imagem: "https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&w=400", descricao: "Acompanha bico." },
+                    { id: 3, nome: "Carro de Controle Remoto Off-Road", sku: "CAR", preco: 145.00, estoque: 12, imagem: "https://images.unsplash.com/photo-1594787318286-3d835c1d207f?auto=format&fit=crop&w=400", descricao: "Bateria recarregável." },
+                    { id: 4, nome: "Kit Pincéis de Maquiagem 12 Peças", sku: "MKP", preco: 45.90, estoque: 20, imagem: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=400", descricao: "Cerdas super macias." },
+                    { id: 5, nome: "Garrafa Térmica Inox 1L", sku: "GAR", preco: 79.90, estoque: 15, imagem: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=400", descricao: "Mantém 24h gelado." },
+                    { id: 6, nome: "Jogo de Panelas 5 Peças", sku: "PAN", preco: 249.90, estoque: 4, imagem: "https://images.unsplash.com/photo-1584990347449-a6a5d419b165?auto=format&fit=crop&w=400", descricao: "Revestimento antiaderente." }
+                ];
+                state.lojas = [
+                    { id: 1, nome: "Multi Coisa's - Matriz", endereco: "R. Cel. Nunes, 118\nSão Miguel, RN", imagem: "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?auto=format&fit=crop&w=600" },
+                    { id: 2, nome: "Multi Coisa's - Filial", endereco: "R. Dep. Hesíquio Fernandes, 271\nSão Miguel, RN", imagem: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=600" }
+                ];
+                state.depoimentos = [
+                    { id: 1, nome: "Ana Flávia", texto: "Sempre encontro o que preciso para a casa. Atendimento top!", foto: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=100" },
+                    { id: 2, nome: "Carlos Eduardo", texto: "Comprei pelo site e retirei na loja. Super prático.", foto: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100" }
+                ];
+                localStorage.setItem('mc_version', CONFIG_VERSION);
+            } else {
+                state.produtos = JSON.parse(localStorage.getItem('mc_erp_produtos')) || [];
+                state.vendas = JSON.parse(localStorage.getItem('mc_erp_vendas')) || [];
+                state.carrinho = JSON.parse(localStorage.getItem('mc_carrinho')) || [];
+                state.lojas = JSON.parse(localStorage.getItem('mc_lojas')) || [];
+                state.depoimentos = JSON.parse(localStorage.getItem('mc_depoimentos')) || [];
+                const cfg = JSON.parse(localStorage.getItem('mc_config')); if(cfg) state.config = { ...state.config, ...cfg };
+            }
+            state.cliente = JSON.parse(localStorage.getItem('mc_cliente')) || null;
+
+            sincronizarStorage(); aplicarTemaEConfiguracoes(); atualizarBadgeCarrinho(); navigate('vitrine'); iniciarProvaSocial();
+            
+            // Clique Ninja no Rodapé (Cadeado 5 cliques)
+            let clicks = 0; let clickTimer; const btnSecret = document.getElementById('btn-secret-admin');
+            if (btnSecret) {
+                btnSecret.addEventListener('click', (e) => {
+                    e.preventDefault(); clicks++; clearTimeout(clickTimer);
+                    if(clicks === 5) { clicks = 0; navigate('login'); } else { clickTimer = setTimeout(() => clicks = 0, 1500); }
+                });
+            }
+        };
+
+        /* --- ATUALIZAÇÃO VISUAL (CMS FRONTEND) --- */
+        function aplicarTemaEConfiguracoes() {
+            const r = document.documentElement;
+            r.style.setProperty('--primary', state.config.corPrimaria); r.style.setProperty('--secondary', state.config.corSecundaria);
+            
+            const els = { 'ui-top-bar-text': state.config.topBar, 'ui-about-title': state.config.aboutTitle, 'ui-about-text1': state.config.aboutP1 };
+            for(let id in els) { const el = document.getElementById(id); if(el) el.innerText = els[id]; }
+            const p2 = document.getElementById('ui-about-text2'); if(p2) p2.innerHTML = state.config.aboutP2;
+            
+            const logoHTML = state.config.logoUrl ? `<img src="${state.config.logoUrl}">` : `${DEFAULT_SVG_LOGO} ${escapeHTML(state.config.nomeLoja)}`;
+            const iconHTML = state.config.logoUrl ? `<img src="${state.config.logoUrl}" class="custom-logo-cart">` : DEFAULT_SVG_BAG;
+            ['ui-main-logo', 'footer-logo-container'].forEach(id => { const el = document.getElementById(id); if(el) el.innerHTML = logoHTML; });
+            ['ui-cart-icon-desktop', 'ui-cart-icon-mobile'].forEach(id => { const el = document.getElementById(id); if(el) el.innerHTML = iconHTML; });
+
+            const s = document.getElementById('hero-slider');
+            if (s) {
+                s.innerHTML = '';
+                if(!state.config.banners || state.config.banners.length === 0) { s.innerHTML = `<div class="slide active"><div class="slide-bg" style="background:#333;"></div><div class="slide-content"><h2>Configure seus banners</h2><p>Painel ADM > Aparência</p></div></div>`; } 
+                else { state.config.banners.forEach((b, idx) => { s.innerHTML += `<div class="slide ${idx===0?'active':''}"><div class="slide-bg" style="background-image: url('${b.img}');"></div><div class="slide-content"><h2>${escapeHTML(b.title)}</h2><p>${escapeHTML(b.text)}</p></div></div>`; }); }
+            }
+            iniciarCarrossel();
+        }
+
+        let sliderInterval;
+        function iniciarCarrossel() {
+            clearInterval(sliderInterval); const s = document.querySelectorAll('.slide'); if(s.length <= 1) return;
+            let i = 0; sliderInterval = setInterval(() => { s[i].classList.remove('active'); i = (i + 1) % s.length; s[i].classList.add('active'); }, 6000); 
+        }
+
+        /* --- NAVEGAÇÃO SPA --- */
+        function navigate(viewId, payload = null) {
+            const isAdm = viewId === 'admin';
+            ['public-header', 'public-topbar', 'public-footer', 'public-bottom-nav'].forEach(id => { const el = document.getElementById(id); if(el) el.style.display = (isAdm && id!=='public-bottom-nav') ? 'none' : (isAdm ? 'none' : (id==='public-bottom-nav'?'flex':'block')); });
+            if (isAdm && !state.isLogged) { viewId = 'login'; document.getElementById('public-header').style.display = 'block'; }
+            
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.bottom-nav-item').forEach(btn => btn.classList.remove('active'));
+            const nId = viewId === 'login' ? 'nav-btn-admin' : `nav-btn-${viewId}`; const nBtn = document.getElementById(nId); if(nBtn) nBtn.classList.add('active');
+            
+            const vEl = document.getElementById(`view-${viewId}`); if(vEl) vEl.classList.add('active');
+            
+            if (viewId === 'vitrine') { renderizarVitrine(); } 
+            else if (viewId === 'produto' && payload) { renderizarDetalheProduto(payload); } 
+            else if (viewId === 'carrinho') { renderizarCarrinho(); } 
+            else if (viewId === 'admin') { abrirAbaAdmin('dashboard'); }
+            window.scrollTo(0, 0);
+        }
+
+        /* --- VITRINE PÚBLICA --- */
+        function renderizarVitrine() {
+            const grid = document.getElementById('grid-produtos');
+            if (grid) {
+                grid.innerHTML = '';
+                state.produtos.forEach(p => {
+                    const noCarrinho = state.carrinho.find(i => i.id == p.id);
+                    const isDisp = p.estoque > 0;
+                    
+                    const tag = isDisp ? (noCarrinho ? `<span class="tag-stock in-cart-text">Na Sacola</span>` : `<span class="tag-stock">Em Estoque</span>`) : `<span class="tag-stock out">Esgotado</span>`;
+                    
+                    const cardClass = noCarrinho ? 'card-produto in-cart' : 'card-produto';
+                    
+                    let btn = '';
+                    if (isDisp) {
+                        if (noCarrinho) {
+                            btn = `<button class="btn-quick-add added" onclick="event.stopPropagation(); navigate('carrinho')" title="Ir para a sacola"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></button>`;
+                        } else {
+                            btn = `<button class="btn-quick-add" onclick="event.stopPropagation(); addItemCarrinho(${p.id})" title="Adicionar à sacola"><svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg></button>`;
+                        }
+                    } else {
+                        btn = `<button class="btn-quick-add" disabled><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>`;
+                    }
+                    
+                    grid.innerHTML += `<div class="${cardClass}" onclick="abrirProduto(${p.id})"><div class="card-img"><img src="${p.imagem}" onerror="this.src='https://via.placeholder.com/400'"></div><div class="card-body"><div class="card-price">${formatarMoeda(p.preco)}</div><div class="card-title">${escapeHTML(p.nome)}</div>${tag}</div>${btn}</div>`;
+                });
+                const msg = document.getElementById('msg-sem-produto'); if (msg) msg.style.display = state.produtos.length === 0 ? 'block' : 'none';
+            }
+            const elLojas = document.getElementById('scroll-lojas');
+            if (elLojas) {
+                elLojas.innerHTML = '';
+                state.lojas.forEach(d => {
+                    const mapLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(d.endereco)}`;
+                    const imgSrc = d.imagem || "https://via.placeholder.com/600x300?text=Loja";
+                    elLojas.innerHTML += `<div class="loja-card"><img src="${imgSrc}" class="loja-img" alt="Fachada da loja"><div class="loja-content"><h3 class="loja-title"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg> ${escapeHTML(d.nome)}</h3><p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:1.2rem; flex-grow: 1;">${escapeHTML(d.endereco).replace(/\n/g, '<br>')}</p><a href="${mapLink}" target="_blank" class="map-btn"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg> Abrir no Google Maps</a></div></div>`;
+                });
+            }
+            const elDeps = document.getElementById('track-depoimentos');
+            if (elDeps) {
+                elDeps.innerHTML = ''; let cards = '';
+                state.depoimentos.forEach(d => { cards += `<div class="depoimento-card"><div class="quote-icon">"</div><div class="dep-header"><img src="${d.foto}" class="dep-img" alt="Cliente"><div><div class="dep-nome">${escapeHTML(d.nome)}</div><div class="dep-estrelas">★★★★★</div></div></div><div class="dep-texto">"${escapeHTML(d.texto)}"</div></div>`; });
+                if(cards) { elDeps.innerHTML = cards + cards; elDeps.style.animation = 'scroll-left 40s linear infinite'; } else { elDeps.innerHTML = '<p>Nenhuma avaliação.</p>'; elDeps.style.animation = 'none'; }
+            }
+        }
+
+        function abrirProduto(id) { const p = state.produtos.find(x => x.id == id); if(p) navigate('produto', p); }
+        function renderizarDetalheProduto(p) {
+            const isDisp = p.estoque > 0; const container = document.getElementById('container-produto'); if (!container) return;
+            const noCarrinho = state.carrinho.find(i => i.id == p.id);
+            const statusTxt = isDisp ? `<span style="color:var(--success); font-weight:bold;">● Em estoque (${p.estoque} un.)</span>` : `<span style="color:var(--danger); font-weight:bold;">● Esgotado no Momento</span>`;
+            
+            let btn = '';
+            if (isDisp) {
+                if (noCarrinho) {
+                    btn = `<button class="btn btn-success" style="padding: 1.2rem; font-size: 1.2rem;" onclick="navigate('carrinho')"><svg style="width:24px;fill:white;" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Produto na Sacola</button>`;
+                } else {
+                    btn = `<button class="btn btn-primary" style="padding: 1.2rem; font-size: 1.2rem;" onclick="addItemCarrinho(${p.id})">🛒 Adicionar à Sacola</button>`;
+                }
+            } else {
+                btn = `<button class="btn" disabled style="background:#E5E7EB; color:#9CA3AF; padding: 1.2rem; font-size: 1.2rem;">Indisponível</button>`;
+            }
+
+            container.innerHTML = `<img src="${p.imagem}" class="detalhe-img"><div class="detalhe-info"><h1>${escapeHTML(p.nome)}</h1><div class="preco">${formatarMoeda(p.preco)}</div><div style="margin-bottom: 1rem;">${statusTxt}</div><div class="sticky-buy">${btn}</div><div class="desc"><strong style="color:var(--text-main);">Detalhes do Produto:</strong><br><br>${escapeHTML(p.descricao)}</div></div>`;
+        }
+
+        /* --- CARRINHO --- */
+        function addItemCarrinho(id) {
+            const p = state.produtos.find(x => x.id == id); if (!p || p.estoque <= 0) return showToast("Esgotado.");
+            const i = state.carrinho.find(x => x.id == id);
+            if (i) { if (i.qtd < p.estoque) i.qtd++; else return showToast("Máximo atingido."); } else { state.carrinho.push({ id: p.id, nome: p.nome, preco: p.preco, imagem: p.imagem, est: p.estoque, qtd: 1 }); }
+            const badge = document.querySelector('.cart-badge'); if (badge) { badge.classList.remove('pop'); void badge.offsetWidth; badge.classList.add('pop'); }
+            sincronizarStorage(); atualizarBadgeCarrinho(); 
+            
+            // Re-render current view if it's vitrine or produto to show marked state
+            const vitrine = document.getElementById('view-vitrine');
+            if(vitrine && vitrine.classList.contains('active')) renderizarVitrine();
+            const viewProd = document.getElementById('view-produto');
+            if(viewProd && viewProd.classList.contains('active')) renderizarDetalheProduto(p);
+
+            showToast("Na sacola!");
+        }
+
+        function atualizarBadgeCarrinho() { const t = state.carrinho.reduce((a, i) => a + i.qtd, 0); document.querySelectorAll('.cart-badge').forEach(b => { b.innerText = t; b.style.display = t > 0 ? 'flex' : 'none'; }); }
+
+        function renderizarCarrinho() {
+            const list = document.getElementById('lista-itens-carrinho'); const v = document.getElementById('carrinho-vazio'); const c = document.getElementById('carrinho-cheio');
+            if(!list || !v || !c) return;
+            list.innerHTML = ''; let tot = 0;
+            if (state.carrinho.length === 0) { v.style.display='block'; c.style.display='none'; return; }
+            v.style.display='none'; c.style.display='block';
+            state.carrinho.forEach(i => {
+                tot += (i.preco * i.qtd);
+                list.innerHTML += `<div class="cart-item"><img src="${i.imagem}"><div class="cart-item-info"><div style="font-weight:600; color:var(--text-main); font-size:0.95rem; margin-bottom:5px;">${escapeHTML(i.nome)}</div><div style="font-weight:900; font-size:1.1rem; color:var(--primary);">${formatarMoeda(i.preco)}</div><div class="qtd-control"><button onclick="mudarQtd(${i.id}, -1)">-</button><span>${i.qtd}</span><button onclick="mudarQtd(${i.id}, 1)">+</button></div></div></div>`;
+            });
+            document.getElementById('carrinho-total-valor').innerText = formatarMoeda(tot);
+            const sel = document.getElementById('checkout-loja'); sel.innerHTML = '<option value="">-- Escolha uma loja --</option>'; state.lojas.forEach(l => { sel.innerHTML += `<option value="${escapeHTML(l.nome)}">${escapeHTML(l.nome)}</option>`; });
+        }
+
+        function mudarQtd(id, d) { const i = state.carrinho.find(x => x.id == id); if(!i) return; i.qtd += d; if (i.qtd > i.est) { i.qtd = i.est; showToast("Máximo atingido."); } else if (i.qtd <= 0) { state.carrinho = state.carrinho.filter(x => x.id != id); } sincronizarStorage(); renderizarCarrinho(); atualizarBadgeCarrinho(); }
+        
+        function finalizarPedido() {
+            if (!state.cliente) { showToast("Faça login para finalizar!"); return navigate('perfil'); }
+            const l = document.getElementById('checkout-loja').value, dStr = document.getElementById('checkout-data').value, hStr = document.getElementById('checkout-hora').value;
+            if (!l || !dStr || !hStr) return showToast("Preencha Loja, Data e Hora.");
+            let m = `🛍️ *PEDIDO (Site)*\n\n👤 ${state.cliente.nome}\n📱 ${state.cliente.zap}\n\n*ITENS:*\n`; let t = 0;
+            state.carrinho.forEach(i => { const s = i.qtd * i.preco; t += s; m += `▫️ ${i.qtd}x ${i.nome} - ${formatarMoeda(s)}\n`; });
+            m += `\n💰 *TOTAL: ${formatarMoeda(t)}*\n📍 Retirada: ${l}\n🕐 ${dStr.split('-').reverse().join('/')} às ${hStr}`;
+            window.open(`https://wa.me/${state.config.telefone}?text=${encodeURIComponent(m)}`, '_blank');
+            state.carrinho = []; sincronizarStorage(); atualizarBadgeCarrinho(); renderizarCarrinho(); showToast("Pedido enviado!"); setTimeout(() => { navigate('vitrine'); }, 2000);
+        }
+
+        /* --- PROVA SOCIAL (FOMO) --- */
+        function iniciarProvaSocial() {
+            setInterval(() => {
+                const v = document.getElementById('view-vitrine'); if(!v || !v.classList.contains('active')) return;
+                const p = state.produtos.filter(x => x.estoque > 0); if(p.length === 0) return;
+                const prod = p[Math.floor(Math.random() * p.length)]; const f = FOMO_PROFILES[Math.floor(Math.random() * FOMO_PROFILES.length)];
+                const img = document.getElementById('sp-img'), txt = document.getElementById('sp-text'), t = document.getElementById('social-proof-toast');
+                if(img && txt && t) {
+                    // Update text and image
+                    img.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(f.nome)}&background=FFCC00&color=E3000F&bold=true`; 
+                    txt.innerHTML = `<strong>${f.nome}</strong> de São Miguel/RN acabou de comprar:<br><span style="color: #6B7280;">${escapeHTML(prod.nome.substring(0,35))}...</span>`;
+                    t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 5000);
+                }
+            }, 30000);
+        }
+
+        /* --- PERFIL CLIENTE --- */
+        function atualizarAvatar() { const n = document.getElementById('cli-nome').value || 'Cliente'; const a = document.getElementById('avatar-preview'); if(a) a.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(n)}&background=E3000F&color=fff&size=120`; }
+        function salvarPerfil() {
+            const e = document.getElementById('cli-email').value.trim(), n = document.getElementById('cli-nome').value.trim(), z = document.getElementById('cli-zap').value.trim();
+            if(!e || !n || !z) return showToast("Preencha todos os campos."); if(!e.includes('@')) return showToast("E-mail inválido.");
+            state.cliente = { email: e, nome: n, zap: z, foto: `https://ui-avatars.com/api/?name=${encodeURIComponent(n)}&background=10B981&color=fff&size=120` };
+            sincronizarStorage(); showToast("Acesso OK!"); atualizarUICliente(); if(state.carrinho.length > 0) navigate('carrinho'); else navigate('vitrine');
+        }
+        function deslogarPerfil() { state.cliente = null; sincronizarStorage(); atualizarUICliente(); showToast("Desconectado."); }
+        function atualizarUICliente() {
+            const s1 = document.getElementById('perfil-step-1'), s2 = document.getElementById('perfil-step-2'), ls = document.getElementById('perfil-logged-state');
+            if (state.cliente) {
+                ['cli-email','cli-nome','cli-zap'].forEach(id => { const el = document.getElementById(id); if(el) el.value = state.cliente[id.replace('cli-','')] || ''; });
+                const els = { 'logged-name': state.cliente.nome, 'logged-email': state.cliente.email, 'logged-zap': state.cliente.zap };
+                for(let id in els) { const el = document.getElementById(id); if(el) el.innerText = els[id]; }
+                const av = document.getElementById('avatar-logged'); if(av) av.src = state.cliente.foto;
+                if(s1) s1.style.display='none'; if(s2) s2.style.display='none'; if(ls) ls.style.display='block';
+            } else {
+                if(s1) s1.style.display='block'; if(s2) s2.style.display='none'; if(ls) ls.style.display='none';
+            }
+        }
+
+        /* --- ÁREA ADMINISTRATIVA --- */
+        function efetuarLogin() { if (document.getElementById('login-user').value === 'admin' && document.getElementById('login-pass').value === '123') { state.isLogged = true; navigate('admin'); } else showToast("Senha inválida."); }
+        function efetuarLogout() { state.isLogged = false; document.getElementById('login-pass').value = ''; navigate('vitrine'); }
+
+        function abrirAbaAdmin(aba) {
+            document.querySelectorAll('.aba-conteudo').forEach(el => el.style.display = 'none'); document.querySelectorAll('.erp-nav-btn').forEach(btn => btn.classList.remove('active'));
+            const aEl = document.getElementById(`aba-${aba}`), tEl = document.getElementById(`tab-${aba}`);
+            if (aEl) aEl.style.display = 'block'; if (tEl) tEl.classList.add('active');
+            if(aba === 'dashboard') renderERP_Dashboard(); if(aba === 'pdv') renderERP_PDV(); if(aba === 'produtos') renderERP_Produtos(); if(aba === 'lojas') renderERP_Lojas(); if(aba === 'depoimentos') renderERP_Depoimentos(); if(aba === 'config') renderERP_Config();
+        }
+        
+        function registrarBaixaEstoque() {
+            const id = document.getElementById('adm-venda-prod').value, q = parseInt(document.getElementById('adm-venda-qtd').value);
+            if (!id || q < 1) return; const p = state.produtos.find(x => x.id == id); if (q > p.estoque) return showToast("Estoque baixo.");
+            p.estoque -= q; state.vendas.unshift({ id: Date.now(), data: new Date().toLocaleString(), nome: p.nome, qtd: q, total: p.preco * q });
+            sincronizarStorage(); showToast("Baixa feita!"); renderDashboardVendas();
+        }
+        
+        function renderDashboardVendas() {
+            document.getElementById('kpi-receita').innerText = formatarMoeda(state.vendas.reduce((a, v) => a + v.total, 0)); document.getElementById('kpi-itens').innerText = state.vendas.reduce((a, v) => a + v.qtd, 0);
+            const sel = document.getElementById('adm-venda-prod'); sel.innerHTML = '<option value="">Produto...</option>'; state.produtos.forEach(p => { if(p.estoque>0) sel.innerHTML += `<option value="${p.id}">${p.nome}</option>`; });
+            const tb = document.getElementById('tabela-vendas'); tb.innerHTML = ''; state.vendas.slice(0, 10).forEach(v => { tb.innerHTML += `<tr><td><small>${v.data}</small></td><td>${escapeHTML(v.nome)}</td><td>${v.qtd}</td><td style="font-weight:bold; color:var(--primary);">${formatarMoeda(v.total)}</td></tr>`; });
+        }
+
+        /* --- MOTOR DE EDIÇÃO E CADASTRO DE PRODUTOS (CRUD) --- */
+        function abrirModalProduto(id = null) {
+            document.querySelectorAll('#erp-prod-modal input, #erp-prod-modal textarea').forEach(i=>i.value=''); document.getElementById('erp-preview-img').style.display='none';
+            if(id) {
+                const p = state.produtos.find(x => x.id === id); document.getElementById('erp-modal-title').innerText = "Editar Produto";
+                document.getElementById('erp-prod-id').value = p.id; document.getElementById('erp-prod-nome').value = p.nome; document.getElementById('erp-prod-sku').value = p.sku || ''; document.getElementById('erp-prod-preco').value = p.preco; document.getElementById('erp-prod-estoque').value = p.estoque; document.getElementById('erp-prod-img-b64').value = p.imagem || ''; document.getElementById('erp-prod-desc').value = p.descricao || '';
+                if (p.imagem) { document.getElementById('erp-preview-img').src = p.imagem; document.getElementById('erp-preview-img').style.display='block'; }
+            } else { document.getElementById('erp-modal-title').innerText = "Novo Produto"; document.getElementById('erp-prod-id').value = ''; }
+            document.getElementById('erp-prod-modal-overlay').style.display = 'flex';
+        }
+        function fecharModalProduto() { document.getElementById('erp-prod-modal-overlay').style.display = 'none'; }
+
+        function salvarEdicaoProdutoERP() {
+            const id = document.getElementById('erp-prod-id').value, n = document.getElementById('erp-prod-nome').value, p = parseFloat(document.getElementById('erp-prod-preco').value);
+            if(!n || isNaN(p)) return showToast("Nome e Preço obrigatórios!");
+            const prodData = { nome: n, sku: document.getElementById('erp-prod-sku').value || `PRD${Date.now().toString().slice(-4)}`, preco: p, estoque: parseInt(document.getElementById('erp-prod-estoque').value||0), descricao: document.getElementById('erp-prod-desc').value, imagem: document.getElementById('erp-prod-img-b64').value || 'https://via.placeholder.com/400' };
+            if(id) { const idx = state.produtos.findIndex(x => x.id == id); if (idx !== -1) state.produtos[idx] = { ...state.produtos[idx], ...prodData }; } 
+            else { prodData.id = Date.now(); state.produtos.unshift(prodData); }
+            sincronizarStorage(); showToast("Produto salvo!"); fecharModalProduto(); renderERP_Produtos();
+        }
+
+        function renderERP_Produtos() {
+            const tb = document.getElementById('tabela-estoque-admin'); if(!tb) return; tb.innerHTML = '';
+            if(state.produtos.length === 0) return tb.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 2rem;">Nenhum produto cadastrado.</td></tr>';
+            state.produtos.forEach(p => {
+                const status = p.estoque > 0 ? `<span class="badge badge-success">${p.estoque} un.</span>` : `<span class="badge badge-danger">Esgotado</span>`;
+                tb.innerHTML += `<tr><td><div style="display:flex; align-items:center; gap:10px;"><img src="${p.imagem}" style="width:40px; height:40px; object-fit:contain; border-radius:8px; border:1px solid #E5E7EB;"><span style="font-weight:600; font-size:0.95rem; color:#111827;">${escapeHTML(p.nome).substring(0, 30)}...</span></div></td><td style="font-weight:900;">${formatarMoeda(p.preco)}</td><td>${status}</td><td><button class="admin-action-btn edit" onclick="abrirModalProduto(${p.id})"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></button> <button class="admin-action-btn delete" onclick="apagarItemState('produtos', ${p.id}, renderERP_Produtos)"><svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button></td></tr>`;
+            });
+        }
+
+        function adicionarLoja() {
+            const n = document.getElementById('adm-loja-nome').value, e = document.getElementById('adm-loja-end').value, img = document.getElementById('adm-loja-img-b64').value;
+            if(!n || !e) return showToast("Preencha Nome e Endereço.");
+            state.lojas.push({ id: Date.now(), nome: n, endereco: e, imagem: img }); sincronizarStorage(); showToast("Loja Adicionada!"); document.getElementById('adm-loja-nome').value=''; document.getElementById('adm-loja-end').value=''; document.getElementById('adm-loja-img-b64').value=''; document.getElementById('preview-loja-img').style.display='none'; renderERP_Lojas();
+        }
+        function renderERP_Lojas() { 
+            const c = document.getElementById('lista-adm-lojas'); if(!c) return; c.innerHTML = '';
+            state.lojas.forEach(l => {
+                c.innerHTML += `<div style="background:#FFF; border:1px solid #E5E7EB; padding:1.5rem; border-radius:12px; margin-bottom:1rem; display:flex; justify-content:space-between; align-items:center; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                    <div style="display:flex; align-items:center; gap:15px;">${l.imagem ? `<img src="${l.imagem}" style="width:60px; height:60px; border-radius:8px; object-fit:cover;">` : ''}<div><b style="font-size:1.1rem; color:#111827;">${escapeHTML(l.nome)}</b><br><small style="color:#6B7280;">${escapeHTML(l.endereco).replace(/\n/g, ', ')}</small></div></div>
+                    <div><button class="admin-action-btn delete" onclick="apagarItemState('lojas', ${l.id}, renderERP_Lojas)"><svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button></div>
+                </div>`;
+            }); 
+        }
+
+        function adicionarDepoimento() {
+            const n = document.getElementById('adm-dep-nome').value, t = document.getElementById('adm-dep-texto').value;
+            if(!n || !t) return showToast("Preencha Nome e Texto.");
+            state.depoimentos.unshift({ id: Date.now(), nome: n, texto: t, foto: `https://ui-avatars.com/api/?name=${encodeURIComponent(n)}&background=FFCC00&color=E3000F` });
+            sincronizarStorage(); showToast("Avaliação publicada!");
+            document.getElementById('adm-dep-nome').value = ''; document.getElementById('adm-dep-texto').value = ''; renderERP_Depoimentos();
+        }
+        function renderERP_Depoimentos() { 
+            const c = document.getElementById('lista-adm-deps'); if(!c) return; c.innerHTML = '';
+            state.depoimentos.forEach(d => {
+                c.innerHTML += `<div style="background:#FFF; border:1px solid #E5E7EB; padding:1.5rem; border-radius:12px; margin-bottom:1rem; display:flex; justify-content:space-between; align-items:center; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                    <div style="display:flex; align-items:center; gap:15px;"><img src="${d.foto}" style="width:50px; height:50px; border-radius:50%; object-fit:cover; border: 2px solid var(--secondary);"><div><b style="font-size:1.05rem; color:#111827;">${escapeHTML(d.nome)}</b><br><small style="color:#6B7280; font-style:italic;">"${escapeHTML(d.texto)}"</small></div></div>
+                    <div><button class="admin-action-btn delete" onclick="apagarItemState('depoimentos', ${d.id}, renderERP_Depoimentos)"><svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button></div>
+                </div>`;
+            }); 
+        }
+
+        /* --- ERP CONFIGURAÇÕES (CMS) --- */
+        function renderERP_Config() {
+            document.getElementById('cfg-nome').value = state.config.nomeLoja; document.getElementById('cfg-zap').value = state.config.telefone;
+            document.getElementById('cfg-cor-pri').value = state.config.corPrimaria; document.getElementById('cfg-cor-sec').value = state.config.corSecundaria;
+            document.getElementById('cfg-topbar').value = state.config.topBar; document.getElementById('cfg-about-title').value = state.config.aboutTitle || '';
+            document.getElementById('cfg-about-p1').value = state.config.aboutP1 || ''; document.getElementById('cfg-about-p2').value = state.config.aboutP2 || '';
+            
+            if(state.config.logoUrl) { document.getElementById('preview-logo').src = state.config.logoUrl; document.getElementById('preview-logo').style.display='block'; document.getElementById('cfg-logo-b64').value = state.config.logoUrl; } 
+            else { document.getElementById('preview-logo').style.display='none'; document.getElementById('cfg-logo-b64').value = ''; }
+            renderListaBannersAdmin();
+        }
+
+        function removerLogo() { document.getElementById('cfg-logo-b64').value = ''; document.getElementById('preview-logo').style.display = 'none'; state.config.logoUrl = ''; sincronizarStorage(); aplicarTemaEConfiguracoes(); showToast('Logomarca removida.'); }
+        
+        function salvarConfiguracoesGlobais() {
+            state.config.nomeLoja = document.getElementById('cfg-nome').value; state.config.telefone = document.getElementById('cfg-zap').value;
+            state.config.corPrimaria = document.getElementById('cfg-cor-pri').value; state.config.corSecundaria = document.getElementById('cfg-cor-sec').value;
+            state.config.logoUrl = document.getElementById('cfg-logo-b64').value; state.config.topBar = document.getElementById('cfg-topbar').value;
+            sincronizarStorage(); aplicarTemaEConfiguracoes(); showToast("Configurações Salvas!");
+        }
+
+        function salvarConfiguracoesSobre() {
+            state.config.aboutTitle = document.getElementById('cfg-about-title').value; state.config.aboutP1 = document.getElementById('cfg-about-p1').value; state.config.aboutP2 = document.getElementById('cfg-about-p2').value;
+            sincronizarStorage(); aplicarTemaEConfiguracoes(); showToast("Textos atualizados!");
+        }
+
+        function renderListaBannersAdmin() {
+            const c = document.getElementById('lista-adm-banners'); if(!c) return; c.innerHTML = '';
+            state.config.banners.forEach((b, i) => {
+                c.innerHTML += `
+                <div style="background:#FFF; border:1px solid #E5E7EB; padding:1.5rem; border-radius:12px; margin-bottom:1rem; display:flex; justify-content:space-between; align-items:center; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                    <div style="display:flex; gap:15px; align-items:center;">
+                        <img src="${b.img}" style="width:120px; height:60px; object-fit:cover; border-radius:6px; border:1px solid #EEE;">
+                        <div><b style="color:#111827; font-size:1.05rem;">${escapeHTML(b.title)}</b><br><small style="color:#6B7280;">${escapeHTML(b.text).substring(0, 40)}...</small></div>
+                    </div>
+                    <div style="display:flex; gap:10px;">
+                        <button class="admin-action-btn edit" onclick="abrirModalBanner(${i})"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></button> 
+                        <button class="admin-action-btn delete" onclick="apagarBanner(${i})"><svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button>
+                    </div>
+                </div>`;
+            });
+        }
+
+        function abrirModalBanner(idx = null) {
+            document.querySelectorAll('#erp-banner-modal input').forEach(i=>i.value=''); document.getElementById('erp-preview-banner-img').style.display='none';
+            if(idx !== null) {
+                const b = state.config.banners[idx]; document.getElementById('erp-modal-banner-title').innerText = "Editar Banner";
+                document.getElementById('erp-banner-id').value = idx; document.getElementById('erp-banner-title').value = b.title; document.getElementById('erp-banner-text').value = b.text; document.getElementById('erp-banner-img-b64').value = b.img;
+                if(b.img) { document.getElementById('erp-preview-banner-img').src = b.img; document.getElementById('erp-preview-banner-img').style.display='block'; }
+            } else { document.getElementById('erp-modal-banner-title').innerText = "Novo Banner"; document.getElementById('erp-banner-id').value = ''; }
+            document.getElementById('erp-banner-modal-overlay').style.display = 'flex';
+        }
+        function fecharModalBanner() { document.getElementById('erp-banner-modal-overlay').style.display = 'none'; }
+        function salvarBannerERP() {
+            const idxStr = document.getElementById('erp-banner-id').value;
+            const b = { title: document.getElementById('erp-banner-title').value, text: document.getElementById('erp-banner-text').value, img: document.getElementById('erp-banner-img-b64').value };
+            if(!b.img) return showToast("Imagem é obrigatória.");
+            if(idxStr !== '') { state.config.banners[parseInt(idxStr)] = b; } else { if (state.config.banners.length >= 5) return showToast("Limite de 5 banners."); state.config.banners.push(b); }
+            sincronizarStorage(); aplicarTemaEConfiguracoes(); fecharModalBanner(); renderListaBannersAdmin(); showToast("Banner atualizado!");
+        }
+        function apagarBanner(idx) { if(confirm("Apagar banner?")) { state.config.banners.splice(idx, 1); sincronizarStorage(); aplicarTemaEConfiguracoes(); renderListaBannersAdmin(); } }
+
+        function apagarItemState(col, id, cb) { if(confirm("Tem a certeza que deseja excluir este item?")) { state[col] = state[col].filter(i => i.id !== id); sincronizarStorage(); cb(); } }
+
+    </script>
+</body>
+</html>
