@@ -45,7 +45,14 @@
         ::-webkit-scrollbar-thumb:hover { background: #9CA3AF; }
 
         /* ==========================================================================
-           2. HEADER E NAVEGAÇÃO SUPERIOR (GLASSMORPHISM)
+           2. LOADER GLOBAL (SINCRONIZAÇÃO NUVEM)
+           ========================================================================== */
+        #global-loader { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 9999; flex-direction: column; align-items: center; justify-content: center; }
+        .spinner { width: 50px; height: 50px; border: 5px solid rgba(227,0,15,0.2); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ==========================================================================
+           3. HEADER E NAVEGAÇÃO SUPERIOR (GLASSMORPHISM)
            ========================================================================== */
         header { background-color: rgba(227, 0, 15, 0.95); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: white; padding: 0.8rem 1rem; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-sm); transition: background-color 0.3s; border-bottom: 1px solid rgba(255,255,255,0.1); }
         .header-content { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem; }
@@ -71,25 +78,9 @@
         .badge-count.pop { transform: scale(1.5) rotate(5deg); }
 
         /* ==========================================================================
-           3. NAVEGAÇÃO INFERIOR FLUTUANTE (MOBILE PREMIUM APP STYLE)
+           4. NAVEGAÇÃO INFERIOR FLUTUANTE (MOBILE PREMIUM APP STYLE)
            ========================================================================== */
-        .mobile-bottom-nav { 
-            position: fixed; 
-            bottom: 15px; 
-            left: 15px; 
-            width: calc(100% - 30px); 
-            background: rgba(255, 255, 255, 0.95); 
-            backdrop-filter: blur(15px); 
-            -webkit-backdrop-filter: blur(15px); 
-            box-shadow: 0 8px 32px rgba(0,0,0,0.15); 
-            border-radius: 35px; 
-            display: flex; 
-            justify-content: space-around; 
-            align-items: center; 
-            height: var(--nav-height); 
-            z-index: 1000; 
-            border: 1px solid rgba(255,255,255,0.6); 
-        }
+        .mobile-bottom-nav { position: fixed; bottom: 15px; left: 15px; width: calc(100% - 30px); background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); box-shadow: 0 8px 32px rgba(0,0,0,0.15); border-radius: 35px; display: flex; justify-content: space-around; align-items: center; height: var(--nav-height); z-index: 1000; border: 1px solid rgba(255,255,255,0.6); }
         .bottom-nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #9CA3AF; font-size: 0.7rem; font-weight: 500; cursor: pointer; width: 33.33%; transition: var(--transition); position: relative; }
         .bottom-nav-item svg { width: 22px; height: 22px; margin-bottom: 4px; fill: currentColor; transition: var(--transition); }
         .bottom-nav-item:hover svg { transform: translateY(-4px) scale(1.1); color: var(--primary); }
@@ -97,7 +88,7 @@
         .bottom-nav-item.active svg { transform: translateY(-3px); }
 
         /* ==========================================================================
-           4. LAYOUT PRINCIPAL E BOTÕES PREMIUM
+           5. LAYOUT PRINCIPAL E BOTÕES PREMIUM
            ========================================================================== */
         main.public-main { max-width: 1200px; margin: 0 auto; padding: 1.5rem 1rem; flex-grow: 1; width: 100%; }
         .view { display: none; opacity: 0; }
@@ -122,7 +113,7 @@
         .section-title:hover::after { width: 100%; }
 
         /* ==========================================================================
-           5. BANNERS ANIMADOS (KEN BURNS)
+           6. BANNERS ANIMADOS (KEN BURNS) E VITRINE
            ========================================================================== */
         .top-bar { background: var(--secondary); color: var(--primary-dark); font-weight: 800; font-size: 0.8rem; text-align: center; padding: 0.6rem 1rem; position: relative; z-index: 102; letter-spacing: 0.5px; text-transform: uppercase; }
         .top-bar span { display: inline-block; animation: pulseText 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
@@ -139,15 +130,10 @@
         .slide-content p { font-size: 1.05rem; color: var(--secondary); text-shadow: 0 2px 8px rgba(0,0,0,0.8); font-weight: 600; transform: translateY(20px); opacity: 0; transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.5s; }
         .slide.active .slide-content h2, .slide.active .slide-content p { transform: translateY(0); opacity: 1; }
 
-        /* ==========================================================================
-           6. VITRINE DE PRODUTOS (MICRO-INTERAÇÕES)
-           ========================================================================== */
         .grid-produtos { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px; }
         .card-produto { background: var(--bg-card); border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; cursor: pointer; position: relative; border: 2px solid transparent; transition: var(--transition); }
         .card-produto:hover { box-shadow: var(--shadow-hover); transform: translateY(-6px); border-color: rgba(227, 0, 15, 0.15); z-index: 2; }
-        
         .card-produto.in-cart { border-color: var(--success); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.15); }
-        
         .card-img { width: 100%; aspect-ratio: 1; position: relative; background: #fff; padding: 1.5rem; overflow: hidden; display: flex; align-items: center; justify-content: center; }
         .card-img img { width: 100%; height: 100%; object-fit: contain; transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1); mix-blend-mode: multiply; }
         .card-produto:hover .card-img img { transform: scale(1.12); }
@@ -169,67 +155,7 @@
         .tag-stock.in-cart-text { color: var(--info); }
 
         /* ==========================================================================
-           7. QUEM SOMOS E ANIMAÇÕES ESPECIAIS
-           ========================================================================== */
-        .about-section { background: white; border-radius: var(--radius-md); padding: 3rem 2rem; box-shadow: var(--shadow-md); margin: 4rem 0; text-align: center; border-top: 4px solid var(--primary); border-bottom: 1px solid #EEE; }
-        .about-section h3 { color: var(--primary); font-size: 1.8rem; margin-bottom: 1rem; font-weight: 900; }
-        .about-section p { color: var(--text-muted); font-size: 1.05rem; line-height: 1.7; margin-bottom: 1rem; max-width: 800px; margin-left: auto; margin-right: auto; font-weight: 400; }
-
-        .marquee-wrapper { width: 100%; overflow: hidden; padding: 1rem 0 3rem 0; position: relative; }
-        .marquee-wrapper::before, .marquee-wrapper::after { content: ''; position: absolute; top: 0; width: 60px; height: 100%; z-index: 2; pointer-events: none; }
-        .marquee-wrapper::before { left: 0; background: linear-gradient(to right, var(--bg-body) 0%, transparent 100%); }
-        .marquee-wrapper::after { right: 0; background: linear-gradient(to left, var(--bg-body) 0%, transparent 100%); }
-        .marquee-track { display: flex; width: max-content; gap: 2rem; animation: scroll-left 40s linear infinite; padding: 10px 0; }
-        .marquee-track:hover { animation-play-state: paused; }
-        @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(calc(-50% - 1rem)); } }
-
-        .depoimento-card { flex: 0 0 340px; background: var(--bg-card); padding: 2rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1px solid rgba(0,0,0,0.05); position: relative; display: flex; flex-direction: column; gap: 15px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: default; }
-        .depoimento-card:hover { transform: scale(1.03) translateY(-8px); box-shadow: var(--shadow-hover); border-color: rgba(255,204,0,0.5); z-index: 10; }
-        .dep-header { display: flex; align-items: center; gap: 15px; }
-        .dep-img { width: 55px; height: 55px; border-radius: 50%; object-fit: cover; border: 2px solid transparent; box-shadow: var(--shadow-sm); transition: var(--transition); }
-        .depoimento-card:hover .dep-img { transform: scale(1.1); border-color: var(--secondary); }
-        .dep-nome { font-weight: 800; color: var(--text-main); font-size: 1.05rem; }
-        .dep-estrelas { color: var(--secondary); font-size: 0.9rem; letter-spacing: 2px; }
-        .dep-texto { font-size: 0.95rem; color: var(--text-muted); font-style: italic; line-height: 1.6; position: relative; z-index: 1; }
-        .quote-icon { position: absolute; top: 15px; right: 20px; font-size: 4rem; color: var(--secondary); opacity: 0.15; font-family: Georgia, serif; line-height: 1; transition: var(--transition); }
-        .depoimento-card:hover .quote-icon { opacity: 0.3; transform: rotate(10deg) scale(1.1); color: var(--primary); }
-
-        .scroll-container { display: flex; overflow-x: auto; gap: 1.5rem; padding-bottom: 2rem; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding-top: 10px; margin: 0 -1rem; padding-left: 1rem; padding-right: 1rem; }
-        .scroll-container::-webkit-scrollbar { display: none; }
-        .loja-card { flex: 0 0 85%; max-width: 350px; scroll-snap-align: center; background: var(--bg-card); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1px solid rgba(0,0,0,0.05); display: flex; flex-direction: column; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); border-left: 6px solid var(--primary); }
-        .loja-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-hover); }
-        .loja-content { padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; position: relative; z-index: 2; background: var(--bg-card); }
-        .loja-title { color: var(--primary); font-size: 1.1rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 5px; font-weight: 800;}
-        .loja-title svg { width: 18px; fill: var(--primary); }
-        .map-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #F3F4F6; padding: 0.9rem 1rem; border-radius: 30px; color: var(--text-main); text-decoration: none; font-weight: 700; font-size: 0.9rem; transition: var(--transition); width: 100%; margin-top: auto; }
-        .map-btn svg { width: 18px; fill: var(--primary); transition: var(--transition); }
-        .loja-card:hover .map-btn { background: var(--primary); color: white; box-shadow: 0 6px 15px rgba(227,0,15,0.25); }
-        .loja-card:hover .map-btn svg { fill: white; transform: translateX(3px); }
-
-        /* ==========================================================================
-           8. RODAPÉ INSTITUCIONAL COM CADEADO NINJA
-           ========================================================================== */
-        .site-footer { background: #111827; color: #F9FAFB; padding: 4rem 1.5rem 1.5rem 1.5rem; margin-top: 3rem; position: relative; border-top: 4px solid var(--primary); }
-        .footer-content { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 2.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 2.5rem; margin-bottom: 1.5rem; }
-        .footer-brand { font-size: 1.8rem; font-weight: 900; color: #FFF; display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1rem; }
-        .footer-brand img { height: 45px; filter: brightness(0) invert(1); }
-        .footer-brand svg { fill: #FFF; width: 32px; height: 32px; }
-        .footer-desc { font-size: 0.95rem; color: #9CA3AF; line-height: 1.7; max-width: 400px; }
-        .footer-links-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        .footer-links-grid a { color: #D1D5DB; text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: var(--transition); display: flex; align-items: center; gap: 8px; }
-        .footer-links-grid a svg { transition: transform 0.3s; fill: currentColor; }
-        .footer-links-grid a:hover { color: var(--secondary); transform: translateX(5px); }
-        
-        .footer-bottom { position: relative; max-width: 1200px; margin: 0 auto; text-align: center; font-size: 0.85rem; color: #6B7280; padding: 0.5rem 0; display: flex; justify-content: center; align-items: center;}
-        
-        /* O CADEADO SECRETO (NINJA) - Fica ao lado dos direitos autorais */
-        .secret-login-btn { opacity: 0.2; cursor: pointer; transition: all 0.3s; padding: 10px; display: flex; align-items: center; justify-content: center; margin-left: 10px;}
-        .secret-login-btn svg { width: 16px; height: 16px; fill: #FFF; }
-        .secret-login-btn:hover { opacity: 1; transform: scale(1.3); filter: drop-shadow(0 0 8px rgba(255,204,0,0.6)); }
-        .secret-login-btn:hover svg { fill: var(--secondary); }
-
-        /* ==========================================================================
-           9. ERP ADMINISTRATIVO (LAYOUT CORPORATIVO SÓBRIO)
+           7. ERP ADMINISTRATIVO (LAYOUT CORPORATIVO RESPONSIVO)
            ========================================================================== */
         #view-admin { display: none; background: #F3F4F6; min-height: 100vh; }
         #view-admin.active { display: flex; flex-direction: column; }
@@ -254,7 +180,7 @@
         .form-grid { display: grid; grid-template-columns: 1fr; gap: 1.2rem; margin-bottom: 1.2rem; }
         .form-group { margin-bottom: 1.2rem; flex-grow: 1; }
         .form-group label { display: block; font-weight: 600; font-size: 0.85rem; margin-bottom: 0.5rem; color: #374151; }
-        .form-group input:not([type="file"]):not([type="color"]), .form-group textarea, .form-group select { width: 100%; padding: 0.7rem; border: 1px solid #CCC; border-radius: 6px; font-size: 0.95rem; background: #FAFAFA; transition: var(--transition); color: #111827; }
+        .form-group input:not([type="file"]):not([type="color"]), .form-group textarea, .form-group select { width: 100%; padding: 0.7rem; border: 1px solid #D1D5DB; border-radius: 6px; font-size: 0.95rem; background: #F9FAFB; transition: var(--transition); color: #111827; }
         .form-group input[type="color"] { width: 100%; height: 45px; border: 1px solid #D1D5DB; border-radius: 8px; cursor: pointer; padding: 2px;}
         .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--info); outline: none; background: #FFF; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15); }
         
@@ -296,7 +222,7 @@
         .admin-action-btn.delete:hover { background: #FEF2F2; color: var(--danger); }
 
         /* ==========================================================================
-           10. MODAIS, TOASTS E EFEITOS
+           8. MODAIS, TOASTS, FOOTER E RESPONSIVIDADE
            ========================================================================== */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(17, 24, 39, 0.7); z-index: 3000; justify-content: center; align-items: flex-end; overflow-y: auto; padding: 1rem; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
         .erp-modal { background: #FFF; width: 100%; max-width: 650px; border-radius: 20px 20px 0 0; box-shadow: 0 20px 40px rgba(0,0,0,0.2); margin: auto; position: relative; animation: slideUpModal 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; display: flex; flex-direction: column; max-height: 90vh;}
@@ -309,7 +235,6 @@
         .erp-modal-footer { padding: 1.2rem 1.5rem; border-top: 1px solid #E5E7EB; display: flex; justify-content: flex-end; gap: 1rem; background: #F9FAFB; }
         @keyframes slideUpModal { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-        /* FOMO ANIMADO REALISTA */
         .social-proof-toast { position: fixed; bottom: 90px; left: 15px; width: calc(100% - 30px); max-width: 380px; background: rgba(255,255,255,0.98); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 50px; padding: 8px 20px 8px 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 12px; z-index: 2000; border: 3px solid var(--secondary); opacity: 0; pointer-events: none; transform: translateY(20px) scale(0.9); transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .social-proof-toast.show { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
         .social-proof-img { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid transparent; padding: 0;}
@@ -320,23 +245,21 @@
         @keyframes toastSlideUp { from { bottom: 0; opacity: 0; } to { bottom: 20px; opacity: 1; } }
         @keyframes fadeout { to { opacity: 0; bottom: 0; transform: translateX(-50%) translateY(20px); } }
 
-        /* Utilitários Extras */
-        .detalhe-container { background: var(--bg-card); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); padding: 2rem; margin-bottom: 2rem; border: 1px solid rgba(0,0,0,0.03); }
-        .detalhe-img { width: 100%; height: 350px; object-fit: contain; border-radius: 12px; margin-bottom: 2rem; background: #fff; padding: 1.5rem; border: 1px solid #F3F4F6; }
-        .detalhe-info h1 { font-size: 1.8rem; color: var(--text-main); margin-bottom: 0.5rem; font-weight: 900; letter-spacing: -0.5px;}
-        .detalhe-info .preco { font-size: 2.5rem; font-weight: 900; color: var(--primary); margin-bottom: 1rem; letter-spacing: -1px;}
-        .detalhe-info .desc { font-size: 1.05rem; color: #4B5563; white-space: pre-line; border-top: 1px solid #E5E7EB; padding-top: 1.5rem; margin-top: 1.5rem; margin-bottom: 2rem; line-height: 1.7; }
-        .sticky-buy { position: fixed; bottom: var(--nav-height); left: 0; width: 100%; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding: 1rem; box-shadow: 0 -4px 20px rgba(0,0,0,0.08); z-index: 90; border-top: 1px solid rgba(0,0,0,0.05); display: flex; gap: 1rem; padding-bottom: calc(1rem + env(safe-area-inset-bottom)); }
-
-        .checkout-box { background: #FFF; border: 1px solid #E5E7EB; padding: 2rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); }
-        .cart-list { background: transparent; margin-bottom: 2rem; }
-        .cart-item { display: flex; gap: 1.5rem; padding: 1.5rem; border-radius: 12px; background: #FFF; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.03); border: 1px solid #F3F4F6; }
-        .cart-item img { width: 90px; height: 90px; object-fit: contain; border: 1px solid #F3F4F6; border-radius: 8px; padding: 5px; }
-        .cart-item-info { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; }
-        .qtd-control { display: inline-flex; align-items: center; border: 1px solid #D1D5DB; border-radius: 8px; overflow: hidden; margin-top: 0.8rem; background: #FFF; }
-        .qtd-control button { background: transparent; border: none; width: 35px; height: 35px; font-weight: bold; cursor: pointer; color: var(--text-main); transition: background 0.2s; font-size: 1.2rem; }
-        .qtd-control button:hover { background: #F3F4F6; color: var(--primary); }
-        .qtd-control span { width: 40px; text-align: center; font-weight: 700; font-size: 0.95rem; border-left: 1px solid #E5E7EB; border-right: 1px solid #E5E7EB; line-height: 35px; color: var(--text-main); }
+        .site-footer { background: #111827; color: #F9FAFB; padding: 4rem 1.5rem 1.5rem 1.5rem; margin-top: 3rem; position: relative; border-top: 4px solid var(--primary); }
+        .footer-content { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 2.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 2.5rem; margin-bottom: 1.5rem; }
+        .footer-brand { font-size: 1.8rem; font-weight: 900; color: #FFF; display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1rem; }
+        .footer-brand img { height: 45px; filter: brightness(0) invert(1); }
+        .footer-brand svg { fill: #FFF; width: 32px; height: 32px; }
+        .footer-desc { font-size: 0.95rem; color: #9CA3AF; line-height: 1.7; max-width: 400px; }
+        .footer-links-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .footer-links-grid a { color: #D1D5DB; text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: var(--transition); display: flex; align-items: center; gap: 8px; }
+        .footer-links-grid a svg { transition: transform 0.3s; fill: currentColor; }
+        .footer-links-grid a:hover { color: var(--secondary); transform: translateX(5px); }
+        .footer-bottom { position: relative; max-width: 1200px; margin: 0 auto; text-align: center; font-size: 0.85rem; color: #6B7280; padding: 0.5rem 0; display: flex; justify-content: center; align-items: center;}
+        .secret-login-btn { opacity: 0.1; cursor: pointer; transition: all 0.3s; padding: 10px; display: flex; align-items: center; justify-content: center; margin-left: 10px;}
+        .secret-login-btn svg { width: 16px; height: 16px; fill: #FFF; }
+        .secret-login-btn:hover { opacity: 1; transform: scale(1.3); filter: drop-shadow(0 0 8px rgba(255,204,0,0.6)); }
+        .secret-login-btn:hover svg { fill: var(--secondary); }
 
         @media (min-width: 768px) {
             body { padding-bottom: 0; }
@@ -352,7 +275,6 @@
             .footer-links-grid { gap: 2rem; display: flex; }
             .site-footer { padding: 4rem 2rem 2rem; }
             
-            /* Ajustes ERP Desktop */
             .erp-modal { border-radius: 16px; align-self: center; transform: translateY(20px); margin: 5vh auto;}
             .erp-modal.open { transform: translateY(0); }
             .erp-layout { flex-direction: row; }
@@ -361,19 +283,20 @@
             .erp-nav-btn.active { background: #FFF; box-shadow: 0 1px 3px rgba(0,0,0,0.1); color: var(--primary); border-left: 3px solid var(--primary); }
             .form-grid { grid-template-columns: 1fr 1fr; }
             .pdv-container { grid-template-columns: 2fr 1fr; gap: 2rem; }
-            .detalhe-container { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; padding: 3rem; }
-            .sticky-buy { position: static; box-shadow: none; padding: 0; border: none; margin-top: 2rem; background: transparent; backdrop-filter: none; }
             .social-proof-toast { bottom: 30px; left: -400px; width: auto; max-width: 400px;}
             @keyframes popupBounce { 0% { left: -400px; opacity: 0; transform: scale(0.9); } 70% { left: 35px; opacity: 1; transform: scale(1.05); } 100% { left: 30px; opacity: 1; transform: scale(1); } }
             #toast { bottom: 30px; }
-            .secret-login-btn { right: 20px; }
         }
-        
-        /* Utilitários de ícones SVG inlines */
         .icon-svg { width: 20px; height: 20px; fill: currentColor; display: inline-block; vertical-align: middle; }
     </style>
 </head>
 <body>
+
+    <!-- LOADER GLOBAL DE SINCRONIZAÇÃO (NOVO) -->
+    <div id="global-loader">
+        <div class="spinner"></div>
+        <p style="margin-top:20px; font-weight:bold; color:var(--text-main); font-size:1.1rem; letter-spacing:0.5px;">Sincronizando Dados...</p>
+    </div>
 
     <!-- BARRA DE ANÚNCIO DINÂMICA -->
     <div class="top-bar" id="public-topbar">
@@ -441,7 +364,7 @@
             <button class="btn btn-outline" style="width: auto; margin-bottom: 1.5rem; padding: 0.6rem 1.2rem; font-size: 0.9rem;" onclick="navigate('vitrine')">
                 <svg class="icon-svg" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg> Voltar
             </button>
-            <div id="container-produto" class="detalhe-container"></div>
+            <div id="container-produto" style="background: var(--bg-card); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); padding: 2rem; margin-bottom: 2rem; border: 1px solid rgba(0,0,0,0.03);"></div>
         </section>
 
         <!-- SACOLA E CHECKOUT -->
@@ -455,9 +378,9 @@
             </div>
 
             <div id="carrinho-cheio" style="display:none;">
-                <div class="cart-list" id="lista-itens-carrinho"></div>
+                <div id="lista-itens-carrinho" style="background: transparent; margin-bottom: 2rem;"></div>
                 
-                <div class="checkout-box">
+                <div style="background: #FFF; border: 1px solid #E5E7EB; padding: 2rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);">
                     <div style="background: #ECFDF5; color: #046C4E; padding: 16px; border-radius: 8px; margin-bottom: 1.5rem; font-size: 0.95rem; font-weight: 600; border: 1px solid #A7F3D0; display: flex; align-items: flex-start; gap: 12px;">
                         <svg style="width:24px; height:24px; fill:currentColor; flex-shrink: 0; margin-top: 2px;" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
                         <div>Lojas Abertas 24h online! Reserve agora os seus produtos e levante comodamente quando a loja física abrir.</div>
@@ -470,8 +393,8 @@
                         <span id="carrinho-total-valor" style="color: var(--primary); letter-spacing:-1px;">R$ 0,00</span>
                     </div>
                     
-                    <div class="form-group" style="margin-bottom:1.5rem;">
-                        <label style="font-size: 0.95rem; margin-bottom: 8px; font-weight: 700;">Local de Levantamento *</label>
+                    <div style="margin-bottom:1.5rem;">
+                        <label style="font-size: 0.95rem; margin-bottom: 8px; font-weight: 700; display:block;">Local de Levantamento *</label>
                         <select id="checkout-loja" style="background:#F9FAFB; padding:1rem; width:100%; border:1px solid #D1D5DB; border-radius:8px; font-size:1rem; cursor:pointer;"></select>
                     </div>
                     <div style="display: flex; gap: 15px; margin-bottom:2rem;">
@@ -520,9 +443,9 @@
                         </div>
                     </div>
 
-                    <div class="form-group" style="margin-bottom: 1.2rem;"><label style="font-weight:700;">E-mail *</label><input type="email" id="cli-email" style="width:100%; padding:1rem; border:1px solid #D1D5DB; border-radius:8px; background:#F9FAFB;"></div>
-                    <div class="form-group" style="margin-bottom: 1.2rem;"><label style="font-weight:700;">Nome Completo *</label><input type="text" id="cli-nome" style="width:100%; padding:1rem; border:1px solid #D1D5DB; border-radius:8px; background:#F9FAFB;" onkeyup="atualizarAvatar()"></div>
-                    <div class="form-group" style="margin-bottom: 2rem;"><label style="font-weight:700;">WhatsApp (com DDD) *</label><input type="tel" id="cli-zap" style="width:100%; padding:1rem; border:1px solid #D1D5DB; border-radius:8px; background:#F9FAFB;"></div>
+                    <div style="margin-bottom: 1.2rem;"><label style="font-weight:700; display:block; margin-bottom:5px;">E-mail *</label><input type="email" id="cli-email" style="width:100%; padding:1rem; border:1px solid #D1D5DB; border-radius:8px; background:#F9FAFB;"></div>
+                    <div style="margin-bottom: 1.2rem;"><label style="font-weight:700; display:block; margin-bottom:5px;">Nome Completo *</label><input type="text" id="cli-nome" style="width:100%; padding:1rem; border:1px solid #D1D5DB; border-radius:8px; background:#F9FAFB;" onkeyup="atualizarAvatar()"></div>
+                    <div style="margin-bottom: 2rem;"><label style="font-weight:700; display:block; margin-bottom:5px;">WhatsApp (com DDD) *</label><input type="tel" id="cli-zap" style="width:100%; padding:1rem; border:1px solid #D1D5DB; border-radius:8px; background:#F9FAFB;"></div>
                     
                     <button class="btn btn-primary" onclick="salvarPerfil()" style="font-size: 1.1rem; padding: 1.2rem; border-radius: 12px; width: 100%;">Confirmar e Aceder</button>
                 </div>
@@ -562,20 +485,20 @@
         <header style="background: #111827; color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 10; position: sticky; top:0;">
             <div style="font-size: 1.3rem; font-weight: 900; color: #FFF; display: flex; align-items: center; gap: 12px; letter-spacing: -0.5px;">
                 <div style="background: var(--primary); padding: 6px; border-radius: 8px;"><svg class="icon-svg" style="fill: #FFF;"><path d="M12 2L1 12h3v9h6v-6h4v6h6v-9h3L12 2zm0 2.84L19.5 12h-1.5v7h-2v-6H8v6H6v-7H4.5L12 4.84z"/></svg></div>
-                Gestão ERP
+                Gestão ERP Nuvem
             </div>
             <button class="btn-outline" style="padding: 0.5rem 1.2rem; border-radius: 20px; font-weight:bold; border: 1px solid #374151; color: #D1D5DB; width: auto;" onclick="efetuarLogout()">Encerrar Sessão</button>
         </header>
 
         <div style="display: flex; flex-grow: 1; flex-direction: column;">
-            <!-- Menu Lateral ERP (Mobile: Horizontal Scroll) -->
+            <!-- Menu Lateral ERP -->
             <div style="background: #1F2937; padding: 0.5rem; display: flex; overflow-x: auto; gap: 0.5rem; scroll-snap-type: x mandatory;">
                 <button class="erp-nav-btn active" id="tab-dashboard" onclick="abrirAbaAdmin('dashboard')"><svg class="icon-svg"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg> Visão Geral</button>
                 <button class="erp-nav-btn" id="tab-pdv" onclick="abrirAbaAdmin('pdv')"><svg class="icon-svg"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg> PDV Caixa</button>
                 <button class="erp-nav-btn" id="tab-produtos" onclick="abrirAbaAdmin('produtos')"><svg class="icon-svg"><path d="M20 6h-4V4c0-1.1-.9-2-2-2h-4C8.9 2 8 2.9 8 4v2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM10 4h4v2h-4V4zm10 16H4V8h16v12z"/></svg> Produtos & Stock</button>
                 <button class="erp-nav-btn" id="tab-lojas" onclick="abrirAbaAdmin('lojas')"><svg class="icon-svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg> Lojas Físicas</button>
                 <button class="erp-nav-btn" id="tab-depoimentos" onclick="abrirAbaAdmin('depoimentos')"><svg class="icon-svg"><path d="M21 6h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1zm-4 6V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1z"/></svg> Avaliações</button>
-                <button class="erp-nav-btn" id="tab-config" onclick="abrirAbaAdmin('config')"><svg class="icon-svg"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.06-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.73,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.06,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.49-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg> Aparência (CMS)</button>
+                <button class="erp-nav-btn" id="tab-config" onclick="abrirAbaAdmin('config')"><svg class="icon-svg"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.06-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.73,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.06,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.49-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg> Setup Nuvem / Aparência</button>
             </div>
 
             <!-- Conteúdo ERP -->
@@ -584,7 +507,11 @@
                 <!-- ABA: ANALYTICS -->
                 <div id="aba-dashboard" class="aba-conteudo">
                     <div style="background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); padding: 2rem; margin-bottom: 1.5rem; border: 1px solid #E5E7EB;">
-                        <h3 style="margin-bottom: 1.5rem; color: #111827; font-size: 1.3rem;">Desempenho Geral</h3>
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1.5rem; flex-wrap:wrap; gap:10px;">
+                            <h3 style="color: #111827; font-size: 1.3rem; margin:0;">Desempenho Geral</h3>
+                            <button class="btn btn-primary" style="width:auto; font-size:0.8rem; padding:0.5rem 1rem;" onclick="syncDataFromCloud()"><svg class="icon-svg"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg> Forçar Sincronização</button>
+                        </div>
+
                         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
                             <div style="background: #FFF; padding: 1.5rem; border-radius: 12px; border: 1px solid #E5E7EB; border-left: 5px solid var(--success); box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
                                 <h4 style="font-size: 0.85rem; color: #6B7280; text-transform: uppercase; margin-bottom: 0.5rem; font-weight: 700;">Faturamento Global</h4>
@@ -596,7 +523,7 @@
                             </div>
                         </div>
 
-                        <h3 style="margin-bottom: 1.5rem; color: #111827; font-size: 1.1rem; border-top: 1px solid #E5E7EB; padding-top: 2rem;">Últimas Transações (Todas as origens)</h3>
+                        <h3 style="margin-bottom: 1.5rem; color: #111827; font-size: 1.1rem; border-top: 1px solid #E5E7EB; padding-top: 2rem;">Últimas Transações Registadas (Nuvem / Local)</h3>
                         <div style="overflow-x: auto; border: 1px solid #E5E7EB; border-radius: 8px;">
                             <table class="data-table" style="width: 100%; border-collapse: collapse; min-width: 600px;">
                                 <thead><tr><th style="background:#F9FAFB; padding:1rem; color:#6B7280; font-size:0.8rem; text-transform:uppercase;">Data/Hora</th><th style="background:#F9FAFB; padding:1rem; color:#6B7280; font-size:0.8rem; text-transform:uppercase;">Produto</th><th style="background:#F9FAFB; padding:1rem; color:#6B7280; font-size:0.8rem; text-transform:uppercase;">Qtd</th><th style="background:#F9FAFB; padding:1rem; color:#6B7280; font-size:0.8rem; text-transform:uppercase;">Valor Total</th></tr></thead>
@@ -612,13 +539,11 @@
                         <div style="background: white; border-radius: 12px; padding: 2rem; border: 1px solid #E5E7EB;">
                             <h3 style="margin-bottom: 1.5rem; display:flex; align-items:center; gap:10px;"><svg class="icon-svg" style="fill:var(--info);"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg> Caixa Rápido (PDV Balcão)</h3>
                             
-                            <!-- Bipagem / Busca -->
                             <div style="display:flex; gap:10px; margin-bottom: 2rem;">
                                 <input type="text" id="pdv-busca" placeholder="Passe o leitor de código de barras ou digite o nome do produto..." style="flex-grow:1; padding:1.2rem; border:2px solid #D1D5DB; border-radius:8px; font-size:1.1rem; background:#F9FAFB;" onkeypress="if(event.key === 'Enter') buscarProdutoPDV()">
                                 <button style="background: var(--info); color: white; border: none; padding: 0 2rem; border-radius: 8px; font-weight: bold; cursor: pointer; transition: background 0.3s;" onclick="buscarProdutoPDV()">Lançar</button>
                             </div>
                             
-                            <!-- Tabela do Cupom -->
                             <div style="border: 1px solid #E5E7EB; border-radius: 8px; overflow: hidden; margin-bottom: 2rem;">
                                 <table style="width: 100%; border-collapse: collapse;">
                                     <thead><tr><th style="background:#F9FAFB; padding:1rem; text-align:left; color:#6B7280; font-size:0.85rem; text-transform:uppercase;">Produto</th><th style="background:#F9FAFB; padding:1rem; text-align:left; color:#6B7280; font-size:0.85rem; text-transform:uppercase;">Qtd</th><th style="background:#F9FAFB; padding:1rem; text-align:left; color:#6B7280; font-size:0.85rem; text-transform:uppercase;">Subtotal</th><th style="background:#F9FAFB; padding:1rem;"></th></tr></thead>
@@ -626,7 +551,6 @@
                                 </table>
                             </div>
                             
-                            <!-- Fechamento -->
                             <div style="background: #F8F9FA; padding: 2rem; border-radius: 12px; border: 1px dashed #D1D5DB;">
                                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
                                     <span style="font-size: 1.2rem; color: #4B5563; font-weight: 600;">Total a Cobrar:</span>
@@ -634,7 +558,7 @@
                                 </div>
                                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                                     <button style="background: transparent; border: 2px solid #D1D5DB; color: #4B5563; padding: 1.2rem; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1.1rem; transition: background 0.3s;" onclick="limparPDV()">Cancelar Cupom</button>
-                                    <button style="background: var(--success); border: none; color: white; padding: 1.2rem; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1.1rem; box-shadow: 0 4px 12px rgba(16,185,129,0.3); transition: transform 0.2s;" onclick="finalizarVendaPDV()">💰 Confirmar Pagamento</button>
+                                    <button style="background: var(--success); border: none; color: white; padding: 1.2rem; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1.1rem; box-shadow: 0 4px 12px rgba(16,185,129,0.3); transition: transform 0.2s;" onclick="finalizarVendaPDV()">💰 Finalizar & Enviar p/ Nuvem</button>
                                 </div>
                             </div>
                         </div>
@@ -654,22 +578,18 @@
 
                         <!-- CADASTRO EXPRESSO DA PRATELEIRA -->
                         <div style="background: #F0FDF4; border: 1px solid #BBF7D0; padding: 1.5rem; border-radius: 12px; margin-bottom: 2.5rem; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
-                            <div style="font-weight: 800; color: #046C4E; margin-bottom: 10px; display: flex; align-items: center; gap: 5px;"><svg class="icon-svg"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg> Registo Rápido de Balcão</div>
+                            <div style="font-weight: 800; color: #046C4E; margin-bottom: 10px; display: flex; align-items: center; gap: 5px;"><svg class="icon-svg"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg> Registo Expresso (Sincroniza Direto)</div>
                             <div style="display: flex; gap: 12px; flex-wrap: wrap;">
                                 <input type="text" id="exp-nome" placeholder="O que vai vender?" style="flex: 3; min-width: 200px; padding: 1rem; border: 1px solid #A7F3D0; border-radius: 8px; font-size: 1rem;" onkeypress="if(event.key === 'Enter') document.getElementById('exp-preco').focus()">
                                 <input type="number" id="exp-preco" step="0.01" placeholder="Preço" style="flex: 1; min-width: 100px; padding: 1rem; border: 1px solid #A7F3D0; border-radius: 8px; font-size: 1rem;" onkeypress="if(event.key === 'Enter') document.getElementById('exp-estoque').focus()">
                                 <input type="number" id="exp-estoque" placeholder="Qtd Estoque" style="flex: 1; min-width: 100px; padding: 1rem; border: 1px solid #A7F3D0; border-radius: 8px; font-size: 1rem;" onkeypress="if(event.key === 'Enter') cadastroExpresso()">
-                                <button style="flex: 1; min-width: 120px; background: #059669; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: background 0.3s;" onclick="cadastroExpresso()">Guardar Rápido</button>
+                                <button style="flex: 1; min-width: 120px; background: #059669; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: background 0.3s;" onclick="cadastroExpresso()">+ Enviar Nuvem</button>
                             </div>
                         </div>
 
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1rem;">
-                            <h4 style="color: #4B5563;">Inventário Atual</h4>
-                            <button style="background:transparent; border:1px solid #D1D5DB; color:#4B5563; padding:0.5rem 1rem; border-radius:6px; font-weight:600; cursor:pointer;" onclick="baixarRelatorioCSV()">Baixar Planilha (CSV)</button>
-                        </div>
                         <div style="overflow-x: auto; border: 1px solid #E5E7EB; border-radius: 8px;">
                             <table class="data-table" style="width: 100%; border-collapse: collapse; min-width: 700px;">
-                                <thead><tr><th style="background:#F9FAFB; padding:1rem; color:#6B7280; font-size:0.8rem; text-transform:uppercase;">Identificação do Produto</th><th style="background:#F9FAFB; padding:1rem; color:#6B7280; font-size:0.8rem; text-transform:uppercase;">Preço Loja</th><th style="background:#F9FAFB; padding:1rem; color:#6B7280; font-size:0.8rem; text-transform:uppercase;">Estoque Real</th><th style="background:#F9FAFB; padding:1rem; color:#6B7280; font-size:0.8rem; text-transform:uppercase;">Ações</th></tr></thead>
+                                <thead><tr><th style="background:#F9FAFB; padding:1rem; color:#6B7280; font-size:0.8rem; text-transform:uppercase;">Produto</th><th style="background:#F9FAFB; padding:1rem; color:#6B7280; font-size:0.8rem; text-transform:uppercase;">Preço Loja</th><th style="background:#F9FAFB; padding:1rem; color:#6B7280; font-size:0.8rem; text-transform:uppercase;">Estoque Atual</th><th style="background:#F9FAFB; padding:1rem; color:#6B7280; font-size:0.8rem; text-transform:uppercase;">Ações</th></tr></thead>
                                 <tbody id="tabela-estoque-admin"></tbody>
                             </table>
                         </div>
@@ -685,7 +605,6 @@
                                 <svg class="icon-svg" style="fill:white;"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg> Adicionar Local
                             </button>
                         </div>
-                        <p style="color: #6B7280; margin-bottom: 2rem;">Estes são os locais que o seu cliente verá na vitrine e poderá escolher para ir buscar o produto no momento do fecho do carrinho.</p>
                         <div id="lista-adm-lojas" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;"></div>
                     </div>
                 </div>
@@ -699,7 +618,6 @@
                                 <svg class="icon-svg" style="fill:white;"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg> Inserir Avaliação
                             </button>
                         </div>
-                        <p style="color: #6B7280; margin-bottom: 2rem;">As avaliações ficam rodando automaticamente num carrossel no final da página inicial para gerar confiança a novos compradores.</p>
                         <div id="lista-adm-deps" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;"></div>
                     </div>
                 </div>
@@ -707,6 +625,13 @@
                 <!-- ABA: CONFIGURAÇÕES DA LOJA (CMS VISUAL) -->
                 <div id="aba-config" class="aba-conteudo" style="display:none;">
                     <div style="background: white; border-radius: 12px; padding: 2rem; border: 1px solid #E5E7EB; margin-bottom: 2rem;">
+                        
+                        <div style="background: #F0FDF4; border: 1px solid #BBF7D0; padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
+                            <h3 style="margin-bottom: 1rem; color: #046C4E;">☁️ Integração com Google Apps Script</h3>
+                            <p style="font-size: 0.95rem; color: #065F46; margin-bottom: 1rem;">Cole a URL do seu Web App gerado no Google Sheets para ativar a sincronização em tempo real das vendas e produtos.</p>
+                            <input type="text" id="cfg-gas-url" placeholder="https://script.google.com/macros/s/SEU_ID_AQUI/exec" style="width:100%; padding:1rem; border:1px solid #A7F3D0; border-radius:8px; margin-bottom: 1rem;">
+                        </div>
+
                         <h3 style="font-size: 1.4rem; margin-bottom: 2rem; color: #111827;">🎨 Identidade e Comunicação</h3>
                         
                         <div style="background: #F9FAFB; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem; border: 1px solid #E5E7EB;">
@@ -736,23 +661,22 @@
                             <h4 style="margin-bottom: 1.5rem; color: #374151;">Textos Estratégicos</h4>
                             <div style="margin-bottom: 1.5rem;"><label style="display:block; font-weight:600; font-size:0.9rem; margin-bottom:8px;">Barra Fixa de Promoção (Topo do site)</label><input type="text" id="cfg-topbar" style="width:100%; padding:0.8rem; border:1px solid #D1D5DB; border-radius:8px;"></div>
                             <hr style="border:0; border-top:1px solid #D1D5DB; margin: 2rem 0;">
-                            <h5 style="margin-bottom: 1rem; color: #4B5563;">Área "Quem Somos" (Aparece a meio do site)</h5>
+                            <h5 style="margin-bottom: 1rem; color: #4B5563;">Área "Quem Somos"</h5>
                             <div style="margin-bottom: 1rem;"><label style="display:block; font-weight:600; font-size:0.9rem; margin-bottom:8px;">Título principal</label><input type="text" id="cfg-about-title" style="width:100%; padding:0.8rem; border:1px solid #D1D5DB; border-radius:8px;"></div>
-                            <div style="margin-bottom: 1rem;"><label style="display:block; font-weight:600; font-size:0.9rem; margin-bottom:8px;">Primeiro Parágrafo (Destaque)</label><textarea id="cfg-about-p1" rows="2" style="width:100%; padding:0.8rem; border:1px solid #D1D5DB; border-radius:8px;"></textarea></div>
-                            <div style="margin-bottom: 1rem;"><label style="display:block; font-weight:600; font-size:0.9rem; margin-bottom:8px;">Segundo Parágrafo (Detalhes de funcionamento)</label><textarea id="cfg-about-p2" rows="3" style="width:100%; padding:0.8rem; border:1px solid #D1D5DB; border-radius:8px;"></textarea></div>
+                            <div style="margin-bottom: 1rem;"><label style="display:block; font-weight:600; font-size:0.9rem; margin-bottom:8px;">Primeiro Parágrafo</label><textarea id="cfg-about-p1" rows="2" style="width:100%; padding:0.8rem; border:1px solid #D1D5DB; border-radius:8px;"></textarea></div>
+                            <div style="margin-bottom: 1rem;"><label style="display:block; font-weight:600; font-size:0.9rem; margin-bottom:8px;">Segundo Parágrafo</label><textarea id="cfg-about-p2" rows="3" style="width:100%; padding:0.8rem; border:1px solid #D1D5DB; border-radius:8px;"></textarea></div>
                         </div>
 
-                        <button style="background: var(--primary); color: white; width: 100%; padding: 1.2rem; font-size: 1.1rem; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 15px rgba(227,0,15,0.3); transition: transform 0.2s;" onclick="salvarConfiguracoesGlobais()">💾 Aplicar Alterações Visuais e de Textos</button>
+                        <button style="background: var(--primary); color: white; width: 100%; padding: 1.2rem; font-size: 1.1rem; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 15px rgba(227,0,15,0.3); transition: transform 0.2s;" onclick="salvarConfiguracoesGlobais()">💾 Aplicar Alterações Visuais e de API</button>
                     </div>
 
                     <div style="background: white; border-radius: 12px; padding: 2rem; border: 1px solid #E5E7EB;">
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; flex-wrap: wrap; gap: 1rem;">
-                            <h3 style="font-size: 1.4rem;">Banners Rotativos (Carrossel Inicial)</h3>
+                            <h3 style="font-size: 1.4rem;">Banners Rotativos (Carrossel)</h3>
                             <button style="background: #111827; color: white; padding: 0.8rem 1.5rem; border-radius: 8px; font-weight: bold; border: none; cursor: pointer; display: flex; align-items: center; gap: 8px;" onclick="abrirModalBanner()">
-                                <svg class="icon-svg" style="fill:white;"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg> Adicionar Novo Slide
+                                <svg class="icon-svg" style="fill:white;"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg> Adicionar Slide
                             </button>
                         </div>
-                        <p style="color: #6B7280; margin-bottom: 2rem;">Pode manter até 5 banners a rodar com efeito "zoom". Tamanho ideal de imagem: Paisagem (ex: 1200x600).</p>
                         <div id="lista-adm-banners" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;"></div>
                     </div>
                 </div>
@@ -760,30 +684,6 @@
             </main>
         </div>
     </section>
-
-    <!-- RODAPÉ INSTITUCIONAL (FOOTER) -->
-    <footer class="site-footer" id="public-footer">
-        <div class="footer-content">
-            <div>
-                <div class="footer-brand" id="footer-logo-container" style="font-size: 1.8rem; font-weight: 900; color: #FFF; display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1rem;">
-                    Multi Coisa's
-                </div>
-                <p style="font-size: 0.95rem; color: #9CA3AF; line-height: 1.7; max-width: 400px;">A sua loja completa de beleza, utilidades e presentes no coração de São Miguel/RN.</p>
-            </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                <a href="#" onclick="navigate('vitrine')" style="color: #D1D5DB; text-decoration: none; font-weight: 500; display: flex; align-items: center; gap: 8px; transition: color 0.3s;"><svg class="icon-svg"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg> Página Inicial</a>
-                <a href="#" onclick="navigate('carrinho')" style="color: #D1D5DB; text-decoration: none; font-weight: 500; display: flex; align-items: center; gap: 8px; transition: color 0.3s;"><svg class="icon-svg"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg> Minha Sacola</a>
-                <a href="#" onclick="navigate('perfil')" style="color: #D1D5DB; text-decoration: none; font-weight: 500; display: flex; align-items: center; gap: 8px; transition: color 0.3s;"><svg class="icon-svg"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg> Perfil do Cliente</a>
-            </div>
-        </div>
-        <div style="position: relative; max-width: 1200px; margin: 0 auto; text-align: center; font-size: 0.85rem; color: #6B7280; padding: 1rem 0;">
-            &copy; 2026. Todos os direitos reservados.
-            <!-- O CADEADO NINJA ESTÁ AQUI. ALINHADO DIREITA, OPACIDADE 20% -->
-            <a href="#" id="btn-secret-admin" title="Área Restrita" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); opacity: 0.2; cursor: pointer; text-decoration: none; padding: 10px; transition: all 0.3s;">
-                <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: #FFF;"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
-            </a>
-        </div>
-    </footer>
 
     <!-- ==========================================================================
          MODAIS DE EDIÇÃO (OVERLAYS NATIVOS FLUIDOS)
@@ -818,7 +718,7 @@
             </div>
             <div style="padding: 1.5rem; border-top: 1px solid #E5E7EB; display: flex; justify-content: flex-end; gap: 1rem; background: #F9FAFB; border-radius: 0 0 16px 16px; position: sticky; bottom: 0;">
                 <button style="background: transparent; border: 1px solid #D1D5DB; padding: 0.8rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight:600; color:#4B5563;" onclick="fecharModalProduto()">Cancelar</button>
-                <button style="background: var(--primary); color: white; border: none; padding: 0.8rem 2rem; border-radius: 8px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 10px rgba(227,0,15,0.2);" onclick="salvarEdicaoProdutoERP()">Gravar Produto</button>
+                <button style="background: var(--primary); color: white; border: none; padding: 0.8rem 2rem; border-radius: 8px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 10px rgba(227,0,15,0.2);" onclick="salvarEdicaoProdutoERP()">🚀 Enviar para Nuvem</button>
             </div>
         </div>
     </div>
@@ -917,9 +817,41 @@
     <div id="toast">Notificação de Sistema</div>
 
     <!-- ==========================================================================
-         JAVASCRIPT - ARQUITETURA LIMPA E MODULAR
+         JAVASCRIPT - ARQUITETURA COMUNICAÇÃO NUVEM (API FETCH)
          ========================================================================== -->
     <script>
+        function showLoader(show) { document.getElementById('global-loader').style.display = show ? 'flex' : 'none'; }
+        function showToast(m) { const t = document.getElementById("toast"); if(!t) return; t.innerText = m; t.className = "show"; setTimeout(() => { t.className = t.className.replace("show", ""); }, 2800); }
+
+        /* --- INTEGRAÇÃO GOOGLE APPS SCRIPT (CLOUD) --- */
+        const API = {
+            TOKEN: 'multe-coisas-mvp-2026',
+            getUrl() { return state.config.gasUrl || null; },
+
+            async get() {
+                const url = this.getUrl();
+                if(!url || url.includes('SEU_ID_AQUI')) return null;
+                try {
+                    const req = await fetch(url);
+                    return await req.json();
+                } catch(e) { console.warn('Aviso: Operando em modo Local (Offline)'); return null; }
+            },
+            
+            async post(payload) {
+                const url = this.getUrl();
+                if(!url || url.includes('SEU_ID_AQUI')) return { success: true, local: true };
+                try {
+                    payload.token = this.TOKEN;
+                    const req = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify(payload)
+                    });
+                    return await req.json();
+                } catch(e) { console.error('Erro de API:', e); return { success: false }; }
+            }
+        };
+
         /* --- ESTADO GLOBAL E DATABASE --- */
         let state = { 
             isLogged: false, 
@@ -931,6 +863,7 @@
             depoimentos: [], 
             pdvCart: [],
             config: {
+                gasUrl: "",
                 nomeLoja: "Multi Coisa's", telefone: "558433532646", corPrimaria: "#E3000F", corSecundaria: "#FFCC00", logoUrl: "",
                 topBar: "⏳ Lojas Abertas! Garanta o presente perfeito! 🎁",
                 aboutTitle: "A sua Loja 24h em São Miguel",
@@ -947,7 +880,7 @@
         const DEFAULT_SVG_LOGO = `<svg viewBox="0 0 24 24"><path d="M12 2L1 12h3v9h6v-6h4v6h6v-9h3L12 2zm0 2.84L19.5 12h-1.5v7h-2v-6H8v6H6v-7H4.5L12 4.84z"/></svg>`;
         const DEFAULT_SVG_BAG = `<svg viewBox="0 0 24 24" style="width:24px;fill:currentColor;"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>`;
 
-        /* --- UTILITÁRIOS (Compressão, Moeda, Toasts, Storage) --- */
+        /* --- UTILITÁRIOS (Compressão, Moeda) --- */
         function processarImagem(input, previewId, hiddenId) {
             const file = input.files[0]; if (!file) return;
             const reader = new FileReader();
@@ -970,33 +903,54 @@
 
         function formatarMoeda(v) { const n = parseFloat(v); if(isNaN(n)) return "R$ 0,00"; return n.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); }
         function escapeHTML(s) { return (s||'').toString().replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
-        function showToast(m) { const t = document.getElementById("toast"); if(!t) return; t.innerText = m; t.className = "show"; setTimeout(() => { t.className = t.className.replace("show", ""); }, 2800); }
-
+        
         function sincronizarStorage() { 
             try { 
                 localStorage.setItem('mc_erp_produtos', JSON.stringify(state.produtos)); localStorage.setItem('mc_erp_vendas', JSON.stringify(state.vendas)); localStorage.setItem('mc_carrinho', JSON.stringify(state.carrinho)); localStorage.setItem('mc_config', JSON.stringify(state.config)); localStorage.setItem('mc_lojas', JSON.stringify(state.lojas)); localStorage.setItem('mc_depoimentos', JSON.stringify(state.depoimentos));
             } catch(e) { console.error("Armazenamento cheio", e); } 
         }
 
-        /* --- INICIALIZAÇÃO (Carregamento Mocks) --- */
-        window.onload = () => {
-            const CONFIG_VERSION = 'v19_mobile_premium';
+        /* --- SINCRONIZAÇÃO ASSÍNCRONA COM A NUVEM --- */
+        async function syncDataFromCloud() {
+            if(!API.getUrl() || API.getUrl().includes('SEU_ID_AQUI')) {
+                showToast("Modo Local. Nuvem não configurada no CMS.");
+                return;
+            }
+            showLoader(true);
+            const cloudData = await API.get();
+            if(cloudData && cloudData.success) {
+                if(cloudData.data.produtos && cloudData.data.produtos.length > 0) state.produtos = cloudData.data.produtos;
+                if(cloudData.data.vendas) state.vendas = cloudData.data.vendas;
+                sincronizarStorage();
+                
+                // Re-renderizar painéis se estiverem ativos
+                if(document.getElementById('view-admin').classList.contains('active')) {
+                    renderERP_Dashboard(); renderERP_Produtos();
+                } else {
+                    renderizarVitrine();
+                }
+                showToast("Base de dados sincronizada com sucesso!");
+            } else {
+                showToast("Falha ao puxar dados. Usando ficheiros locais.");
+            }
+            showLoader(false);
+        }
+
+        /* --- INICIALIZAÇÃO --- */
+        window.onload = async () => {
+            const CONFIG_VERSION = 'v20_cloud_ready';
             if(localStorage.getItem('mc_version') !== CONFIG_VERSION) {
                 state.produtos = [
                     { id: 1, nome: "Fritadeira Airfryer 4L Preto/Inox", sku: "AF4L", preco: 389.90, estoque: 6, imagem: "https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=400", descricao: "Timer de 60 min, controle até 200ºC." },
                     { id: 2, nome: "Secador de Cabelo Profissional 2000W", sku: "SEC", preco: 159.00, estoque: 8, imagem: "https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&w=400", descricao: "Acompanha bico." },
                     { id: 3, nome: "Carro de Controle Remoto Off-Road", sku: "CAR", preco: 145.00, estoque: 12, imagem: "https://images.unsplash.com/photo-1594787318286-3d835c1d207f?auto=format&fit=crop&w=400", descricao: "Bateria recarregável." },
-                    { id: 4, nome: "Kit Pincéis de Maquiagem 12 Peças", sku: "MKP", preco: 45.90, estoque: 20, imagem: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=400", descricao: "Cerdas super macias." },
-                    { id: 5, nome: "Garrafa Térmica Inox 1L", sku: "GAR", preco: 79.90, estoque: 15, imagem: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=400", descricao: "Mantém 24h gelado." },
-                    { id: 6, nome: "Jogo de Panelas 5 Peças", sku: "PAN", preco: 249.90, estoque: 4, imagem: "https://images.unsplash.com/photo-1584990347449-a6a5d419b165?auto=format&fit=crop&w=400", descricao: "Revestimento antiaderente." }
+                    { id: 4, nome: "Kit Pincéis de Maquiagem 12 Peças", sku: "MKP", preco: 45.90, estoque: 20, imagem: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=400", descricao: "Cerdas super macias." }
                 ];
                 state.lojas = [
-                    { id: 1, nome: "Multi Coisa's - Matriz", endereco: "R. Cel. Nunes, 118\nSão Miguel, RN", imagem: "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?auto=format&fit=crop&w=600" },
-                    { id: 2, nome: "Multi Coisa's - Filial", endereco: "R. Dep. Hesíquio Fernandes, 271\nSão Miguel, RN", imagem: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=600" }
+                    { id: 1, nome: "Multi Coisa's - Matriz", endereco: "R. Cel. Nunes, 118\nSão Miguel, RN", imagem: "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?auto=format&fit=crop&w=600" }
                 ];
                 state.depoimentos = [
-                    { id: 1, nome: "Ana Flávia", texto: "Sempre encontro o que preciso para a casa. Atendimento top!", foto: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=100" },
-                    { id: 2, nome: "Carlos Eduardo", texto: "Comprei pelo site e retirei na loja. Super prático.", foto: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100" }
+                    { id: 1, nome: "Ana Flávia", texto: "Sempre encontro o que preciso para a casa. Atendimento top!", foto: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=100" }
                 ];
                 localStorage.setItem('mc_version', CONFIG_VERSION);
             } else {
@@ -1009,9 +963,19 @@
             }
             state.cliente = JSON.parse(localStorage.getItem('mc_cliente')) || null;
 
-            sincronizarStorage(); aplicarTemaEConfiguracoes(); atualizarBadgeCarrinho(); navigate('vitrine'); iniciarProvaSocial();
+            aplicarTemaEConfiguracoes(); 
+            atualizarBadgeCarrinho(); 
+            navigate('vitrine'); 
+            iniciarProvaSocial();
             
-            // Clique Ninja no Rodapé (Cadeado 5 cliques)
+            // Tenta puxar a Nuvem ao iniciar
+            if(API.getUrl() && !API.getUrl().includes('SEU_ID_AQUI')) {
+                await syncDataFromCloud();
+            }
+
+            sincronizarStorage(); 
+            
+            // Clique Ninja no Rodapé
             let clicks = 0; let clickTimer; const btnSecret = document.getElementById('btn-secret-admin');
             if (btnSecret) {
                 btnSecret.addEventListener('click', (e) => {
@@ -1079,7 +1043,6 @@
                     const isDisp = p.estoque > 0;
                     
                     const tag = isDisp ? (noCarrinho ? `<span class="tag-stock in-cart-text">Na Sacola</span>` : `<span class="tag-stock">Em Estoque</span>`) : `<span class="tag-stock out">Esgotado</span>`;
-                    
                     const cardClass = noCarrinho ? 'card-produto in-cart' : 'card-produto';
                     
                     let btn = '';
@@ -1142,7 +1105,6 @@
             const badge = document.querySelector('.cart-badge'); if (badge) { badge.classList.remove('pop'); void badge.offsetWidth; badge.classList.add('pop'); }
             sincronizarStorage(); atualizarBadgeCarrinho(); 
             
-            // Re-render current view if it's vitrine or produto to show marked state
             const vitrine = document.getElementById('view-vitrine');
             if(vitrine && vitrine.classList.contains('active')) renderizarVitrine();
             const viewProd = document.getElementById('view-produto');
@@ -1188,9 +1150,8 @@
                 const prod = p[Math.floor(Math.random() * p.length)]; const f = FOMO_PROFILES[Math.floor(Math.random() * FOMO_PROFILES.length)];
                 const img = document.getElementById('sp-img'), txt = document.getElementById('sp-text'), t = document.getElementById('social-proof-toast');
                 if(img && txt && t) {
-                    // Update text and image
                     img.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(f.nome)}&background=FFCC00&color=E3000F&bold=true`; 
-                    txt.innerHTML = `<strong>${f.nome}</strong> de São Miguel/RN acabou de comprar:<br><span style="color: #6B7280;">${escapeHTML(prod.nome.substring(0,35))}...</span>`;
+                    txt.innerHTML = `<strong>${f.nome}</strong> comprou:<br><span style="color: #6B7280;">${escapeHTML(prod.nome.substring(0,35))}...</span>`;
                     t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 5000);
                 }
             }, 30000);
@@ -1218,7 +1179,7 @@
             }
         }
 
-        /* --- ÁREA ADMINISTRATIVA --- */
+        /* --- ÁREA ADMINISTRATIVA (ERP NUVEM) --- */
         function efetuarLogin() { if (document.getElementById('login-user').value === 'admin' && document.getElementById('login-pass').value === '123') { state.isLogged = true; navigate('admin'); } else showToast("Senha inválida."); }
         function efetuarLogout() { state.isLogged = false; document.getElementById('login-pass').value = ''; navigate('vitrine'); }
 
@@ -1229,38 +1190,137 @@
             if(aba === 'dashboard') renderERP_Dashboard(); if(aba === 'pdv') renderERP_PDV(); if(aba === 'produtos') renderERP_Produtos(); if(aba === 'lojas') renderERP_Lojas(); if(aba === 'depoimentos') renderERP_Depoimentos(); if(aba === 'config') renderERP_Config();
         }
         
-        function registrarBaixaEstoque() {
-            const id = document.getElementById('adm-venda-prod').value, q = parseInt(document.getElementById('adm-venda-qtd').value);
-            if (!id || q < 1) return; const p = state.produtos.find(x => x.id == id); if (q > p.estoque) return showToast("Estoque baixo.");
-            p.estoque -= q; state.vendas.unshift({ id: Date.now(), data: new Date().toLocaleString(), nome: p.nome, qtd: q, total: p.preco * q });
-            sincronizarStorage(); showToast("Baixa feita!"); renderDashboardVendas();
-        }
-        
-        function renderDashboardVendas() {
+        async function renderERP_Dashboard() {
             document.getElementById('kpi-receita').innerText = formatarMoeda(state.vendas.reduce((a, v) => a + v.total, 0)); document.getElementById('kpi-itens').innerText = state.vendas.reduce((a, v) => a + v.qtd, 0);
-            const sel = document.getElementById('adm-venda-prod'); sel.innerHTML = '<option value="">Produto...</option>'; state.produtos.forEach(p => { if(p.estoque>0) sel.innerHTML += `<option value="${p.id}">${p.nome}</option>`; });
-            const tb = document.getElementById('tabela-vendas'); tb.innerHTML = ''; state.vendas.slice(0, 10).forEach(v => { tb.innerHTML += `<tr><td><small>${v.data}</small></td><td>${escapeHTML(v.nome)}</td><td>${v.qtd}</td><td style="font-weight:bold; color:var(--primary);">${formatarMoeda(v.total)}</td></tr>`; });
+            
+            const tb = document.getElementById('tabela-vendas'); if(!tb) return; tb.innerHTML = '';
+            if(state.vendas.length === 0) {
+                tb.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 2rem;">Nenhuma transação registada.</td></tr>';
+            } else {
+                state.vendas.slice(0, 10).forEach(v => { tb.innerHTML += `<tr><td><small>${v.data}</small></td><td>${escapeHTML(v.produtoNome || v.nome)}</td><td>${v.qtd}</td><td style="font-weight:bold; color:var(--success);">${formatarMoeda(v.total)}</td></tr>`; });
+            }
         }
 
-        /* --- MOTOR DE EDIÇÃO E CADASTRO DE PRODUTOS (CRUD) --- */
+        /* --- ERP: PDV E COMUNICAÇÃO NUVEM --- */
+        function renderERP_PDV() { atualizarTabelaPDV(); }
+        function buscarProdutoPDV() {
+            const termo = document.getElementById('pdv-busca').value.trim().toLowerCase(); if(!termo) return;
+            const prod = state.produtos.find(p => (p.sku||'').toLowerCase() === termo || p.nome.toLowerCase().includes(termo));
+            if(!prod) return showToast("Produto não encontrado.");
+            if(prod.estoque <= 0) return showToast("Produto sem estoque.");
+            
+            const item = state.pdvCart.find(i => i.id === prod.id);
+            if(item) { if(item.qtd < prod.estoque) item.qtd++; else showToast("Estoque insuficiente"); }
+            else { state.pdvCart.push({...prod, qtd: 1}); }
+            
+            document.getElementById('pdv-busca').value = ''; atualizarTabelaPDV();
+        }
+        function removerItemPDV(id) { state.pdvCart = state.pdvCart.filter(i => i.id !== id); atualizarTabelaPDV(); }
+        function atualizarTabelaPDV() {
+            const tb = document.getElementById('tabela-pdv-itens'); tb.innerHTML = ''; let tot = 0;
+            state.pdvCart.forEach(i => {
+                const sub = i.preco * i.qtd; tot += sub;
+                tb.innerHTML += `<tr><td>${i.nome}</td><td>${i.qtd}</td><td style="font-weight:bold;">${formatarMoeda(sub)}</td><td><button class="btn-danger" style="padding:2px 8px; border-radius:4px; border:none; cursor:pointer;" onclick="removerItemPDV(${i.id})">X</button></td></tr>`;
+            });
+            document.getElementById('pdv-total-valor').innerText = formatarMoeda(tot);
+        }
+        function limparPDV() { state.pdvCart = []; atualizarTabelaPDV(); }
+        
+        async function finalizarVendaPDV() {
+            if(state.pdvCart.length === 0) return showToast("Caixa vazio.");
+            showLoader(true);
+            
+            let totalVenda = 0; let totalItens = 0; let syncErrors = 0;
+            
+            // Abater estoque e enviar para Nuvem
+            for (let item of state.pdvCart) {
+                const prodReal = state.produtos.find(p => p.id === item.id);
+                if(prodReal) { 
+                    prodReal.estoque -= item.qtd; 
+                    
+                    const postRes = await API.post({
+                        action: 'registrar_venda',
+                        produtoId: item.id,
+                        produtoNome: item.nome,
+                        qtd: item.qtd,
+                        total: (item.preco * item.qtd),
+                        data: new Date().toLocaleString('pt-BR')
+                    });
+                    
+                    if(!postRes.success) syncErrors++;
+                }
+                totalVenda += (item.preco * item.qtd); totalItens += item.qtd;
+            }
+
+            state.vendas.unshift({ id: Date.now(), data: new Date().toLocaleString('pt-BR'), nome: "Venda PDV", qtd: totalItens, total: totalVenda });
+            sincronizarStorage(); 
+            showLoader(false);
+            
+            if(syncErrors === 0) showToast("Venda Finalizada com Sucesso na Nuvem!");
+            else showToast("Venda salva localmente (Erro parcial na Nuvem).");
+            
+            limparPDV();
+        }
+
+        /* --- ERP: PRODUTOS (CRUD COM NUVEM) --- */
+        async function cadastroExpresso() {
+            const n = document.getElementById('exp-nome').value, p = parseFloat(document.getElementById('exp-preco').value), e = parseInt(document.getElementById('exp-estoque').value);
+            if(!n || isNaN(p) || isNaN(e)) return showToast('Preencha Nome, Preço e Estoque');
+            
+            const novoP = { id: Date.now(), nome: n, sku: `PRD${Date.now().toString().slice(-4)}`, preco: p, precoCusto: p * 0.5, estoque: e, imagem: 'https://via.placeholder.com/400?text=Sem+Foto', descricao: '' };
+            
+            showLoader(true);
+            const res = await API.post({ action: 'cadastrar_produto', ...novoP });
+            
+            if (res && res.success) {
+                if(res.data && res.data.id) novoP.id = res.data.id; // Assume ID da Nuvem
+                state.produtos.unshift(novoP); 
+                sincronizarStorage(); 
+                showToast('Produto salvo na Nuvem!'); 
+            } else {
+                showToast("Nuvem indisponível. Salvo localmente.");
+                state.produtos.unshift(novoP); 
+                sincronizarStorage();
+            }
+            
+            showLoader(false);
+            renderERP_Produtos();
+            document.getElementById('exp-nome').value = ''; document.getElementById('exp-preco').value = ''; document.getElementById('exp-estoque').value = ''; document.getElementById('exp-nome').focus();
+        }
+
         function abrirModalProduto(id = null) {
             document.querySelectorAll('#erp-prod-modal input, #erp-prod-modal textarea').forEach(i=>i.value=''); document.getElementById('erp-preview-img').style.display='none';
             if(id) {
                 const p = state.produtos.find(x => x.id === id); document.getElementById('erp-modal-title').innerText = "Editar Produto";
-                document.getElementById('erp-prod-id').value = p.id; document.getElementById('erp-prod-nome').value = p.nome; document.getElementById('erp-prod-sku').value = p.sku || ''; document.getElementById('erp-prod-preco').value = p.preco; document.getElementById('erp-prod-estoque').value = p.estoque; document.getElementById('erp-prod-img-b64').value = p.imagem || ''; document.getElementById('erp-prod-desc').value = p.descricao || '';
+                document.getElementById('erp-prod-id').value = p.id; document.getElementById('erp-prod-nome').value = p.nome; document.getElementById('erp-prod-preco').value = p.preco; document.getElementById('erp-prod-estoque').value = p.estoque; document.getElementById('erp-prod-img-b64').value = p.imagem || ''; document.getElementById('erp-prod-desc').value = p.descricao || '';
                 if (p.imagem) { document.getElementById('erp-preview-img').src = p.imagem; document.getElementById('erp-preview-img').style.display='block'; }
             } else { document.getElementById('erp-modal-title').innerText = "Novo Produto"; document.getElementById('erp-prod-id').value = ''; }
             document.getElementById('erp-prod-modal-overlay').style.display = 'flex';
         }
         function fecharModalProduto() { document.getElementById('erp-prod-modal-overlay').style.display = 'none'; }
 
-        function salvarEdicaoProdutoERP() {
+        async function salvarEdicaoProdutoERP() {
             const id = document.getElementById('erp-prod-id').value, n = document.getElementById('erp-prod-nome').value, p = parseFloat(document.getElementById('erp-prod-preco').value);
             if(!n || isNaN(p)) return showToast("Nome e Preço obrigatórios!");
-            const prodData = { nome: n, sku: document.getElementById('erp-prod-sku').value || `PRD${Date.now().toString().slice(-4)}`, preco: p, estoque: parseInt(document.getElementById('erp-prod-estoque').value||0), descricao: document.getElementById('erp-prod-desc').value, imagem: document.getElementById('erp-prod-img-b64').value || 'https://via.placeholder.com/400' };
-            if(id) { const idx = state.produtos.findIndex(x => x.id == id); if (idx !== -1) state.produtos[idx] = { ...state.produtos[idx], ...prodData }; } 
-            else { prodData.id = Date.now(); state.produtos.unshift(prodData); }
-            sincronizarStorage(); showToast("Produto salvo!"); fecharModalProduto(); renderERP_Produtos();
+            const prodData = { nome: n, sku: `PRD${Date.now().toString().slice(-4)}`, preco: p, estoque: parseInt(document.getElementById('erp-prod-estoque').value||0), descricao: document.getElementById('erp-prod-desc').value, imagem: document.getElementById('erp-prod-img-b64').value || 'https://via.placeholder.com/400' };
+            
+            showLoader(true);
+            if(id) { 
+                const idx = state.produtos.findIndex(x => x.id == id); 
+                if (idx !== -1) state.produtos[idx] = { ...state.produtos[idx], ...prodData }; 
+                showToast("Edição Local Salva!");
+            } else { 
+                prodData.id = Date.now();
+                const res = await API.post({ action: 'cadastrar_produto', ...prodData });
+                if (res && res.success) {
+                    if(res.data && res.data.id) prodData.id = res.data.id;
+                    showToast("Salvo na Nuvem!");
+                } else {
+                    showToast("Salvo Localmente!");
+                }
+                state.produtos.unshift(prodData); 
+            }
+            sincronizarStorage(); showLoader(false); fecharModalProduto(); renderERP_Produtos();
         }
 
         function renderERP_Produtos() {
@@ -1268,10 +1328,11 @@
             if(state.produtos.length === 0) return tb.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 2rem;">Nenhum produto cadastrado.</td></tr>';
             state.produtos.forEach(p => {
                 const status = p.estoque > 0 ? `<span class="badge badge-success">${p.estoque} un.</span>` : `<span class="badge badge-danger">Esgotado</span>`;
-                tb.innerHTML += `<tr><td><div style="display:flex; align-items:center; gap:10px;"><img src="${p.imagem}" style="width:40px; height:40px; object-fit:contain; border-radius:8px; border:1px solid #E5E7EB;"><span style="font-weight:600; font-size:0.95rem; color:#111827;">${escapeHTML(p.nome).substring(0, 30)}...</span></div></td><td style="font-weight:900;">${formatarMoeda(p.preco)}</td><td>${status}</td><td><button class="admin-action-btn edit" onclick="abrirModalProduto(${p.id})"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></button> <button class="admin-action-btn delete" onclick="apagarItemState('produtos', ${p.id}, renderERP_Produtos)"><svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button></td></tr>`;
+                tb.innerHTML += `<tr><td><div style="display:flex; align-items:center; gap:10px;"><img src="${p.imagem}" style="width:40px; height:40px; object-fit:contain; border-radius:8px; border:1px solid #E5E7EB;"><span style="font-weight:600; font-size:0.95rem; color:#111827;">${escapeHTML(p.nome).substring(0, 30)}...</span></div></td><td style="font-weight:900;">${formatarMoeda(p.preco)}</td><td>${status}</td><td><button class="admin-action-btn edit" onclick="abrirModalProduto('${p.id}')"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></button> <button class="admin-action-btn delete" onclick="apagarItemState('produtos', '${p.id}', renderERP_Produtos)"><svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button></td></tr>`;
             });
         }
 
+        /* --- ERP: LOJAS, DEPOIMENTOS E CMS --- */
         function adicionarLoja() {
             const n = document.getElementById('adm-loja-nome').value, e = document.getElementById('adm-loja-end').value, img = document.getElementById('adm-loja-img-b64').value;
             if(!n || !e) return showToast("Preencha Nome e Endereço.");
@@ -1304,8 +1365,8 @@
             }); 
         }
 
-        /* --- ERP CONFIGURAÇÕES (CMS) --- */
         function renderERP_Config() {
+            document.getElementById('cfg-gas-url').value = state.config.gasUrl || '';
             document.getElementById('cfg-nome').value = state.config.nomeLoja; document.getElementById('cfg-zap').value = state.config.telefone;
             document.getElementById('cfg-cor-pri').value = state.config.corPrimaria; document.getElementById('cfg-cor-sec').value = state.config.corSecundaria;
             document.getElementById('cfg-topbar').value = state.config.topBar; document.getElementById('cfg-about-title').value = state.config.aboutTitle || '';
@@ -1319,15 +1380,14 @@
         function removerLogo() { document.getElementById('cfg-logo-b64').value = ''; document.getElementById('preview-logo').style.display = 'none'; state.config.logoUrl = ''; sincronizarStorage(); aplicarTemaEConfiguracoes(); showToast('Logomarca removida.'); }
         
         function salvarConfiguracoesGlobais() {
+            state.config.gasUrl = document.getElementById('cfg-gas-url').value.trim();
             state.config.nomeLoja = document.getElementById('cfg-nome').value; state.config.telefone = document.getElementById('cfg-zap').value;
             state.config.corPrimaria = document.getElementById('cfg-cor-pri').value; state.config.corSecundaria = document.getElementById('cfg-cor-sec').value;
             state.config.logoUrl = document.getElementById('cfg-logo-b64').value; state.config.topBar = document.getElementById('cfg-topbar').value;
-            sincronizarStorage(); aplicarTemaEConfiguracoes(); showToast("Configurações Salvas!");
-        }
-
-        function salvarConfiguracoesSobre() {
+            
             state.config.aboutTitle = document.getElementById('cfg-about-title').value; state.config.aboutP1 = document.getElementById('cfg-about-p1').value; state.config.aboutP2 = document.getElementById('cfg-about-p2').value;
-            sincronizarStorage(); aplicarTemaEConfiguracoes(); showToast("Textos atualizados!");
+            
+            sincronizarStorage(); aplicarTemaEConfiguracoes(); showToast("Configurações Salvas!");
         }
 
         function renderListaBannersAdmin() {
@@ -1366,7 +1426,7 @@
         }
         function apagarBanner(idx) { if(confirm("Apagar banner?")) { state.config.banners.splice(idx, 1); sincronizarStorage(); aplicarTemaEConfiguracoes(); renderListaBannersAdmin(); } }
 
-        function apagarItemState(col, id, cb) { if(confirm("Tem a certeza que deseja excluir este item?")) { state[col] = state[col].filter(i => i.id !== id); sincronizarStorage(); cb(); } }
+        function apagarItemState(col, id, cb) { if(confirm("Tem a certeza que deseja excluir este item?")) { state[col] = state[col].filter(i => i.id != id); sincronizarStorage(); cb(); } }
 
     </script>
 </body>
