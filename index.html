@@ -1,52 +1,1509 @@
-<div id="aba-config" class="aba-conteudo erp-panel" style="display:none;">
-                    <h3 style="font-size: 1.5rem; font-weight:800; margin-bottom: 2rem;">Aparência e API</h3>
-                    
-                    <div class="form-group">
-                        <label>Integração Google Apps Script URL</label>
-                        <input type="text" id="cfg-gas-url" class="form-input" placeholder="https://script.google.com/macros/...">
-                    </div>
-                    
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
-                        <div class="form-group"><label>Nome da Loja</label><input type="text" id="cfg-nome" class="form-input"></div>
-                        <div class="form-group"><label>WhatsApp Loja (Apenas números com DDD)</label><input type="tel" id="cfg-zap" class="form-input"></div>
-                    </div>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#0F172A">
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/gilneilaurindo/multicoisas/main/Multcoisas%20(1).png">
+    
+    <!-- Preconnects & Fonts (Montserrat para força, Inter para leitura) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <title>Sistema Multi Coisa's - Especial Dia das Mães</title>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { 
+                        sans: ['Inter', 'sans-serif'],
+                        montserrat: ['Montserrat', 'sans-serif']
+                    },
+                    colors: {
+                        brand: { 
+                            50: '#fff1f2', 100: '#ffe4e6', 500: '#E3000F', 600: '#B3000C', 900: '#0F172A',
+                            yellow: '#FFCC00'
+                        }
+                    },
+                    boxShadow: {
+                        'hard': '4px 4px 0px 0px rgba(15, 23, 42, 1)',
+                        'hard-sm': '2px 2px 0px 0px rgba(15, 23, 42, 1)',
+                    }
+                }
+            }
+        }
+    </script>
 
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
-                        <div class="form-group">
-                            <label>Cor Primária (Topo, Botões e Destaques)</label>
-                            <input type="color" id="cfg-cor-pri" class="form-input" style="height: 50px; padding: 5px; cursor: pointer;">
-                        </div>
-                        <div class="form-group">
-                            <label>Cor Secundária (Textos de destaque e Ícones)</label>
-                            <input type="color" id="cfg-cor-sec" class="form-input" style="height: 50px; padding: 5px; cursor: pointer;">
-                        </div>
-                    </div>
+    <style>
+        /* ==========================================================================
+           1. VARIÁVEIS E RESET CSS
+           ========================================================================== */
+        :root {
+            --primary: #E3000F;        
+            --secondary: #FFCC00;      
+            --bg-body: #F8FAFC;        
+            --text-main: #0F172A;
+            --border-light: #E2E8F0;
+            --transition: all 0.2s ease-in-out;
+        }
 
-                    <div class="form-group">
-                        <label>URL da Logomarca (Deixe vazio para usar apenas o Nome da Loja)</label>
-                        <input type="text" id="cfg-logo-b64" class="form-input" placeholder="Ex: https://i.imgur.com/sua-logo.png">
-                        <img id="preview-logo" src="" style="max-height: 80px; margin-top: 10px; display: none; border-radius: 8px; border: 1px solid var(--border-light); padding: 5px;">
-                        <br>
-                        <button class="btn-outline" style="width: auto; padding: 0.4rem 1rem; font-size: 0.85rem; margin-top: 10px; cursor: pointer;" onclick="removerLogo()">Remover Logo</button>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Barra Fixa de Aviso Topo</label>
-                        <input type="text" id="cfg-topbar" class="form-input">
-                    </div>
+        html { scroll-behavior: smooth; }
+        body { background-color: var(--bg-body); color: var(--text-main); -webkit-font-smoothing: antialiased; display: flex; flex-direction: column; min-height: 100vh; overflow-x: hidden; }
 
-                    <div style="background: #F8FAFC; padding: 1.5rem; border-radius: 12px; border: 1px solid #CBD5E1; margin-bottom: 1.5rem;">
-                        <h4 style="margin-bottom: 1rem; color: #334155;">Textos da Seção "Sobre a Loja"</h4>
-                        <div class="form-group"><label>Título</label><input type="text" id="cfg-about-title" class="form-input"></div>
-                        <div class="form-group"><label>Descrição (Linha 1)</label><input type="text" id="cfg-about-p1" class="form-input"></div>
-                        <div class="form-group" style="margin-bottom: 0;"><label>Descrição (Linha 2)</label><input type="text" id="cfg-about-p2" class="form-input"></div>
-                    </div>
+        /* Scrollbars robustas */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #E2E8F0; }
+        ::-webkit-scrollbar-thumb { background: #94A3B8; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #64748B; }
 
-                    <button class="btn btn-primary" onclick="salvarConfiguracoesGlobais()">Salvar Configurações Gerais</button>
-                    
-                    <hr style="border:0; border-top:1px solid var(--border-light); margin: 3rem 0;">
+        /* ==========================================================================
+           2. ANIMAÇÕES E COMPONENTES
+           ========================================================================== */
+        #preloader { position: fixed; inset: 0; background: #0F172A; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; transition: opacity 0.5s ease; }
+        
+        .view { display: none; opacity: 0; }
+        .view.active { display: block; animation: fadeIn 0.4s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-                    <h3 style="font-size: 1.2rem; font-weight:700; margin: 3rem 0 1.5rem;">Banners Rotativos</h3>
-                    <button class="btn btn-outline" style="margin-bottom:1.5rem; width:auto; padding:0.5rem 1rem;" onclick="abrirModalBanner()">+ Adicionar Banner</button>
-                    <div id="lista-adm-banners" style="display: grid; grid-template-columns: 1fr; gap: 1rem;"></div>
+        @keyframes slideUpFade {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .anim-slide-up { animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+
+        /* Slider Animado */
+        .slider-container { position: relative; width: 100%; height: 100%; }
+        .slide-bg { position: absolute; inset: 0; background-size: cover; background-position: center; transition: transform 6s linear; transform: scale(1); }
+        .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.5s ease-in-out; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: 3rem; color: white; overflow: hidden; }
+        .slide::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to right, rgba(15,23,42,0.9) 0%, rgba(15,23,42,0.4) 100%); z-index: 1; }
+        .slide.active { opacity: 1; z-index: 2; }
+        .slide.active .slide-bg { transform: scale(1.05); }
+        .slide-content { position: relative; z-index: 3; max-width: 600px; border-left: 5px solid var(--secondary); padding-left: 1rem; }
+        
+        /* Categoria Pills (Preto, Vermelho e Amarelo) */
+        .cat-pill { 
+            flex: 0 0 auto; background: #FFF; border: 2px solid var(--border-light); 
+            padding: 0.6rem 1.25rem; border-radius: 8px; font-weight: 700; font-size: 0.85rem; 
+            color: #475569; cursor: pointer; transition: var(--transition); 
+            display:flex; align-items:center; gap:8px; text-transform: uppercase;
+        }
+        .cat-pill:hover { border-color: var(--text-main); color: var(--text-main); box-shadow: 0 4px 6px rgba(0,0,0,0.05); transform: translateY(-2px); }
+        .cat-pill.active { background: var(--text-main); color: var(--secondary); border-color: var(--text-main); box-shadow: var(--shadow-hard-sm); transform: translateY(-2px); }
+
+        /* Depoimentos Marquee */
+        .marquee-track { display: flex; gap: 1.5rem; width: max-content; animation: scroll-left 35s linear infinite; }
+        .marquee-track:hover { animation-play-state: paused; }
+        @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(calc(-50% - 0.75rem)); } }
+
+        /* Estrutura Input & Botões */
+        .form-group { margin-bottom: 1.2rem; width: 100%; }
+        .form-group label { display: block; font-weight: 800; font-size: 0.75rem; margin-bottom: 0.4rem; color: #475569; text-transform: uppercase; letter-spacing: 0.05em; }
+        .form-input { width: 100%; padding: 0.8rem 1rem; border: 2px solid var(--border-light); border-radius: 8px; font-size: 0.95rem; font-weight: 500; background: #FFF; transition: var(--transition); color: var(--text-main); }
+        .form-input:focus { border-color: var(--primary); outline: none; box-shadow: var(--shadow-hard-sm); }
+
+        .btn { padding: 0.8rem 1.5rem; border: 2px solid transparent; border-radius: 8px; cursor: pointer; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; transition: var(--transition); text-align: center; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; letter-spacing: 0.05em; }
+        .btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-hard-sm); }
+        .btn:active { transform: translateY(0); box-shadow: none; }
+        
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.85); z-index: 3000; justify-content: center; align-items: center; padding: 1rem; backdrop-filter: blur(4px); }
+        
+        #toast { visibility: hidden; min-width: 250px; background-color: #10B981; color: #FFF; text-align: center; border-radius: 8px; padding: 14px 24px; position: fixed; z-index: 4000; left: 50%; bottom: 20px; transform: translateX(-50%) translateY(20px); font-weight: 800; font-size: 0.85rem; text-transform: uppercase; opacity: 0; transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); border: 2px solid #064E3B; box-shadow: var(--shadow-hard); }
+        #toast.show { visibility: visible; transform: translateX(-50%) translateY(0); opacity: 1; }
+        #toast.error { background-color: #EF4444; border-color: #7F1D1D; }
+
+    </style>
+</head>
+<body class="bg-slate-100 font-sans text-slate-900">
+
+    <!-- PRELOADER COM LOGO -->
+    <div id="preloader">
+        <img src="https://raw.githubusercontent.com/gilneilaurindo/multicoisas/main/Multcoisas%20(1).png" class="w-64 md:w-80 object-contain animate-pulse drop-shadow-2xl mb-8" alt="Logo Multi Coisas">
+        <div class="w-48 h-2 bg-slate-800 rounded overflow-hidden">
+            <div class="h-full bg-brand-500 w-1/2 animate-[pulse_1s_infinite]"></div>
+        </div>
+    </div>
+
+    <!-- LOADER GLOBAL -->
+    <div id="global-loader" class="hidden fixed inset-0 bg-white/90 backdrop-blur-sm z-[9999] flex-col items-center justify-center">
+        <i class="fas fa-circle-notch fa-spin text-5xl text-brand-500 mb-4"></i>
+        <p class="font-bold text-slate-800 uppercase tracking-widest text-sm">Processando...</p>
+    </div>
+
+    <!-- BARRA DE AVISO PÚBLICA -->
+    <div id="public-topbar" class="bg-brand-500 text-brand-yellow text-[10px] md:text-xs font-black py-2.5 text-center uppercase tracking-widest border-b-2 border-slate-900 relative z-[102]" style="background-color: var(--primary); color: var(--secondary);">
+        <span id="ui-top-bar-text" class="animate-pulse">❤️ MÊS DAS MÃES: O PRESENTE PERFEITO COM RETIRADA NA HORA! ❤️</span>
+    </div>
+
+    <!-- CABEÇALHO PÚBLICO -->
+    <header id="public-header" class="bg-slate-900 border-b-4 border-brand-500 sticky top-0 z-[100] shadow-md transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col md:flex-row items-center gap-4">
+            
+            <div class="flex justify-between items-center w-full md:w-auto shrink-0">
+                <div class="cursor-pointer" onclick="navigate('vitrine')" id="ui-main-logo">
+                    <img src="https://raw.githubusercontent.com/gilneilaurindo/multicoisas/main/Multcoisas%20(1).png" class="h-10 md:h-12 object-contain" alt="Multi Coisas">
                 </div>
+                <div class="md:hidden relative cursor-pointer p-2 flex items-center" onclick="toggleCart()">
+                    <i class="fas fa-shopping-cart text-white text-xl"></i>
+                    <span class="cart-badge absolute -top-1 -right-1 bg-brand-500 text-white text-[10px] font-black w-5 h-5 flex items-center justify-center rounded-full border-2 border-slate-900 hidden">0</span>
+                </div>
+            </div>
+            
+            <div class="w-full relative flex-1 max-w-2xl mx-auto">
+                <input type="text" id="inputBusca" class="w-full bg-white border-2 border-transparent text-slate-900 rounded-lg py-2.5 pl-10 pr-4 text-sm font-bold outline-none focus:border-brand-500 transition shadow-inner" placeholder="BUSCAR PRESENTE, ELETRO..." onkeyup="filtrarVitrine()">
+                <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+            </div>
+            
+            <div class="hidden md:flex items-center gap-4 shrink-0">
+                <button onclick="toggleCart()" class="bg-brand-500 text-white border-2 border-brand-600 hover:bg-brand-600 px-4 py-2 rounded-lg font-bold text-xs uppercase tracking-widest transition-colors flex items-center gap-2 relative shadow-hard-sm">
+                    <i class="fas fa-shopping-cart"></i> Carrinho
+                    <span class="cart-badge absolute -top-2 -right-2 bg-brand-yellow text-slate-900 border-2 border-slate-900 text-[10px] font-black w-5 h-5 flex items-center justify-center rounded-full hidden">0</span>
+                </button>
+                <button onclick="navigate('perfil')" class="bg-slate-800 text-brand-yellow border-2 border-slate-700 hover:bg-slate-700 px-4 py-2 rounded-lg font-bold text-xs uppercase tracking-widest transition-colors flex items-center gap-2 shadow-hard-sm">
+                    <i class="fas fa-user"></i> Conta
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- NAVEGAÇÃO MOBILE INFERIOR -->
+    <div id="public-bottom-nav" class="md:hidden fixed bottom-0 left-0 right-0 bg-slate-900 border-t-4 border-brand-500 z-[90] flex justify-around items-center h-[70px] pb-safe">
+        <button class="flex flex-col items-center gap-1 text-slate-400 hover:text-brand-yellow transition w-16" id="nav-btn-vitrine" onclick="navigate('vitrine')">
+            <i class="fas fa-home text-xl mb-1"></i><span class="text-[9px] font-bold uppercase tracking-widest">Loja</span>
+        </button>
+        <button class="flex flex-col items-center gap-1 text-slate-400 hover:text-brand-yellow transition w-16 relative" onclick="toggleCart()">
+            <i class="fas fa-shopping-cart text-xl mb-1"></i><span class="text-[9px] font-bold uppercase tracking-widest">Carrinho</span>
+            <span class="cart-badge absolute top-0 right-2 bg-brand-500 border border-slate-900 text-white text-[9px] font-bold w-4 h-4 flex items-center justify-center rounded-full hidden">0</span>
+        </button>
+        <button class="flex flex-col items-center gap-1 text-slate-400 hover:text-white transition w-16" id="nav-btn-perfil" onclick="navigate('perfil')">
+            <i class="fas fa-user text-xl mb-1"></i><span class="text-[9px] font-bold uppercase tracking-widest">Conta</span>
+        </button>
+    </div>
+
+    <!-- SIDEBAR DO CARRINHO -->
+    <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-full md:w-[450px] bg-slate-50 border-l-4 border-brand-500 shadow-2xl z-[1000] transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col">
+        <div class="p-5 border-b-2 border-slate-200 bg-slate-900 flex justify-between items-center">
+            <h3 class="font-montserrat font-black text-xl uppercase text-white"><i class="fas fa-shopping-cart text-brand-yellow mr-2"></i> Carrinho</h3>
+            <button onclick="toggleCart()" class="w-8 h-8 rounded border-2 border-slate-700 bg-slate-800 flex items-center justify-center text-white hover:bg-brand-500 hover:border-brand-500 transition"><i class="fas fa-times"></i></button>
+        </div>
+        
+        <div id="cart-items" class="flex-1 overflow-y-auto p-5 space-y-4">
+            <!-- Itens do Carrinho Injetados Via JS -->
+        </div>
+        
+        <div class="p-5 bg-white border-t-2 border-slate-200 shadow-[0_-5px_15px_rgba(0,0,0,0.05)]">
+            <div class="flex justify-between items-end mb-4">
+                <span class="text-slate-500 uppercase text-xs font-bold tracking-widest">Total a Pagar</span>
+                <span id="cart-total-val" class="font-montserrat font-black text-3xl text-brand-500">R$ 0,00</span>
+            </div>
+            <button onclick="navigate('checkout'); toggleCart();" id="checkout-btn" class="w-full bg-[#10B981] border-2 border-[#064E3B] text-white font-black py-4 rounded-xl shadow-hard hover:translate-y-1 transition-all disabled:opacity-50 text-sm uppercase tracking-widest flex items-center justify-center gap-2" disabled>
+                Avançar para Pagamento <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+    <div id="cart-overlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[900] hidden opacity-0 transition-opacity duration-300" onclick="toggleCart()"></div>
+
+    <!-- MAIN PÚBLICO -->
+    <main class="w-full flex-grow" id="public-main">
+        
+        <!-- VITRINE (LOJA PÚBLICA) -->
+        <section id="view-vitrine" class="view active pb-10">
+            
+            <!-- CARROSSEL -->
+            <div class="max-w-7xl mx-auto px-4 mt-6 mb-8">
+                <div class="slider-container rounded-2xl border-4 border-slate-900 overflow-hidden h-[200px] sm:h-[300px] md:h-[400px] bg-slate-900 shadow-hard" id="hero-slider"></div>
+            </div>
+
+            <!-- FILTROS COM EMOJIS (DIA DAS MÃES EM DESTAQUE) -->
+            <div class="max-w-7xl mx-auto px-4 mb-8">
+                <div class="flex overflow-x-auto gap-3 pb-2 no-scrollbar" id="category-filters">
+                    <button class="cat-pill active" onclick="filtrarPorCategoria('Todos', this)">Todos</button>
+                    <button class="cat-pill" onclick="filtrarPorCategoria('Dia das Mães', this)">👩 Especial Mães</button>
+                    <button class="cat-pill" onclick="filtrarPorCategoria('Presentes', this)">🎁 Presentes</button>
+                    <button class="cat-pill" onclick="filtrarPorCategoria('Beleza', this)">💄 Beleza</button>
+                    <button class="cat-pill" onclick="filtrarPorCategoria('Eletrodomésticos', this)">🔌 Eletros</button>
+                    <button class="cat-pill" onclick="filtrarPorCategoria('Ferramentas', this)">🛠️ Ferramentas</button>
+                    <button class="cat-pill" onclick="filtrarPorCategoria('Crianças', this)">🧸 Brinquedos</button>
+                </div>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="flex justify-between items-center mb-6 border-b-2 border-slate-200 pb-2">
+                    <h2 class="font-montserrat text-xl md:text-2xl font-black text-slate-900 uppercase tracking-tight"><i class="fas fa-bolt text-brand-500 mr-2"></i> Produtos em Destaque</h2>
+                </div>
+                
+                <div id="grid-produtos" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"></div>
+                <div id="msg-sem-produto" style="display:none; text-align:center; padding: 4rem 2rem; color: var(--text-muted); background: #FFF; border: 2px dashed var(--border-light); border-radius: 12px; font-weight: bold; text-transform: uppercase;">Nenhum produto encontrado para este filtro.</div>
+            </div>
+
+            <!-- SOBRE NÓS -->
+            <section class="max-w-7xl mx-auto px-4 mt-16 mb-16">
+                <div class="bg-slate-900 text-white rounded-2xl border-4 border-slate-800 p-8 md:p-12 text-center relative shadow-hard overflow-hidden">
+                    <i class="fas fa-heart absolute -right-10 -bottom-10 text-9xl text-brand-500 opacity-20"></i>
+                    <h3 id="ui-about-title" class="font-montserrat text-2xl md:text-4xl font-black mb-4 uppercase text-brand-yellow relative z-10">ESPECIAL MÊS DAS MÃES</h3>
+                    <p id="ui-about-text1" class="text-lg text-slate-300 mb-2 max-w-2xl mx-auto font-medium relative z-10"></p>
+                    <p id="ui-about-text2" class="text-sm text-slate-400 max-w-2xl mx-auto font-bold relative z-10"></p>
+                </div>
+            </section>
+
+            <!-- LOJAS -->
+            <section class="max-w-7xl mx-auto px-4 mb-16">
+                <h2 class="font-montserrat text-xl md:text-2xl font-black text-slate-900 uppercase tracking-tight mb-6 border-b-2 border-slate-200 pb-2"><i class="fas fa-map-marker-alt text-brand-500 mr-2"></i> Nossas Unidades</h2>
+                <div id="scroll-lojas" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            </section>
+
+            <!-- DEPOIMENTOS ANIMADOS (MARQUEE) -->
+            <section class="max-w-7xl mx-auto px-4 mb-8 overflow-hidden">
+                <h2 class="font-montserrat text-xl md:text-2xl font-black text-slate-900 uppercase tracking-tight mb-6 border-b-2 border-slate-200 pb-2"><i class="fas fa-comments text-brand-500 mr-2"></i> O que dizem de nós</h2>
+                <div class="relative w-full overflow-hidden pb-4">
+                    <div class="absolute top-0 left-0 w-12 h-full bg-gradient-to-r from-[#F8FAFC] to-transparent z-10 pointer-events-none"></div>
+                    <div class="absolute top-0 right-0 w-12 h-full bg-gradient-to-l from-[#F8FAFC] to-transparent z-10 pointer-events-none"></div>
+                    <div class="marquee-track" id="track-depoimentos"></div>
+                </div>
+            </section>
+        </section>
+
+        <!-- DETALHE DO PRODUTO -->
+        <section id="view-produto" class="view max-w-6xl mx-auto px-4 py-8">
+            <button class="bg-white border-2 border-slate-900 text-slate-900 font-bold px-4 py-2 rounded-lg text-xs uppercase tracking-widest hover:bg-slate-900 hover:text-white transition mb-6 flex items-center gap-2 shadow-hard-sm" onclick="navigate('vitrine')">
+                <i class="fas fa-arrow-left"></i> Voltar à Loja
+            </button>
+            <div id="container-produto" class="bg-white p-6 md:p-10 rounded-2xl shadow-sm border-2 border-slate-200 flex flex-col md:flex-row gap-8 md:gap-12"></div>
+        </section>
+
+        <!-- CHECKOUT -->
+        <section id="view-checkout" class="view max-w-5xl mx-auto px-4 py-8">
+            <button class="bg-white border-2 border-slate-900 text-slate-900 font-bold px-4 py-2 rounded-lg text-xs uppercase tracking-widest hover:bg-slate-900 hover:text-white transition mb-6 flex items-center gap-2 shadow-hard-sm" onclick="navigate('vitrine')">
+                <i class="fas fa-arrow-left"></i> Voltar à Loja
+            </button>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white border-2 border-slate-200 rounded-2xl p-6 shadow-sm">
+                    <h3 class="font-montserrat text-xl font-black uppercase text-slate-900 mb-6 border-b-2 border-slate-100 pb-2"><i class="fas fa-clipboard-check text-brand-500"></i> Dados da Retirada</h3>
+                    <div class="space-y-4">
+                        <div class="form-group mb-0"><label>Onde deseja retirar? *</label><select id="checkout-loja" class="form-input"></select></div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="form-group mb-0"><label>Data Retirada *</label><input type="date" id="checkout-data" class="form-input"></div>
+                            <div class="form-group mb-0"><label>Hora Prevista *</label><input type="time" id="checkout-hora" class="form-input"></div>
+                        </div>
+                        <div class="form-group mb-0">
+                            <label>Método de Pagamento (Na Loja) *</label>
+                            <select id="checkout-pgto" class="form-input">
+                                <option value="PIX">PIX</option><option value="Dinheiro">Dinheiro</option><option value="Cartão de Crédito">Cartão de Crédito</option><option value="Cartão de Débito">Cartão de Débito</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 text-white border-4 border-slate-800 rounded-2xl p-6 shadow-hard h-max">
+                    <h3 class="font-montserrat text-xl font-black uppercase text-brand-yellow mb-6 border-b-2 border-slate-700 pb-2">Resumo Final</h3>
+                    <div id="checkout-items-list" class="space-y-3 mb-6 max-h-48 overflow-y-auto custom-scrollbar"></div>
+                    <div class="border-t-2 border-slate-700 pt-4 mb-6">
+                        <div class="flex justify-between items-end">
+                            <span class="text-slate-400 font-bold uppercase text-xs tracking-widest">Total a Pagar</span>
+                            <span id="checkout-total-val" class="font-montserrat text-3xl font-black text-brand-500">R$ 0,00</span>
+                        </div>
+                    </div>
+                    <button class="w-full bg-[#25D366] border-2 border-[#1E9E4D] text-white font-black py-4 rounded-xl hover:-translate-y-1 transition-all uppercase tracking-widest text-sm shadow-hard flex items-center justify-center gap-3" onclick="finalizarPedido()">
+                        <i class="fab fa-whatsapp text-xl"></i> Enviar Pedido
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- PERFIL / LOGIN CLIENTE -->
+        <section id="view-perfil" class="view max-w-md mx-auto px-4 py-16">
+            <div class="bg-white rounded-2xl border-2 border-slate-200 p-8 text-center shadow-sm">
+                <div id="perfil-step-1">
+                    <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 text-2xl mx-auto mb-4 border-2 border-slate-200"><i class="fas fa-user"></i></div>
+                    <h2 class="font-montserrat text-2xl font-black text-slate-900 mb-2 uppercase">Sua Conta</h2>
+                    <p class="text-sm font-bold text-slate-500 mb-8">Identifique-se para gerenciar pedidos.</p>
+                    <button class="btn btn-primary w-full shadow-hard-sm" onclick="document.getElementById('perfil-step-1').style.display='none'; document.getElementById('perfil-step-2').style.display='block';">Entrar / Registar</button>
+                </div>
+
+                <div id="perfil-step-2" style="display: none; text-align: left;">
+                    <h2 class="font-montserrat text-xl font-black text-slate-900 mb-6 uppercase border-b-2 border-slate-100 pb-2">Dados do Cliente</h2>
+                    <div class="form-group"><label>Nome Completo *</label><input type="text" id="cli-nome" class="form-input"></div>
+                    <div class="form-group"><label>WhatsApp (DDD) *</label><input type="tel" id="cli-zap" class="form-input"></div>
+                    <div class="form-group"><label>E-mail</label><input type="email" id="cli-email" class="form-input"></div>
+                    <div class="flex gap-2">
+                        <button class="btn btn-outline flex-1" onclick="document.getElementById('perfil-step-2').style.display='none'; document.getElementById('perfil-step-1').style.display='block';">Voltar</button>
+                        <button class="btn btn-primary flex-1" onclick="salvarPerfil()">Salvar</button>
+                    </div>
+                </div>
+
+                <div id="perfil-logged-state" style="display: none;">
+                    <img id="avatar-logged" src="" class="w-20 h-20 rounded-full mx-auto object-cover border-4 border-slate-100 mb-4">
+                    <h2 id="logged-name" class="font-montserrat text-xl font-black text-slate-900 uppercase">Nome</h2>
+                    <p id="logged-zap" class="text-slate-500 font-bold mb-6 text-sm"></p>
+                    <button class="btn bg-slate-100 text-red-500 border-2 border-slate-200 hover:bg-red-50" onclick="deslogarPerfil()"><i class="fas fa-sign-out-alt"></i> Sair da Conta</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- LOGIN GESTÃO (ADMIN) -->
+        <section id="view-login" class="view max-w-sm mx-auto px-4 py-20">
+            <div class="bg-slate-900 rounded-2xl border-4 border-brand-500 p-8 text-center shadow-hard relative">
+                <i class="fas fa-lock text-5xl text-brand-500 mb-4"></i>
+                <h2 class="font-montserrat text-2xl font-black text-white mb-6 uppercase">Acesso Restrito</h2>
+                <div class="form-group text-left"><label class="text-slate-300">Usuário</label><input type="text" id="login-user" value="admin" class="form-input bg-slate-800 border-slate-700 text-white focus:border-brand-500"></div>
+                <div class="form-group text-left"><label class="text-slate-300">Senha</label><input type="password" id="login-pass" value="123" class="form-input bg-slate-800 border-slate-700 text-white focus:border-brand-500"></div>
+                <button class="btn btn-primary w-full mt-4 shadow-hard-sm hover:translate-y-[-2px]" onclick="efetuarLogin()">Acessar Painel</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- ==========================================================================
+         RODAPÉ (PÚBLICO)
+         ========================================================================== -->
+    <footer id="public-footer" class="bg-slate-900 border-t-[8px] border-brand-500 pt-16 pb-8 mt-12">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+            
+            <div>
+                <div class="mb-4" id="footer-logo-container">
+                    <!-- Gerado Dinamicamente -->
+                </div>
+                <p class="text-sm text-slate-400 font-medium mb-6">Sua loja completa de presentes, utilidades e ferramentas. O presente ideal para a sua Mãe está aqui!</p>
+            </div>
+
+            <div>
+                <h4 class="text-white font-black mb-6 uppercase tracking-widest text-sm border-b-2 border-slate-700 pb-2 inline-block">Navegação</h4>
+                <ul class="space-y-3 text-sm font-bold text-slate-400">
+                    <li><a href="#" onclick="navigate('vitrine'); return false;" class="hover:text-brand-yellow transition"><i class="fas fa-chevron-right text-brand-500 text-xs mr-2"></i> Início</a></li>
+                    <li><a href="#" onclick="toggleCart(); return false;" class="hover:text-brand-yellow transition"><i class="fas fa-chevron-right text-brand-500 text-xs mr-2"></i> Carrinho</a></li>
+                    <li><a href="#" class="hover:text-brand-yellow transition"><i class="fas fa-chevron-right text-brand-500 text-xs mr-2"></i> Contato</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-white font-black mb-6 uppercase tracking-widest text-sm border-b-2 border-slate-700 pb-2 inline-block">Atendimento</h4>
+                <ul class="space-y-4 text-sm font-bold text-slate-400">
+                    <li class="flex items-start gap-3"><i class="fas fa-map-marker-alt text-brand-500 mt-1"></i> <span>Rua Cel. Nunes, 118<br>Centro - São Miguel/RN</span></li>
+                    <li class="flex items-center gap-3"><i class="fab fa-whatsapp text-[#25D366] text-lg"></i> <a href="#" id="footer-whatsapp-link" target="_blank" class="hover:text-white transition">Falar com Consultor</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-white font-black mb-6 uppercase tracking-widest text-sm border-b-2 border-slate-700 pb-2 inline-block">Pagamento na Loja</h4>
+                <div class="flex flex-col gap-2">
+                    <div class="bg-[#1E293B] text-white py-2.5 px-4 rounded border border-slate-700 flex items-center gap-3 font-bold text-xs uppercase tracking-widest shadow-sm">
+                        <i class="fas fa-qrcode text-brand-yellow text-lg"></i> PIX
+                    </div>
+                    <div class="bg-[#1E293B] text-white py-2.5 px-4 rounded border border-slate-700 flex items-center gap-3 font-bold text-xs uppercase tracking-widest shadow-sm">
+                        <i class="fas fa-credit-card text-brand-yellow text-lg"></i> Crédito / Débito
+                    </div>
+                    <div class="bg-[#1E293B] text-white py-2.5 px-4 rounded border border-slate-700 flex items-center gap-3 font-bold text-xs uppercase tracking-widest shadow-sm">
+                        <i class="fas fa-money-bill-wave text-brand-yellow text-lg"></i> Dinheiro
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 border-t border-slate-800 pt-6 flex flex-col md:flex-row justify-between items-center gap-6">
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-widest">© 2026 Multi Coisa's. Todos os direitos reservados.</p>
+            
+            <!-- ADMIN EM DESTAQUE ABSOLUTO -->
+            <button id="btn-secret-admin" class="bg-brand-500 text-white px-6 py-3 rounded-lg font-black text-xs uppercase tracking-widest shadow-hard hover:translate-y-[-2px] hover:bg-brand-600 transition-all flex items-center gap-2 border-2 border-slate-900">
+                <i class="fas fa-lock"></i> Acesso Gerencial
+            </button>
+        </div>
+    </footer>
+
+    <!-- ==========================================================================
+         VIEW: ERP ADMINISTRATIVO (ISOLADO E BLINDADO)
+         ========================================================================== -->
+    <section id="view-admin" class="view" style="padding:0; margin:0; max-width:none;">
+        
+        <!-- HEADER ADMIN EXCLUSIVO (RESOLVE O PROBLEMA DE CONTRASTE) -->
+        <header class="bg-slate-900 border-b-4 border-brand-500 px-4 md:px-8 py-4 flex justify-between items-center sticky top-0 z-50 shadow-hard">
+            <div class="font-montserrat font-black text-lg md:text-xl uppercase tracking-widest text-white flex items-center gap-3">
+                <i class="fas fa-tools text-brand-yellow text-2xl"></i> 
+                <span class="hidden sm:inline">Gestão ERP Nuvem</span><span class="sm:hidden">ERP</span>
+            </div>
+            <button class="bg-transparent border-2 border-slate-600 text-slate-300 hover:bg-brand-500 hover:border-brand-500 hover:text-white px-5 py-2 rounded-lg font-bold text-xs uppercase tracking-widest transition" onclick="efetuarLogout()">Sair</button>
+        </header>
+
+        <div class="flex flex-col md:flex-row min-h-[calc(100vh-76px)]">
+            <!-- SIDEBAR ADMIN -->
+            <div class="w-full md:w-64 bg-white border-b-2 md:border-b-0 md:border-r-2 border-slate-200 flex overflow-x-auto md:flex-col p-3 md:p-6 gap-2 shadow-sm sticky top-[76px] z-40 no-scrollbar md:h-[calc(100vh-76px)]">
+                <button class="erp-nav-btn active flex-shrink-0 md:flex-shrink" id="tab-dashboard" onclick="abrirAbaAdmin('dashboard')"><i class="fas fa-chart-line w-5 text-center"></i> Visão Geral</button>
+                <button class="erp-nav-btn flex-shrink-0 md:flex-shrink" id="tab-pdv" onclick="abrirAbaAdmin('pdv')"><i class="fas fa-cash-register w-5 text-center"></i> Caixa PDV</button>
+                <button class="erp-nav-btn flex-shrink-0 md:flex-shrink" id="tab-produtos" onclick="abrirAbaAdmin('produtos')"><i class="fas fa-boxes w-5 text-center"></i> Estoque</button>
+                <button class="erp-nav-btn flex-shrink-0 md:flex-shrink" id="tab-lojas" onclick="abrirAbaAdmin('lojas')"><i class="fas fa-store w-5 text-center"></i> Lojas Físicas</button>
+                <button class="erp-nav-btn flex-shrink-0 md:flex-shrink" id="tab-depoimentos" onclick="abrirAbaAdmin('depoimentos')"><i class="fas fa-star w-5 text-center"></i> Avaliações</button>
+                <button class="erp-nav-btn flex-shrink-0 md:flex-shrink" id="tab-config" onclick="abrirAbaAdmin('config')"><i class="fas fa-cog w-5 text-center"></i> Configurações</button>
+            </div>
+
+            <!-- CONTEÚDO ADMIN -->
+            <div class="flex-grow p-4 md:p-8">
+                
+                <!-- ABA DASHBOARD -->
+                <div id="aba-dashboard" class="aba-conteudo bg-white rounded-2xl border border-slate-200 p-6 md:p-8 shadow-sm">
+                    <div class="flex justify-between items-center mb-6 flex-wrap gap-4 anim-slide-up delay-1">
+                        <h3 class="font-montserrat text-2xl font-black uppercase text-slate-800">Painel de Controlo</h3>
+                        <button class="btn bg-blue-500 text-white hover:bg-blue-600 shadow-hard-sm" onclick="syncDataFromCloud()"><i class="fas fa-sync-alt mr-2"></i> Sync Nuvem</button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <div class="bg-gradient-to-br from-emerald-500 to-emerald-700 text-white p-6 rounded-xl shadow-hard anim-slide-up delay-2 relative overflow-hidden">
+                            <i class="fas fa-dollar-sign absolute -right-4 -bottom-4 text-7xl opacity-20"></i>
+                            <h4 class="text-xs font-bold text-emerald-100 uppercase tracking-widest mb-1 relative z-10">Faturamento</h4>
+                            <div id="kpi-receita" class="font-montserrat text-4xl font-black relative z-10">R$ 0,00</div>
+                        </div>
+                        <div class="bg-gradient-to-br from-blue-500 to-blue-700 text-white p-6 rounded-xl shadow-hard anim-slide-up delay-3 relative overflow-hidden">
+                            <i class="fas fa-shopping-bag absolute -right-4 -bottom-4 text-7xl opacity-20"></i>
+                            <h4 class="text-xs font-bold text-blue-100 uppercase tracking-widest mb-1 relative z-10">Itens Vendidos</h4>
+                            <div id="kpi-itens" class="font-montserrat text-4xl font-black relative z-10">0</div>
+                        </div>
+                        <div class="bg-gradient-to-br from-amber-500 to-amber-700 text-white p-6 rounded-xl shadow-hard anim-slide-up delay-4 relative overflow-hidden">
+                            <i class="fas fa-boxes absolute -right-4 -bottom-4 text-7xl opacity-20"></i>
+                            <h4 class="text-xs font-bold text-amber-100 uppercase tracking-widest mb-1 relative z-10">Preso em Estoque</h4>
+                            <div id="kpi-custo-est" class="font-montserrat text-4xl font-black relative z-10">R$ 0,00</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-red-50 border border-red-200 rounded-xl p-6 mb-8 anim-slide-up delay-3 shadow-sm">
+                        <h3 class="text-red-700 font-black uppercase tracking-widest mb-4 flex items-center gap-2"><i class="fas fa-exclamation-triangle fa-fade"></i> Alertas de Reposição</h3>
+                        <ul id="lista-alertas-estoque" class="space-y-2 text-sm text-red-600 font-bold"></ul>
+                    </div>
+
+                    <h3 class="font-bold text-slate-800 uppercase tracking-widest text-sm mb-4 anim-slide-up delay-4">Últimas Vendas Registradas</h3>
+                    <div class="overflow-x-auto bg-white rounded-xl border border-slate-200 shadow-sm anim-slide-up delay-4">
+                        <table class="w-full text-left border-collapse">
+                            <thead><tr class="bg-slate-50 border-b border-slate-200"><th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-widest">Data</th><th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-widest">Produto</th><th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-widest">Qtd</th><th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-widest">Total</th></tr></thead>
+                            <tbody id="tabela-vendas" class="text-sm font-medium text-slate-600 divide-y divide-slate-100"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ABA: PDV -->
+                <div id="aba-pdv" class="aba-conteudo bg-white rounded-2xl border border-slate-200 p-6 md:p-8 shadow-sm" style="display:none;">
+                    <h3 class="font-montserrat text-2xl font-black uppercase text-slate-800 mb-6"><i class="fas fa-cash-register text-brand-500 mr-2"></i> Frente de Caixa</h3>
+                    <div class="flex gap-2 mb-6">
+                        <input type="text" id="pdv-busca" class="form-input flex-1" placeholder="Código SKU ou Nome do produto..." onkeypress="if(event.key === 'Enter') buscarProdutoPDV()">
+                        <button class="btn btn-primary shadow-hard-sm" onclick="buscarProdutoPDV()">Lançar Item</button>
+                    </div>
+                    <div class="bg-white rounded-xl border border-slate-200 mb-6 max-h-[300px] overflow-y-auto shadow-inner">
+                        <table class="w-full text-left border-collapse">
+                            <thead class="sticky top-0 bg-slate-100 shadow-sm border-b border-slate-200"><tr><th class="p-3 text-xs uppercase text-slate-500">Produto</th><th class="p-3 text-xs uppercase text-slate-500">Qtd</th><th class="p-3 text-xs uppercase text-slate-500">Subtotal</th><th class="p-3"></th></tr></thead>
+                            <tbody id="tabela-pdv-itens" class="text-sm font-bold text-slate-700 divide-y divide-slate-100"></tbody>
+                        </table>
+                    </div>
+                    <div class="bg-slate-900 text-white p-6 rounded-xl shadow-hard">
+                        <div class="flex justify-between items-center mb-6">
+                            <span class="font-bold uppercase tracking-widest text-slate-400">Total a Pagar:</span>
+                            <span id="pdv-total-valor" class="font-montserrat text-4xl md:text-5xl font-black text-brand-yellow">R$ 0,00</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <button class="btn bg-slate-800 text-slate-300 border-none hover:bg-slate-700" onclick="limparPDV()">Cancelar</button>
+                            <button class="btn bg-emerald-500 text-white border-none hover:bg-emerald-600 shadow-hard-sm" onclick="finalizarVendaPDV()">Finalizar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ABA: PRODUTOS (ESTOQUE) -->
+                <div id="aba-produtos" class="aba-conteudo bg-white rounded-2xl border border-slate-200 p-6 md:p-8 shadow-sm" style="display:none;">
+                    <div class="flex justify-between items-center mb-6 flex-wrap gap-4">
+                        <h3 class="font-montserrat text-2xl font-black uppercase text-slate-800"><i class="fas fa-boxes text-brand-500 mr-2"></i> Controle de Estoque</h3>
+                        <div class="flex gap-2">
+                            <button class="btn bg-slate-200 text-slate-700 text-xs py-2 shadow-sm" onclick="baixarRelatorioCSV()"><i class="fas fa-download"></i> CSV</button>
+                            <button class="btn btn-primary text-xs py-2 shadow-hard-sm" onclick="abrirModalProduto()"><i class="fas fa-plus"></i> Novo Item</button>
+                        </div>
+                    </div>
+
+                    <!-- Cadastro Rápido Expresso -->
+                    <div class="bg-emerald-50 border border-emerald-200 p-5 rounded-2xl mb-8 flex flex-wrap gap-3 items-end shadow-sm">
+                        <div class="w-full text-emerald-800 font-bold mb-2 text-sm"><i class="fas fa-bolt"></i> Registo Rápido</div>
+                        <div class="flex-1 min-w-[200px]"><input type="text" id="exp-nome" class="w-full bg-white border border-slate-200 rounded-lg p-2.5 text-sm outline-none focus:border-emerald-500" placeholder="Nome do Produto"></div>
+                        <div class="w-full sm:w-auto">
+                            <select id="exp-cat" class="w-full sm:w-auto bg-white border border-slate-200 rounded-lg p-2.5 text-sm outline-none focus:border-emerald-500">
+                                <option value="Todos">Categoria...</option>
+                                <option value="Presentes">Presentes</option>
+                                <option value="Dia das Mães">Dia das Mães</option>
+                                <option value="Eletrodomésticos">Eletrodomésticos</option>
+                                <option value="Beleza">Beleza</option>
+                                <option value="Crianças">Crianças</option>
+                                <option value="Ferramentas">Ferramentas</option>
+                            </select>
+                        </div>
+                        <div class="w-24"><input type="number" id="exp-preco" class="w-full bg-white border border-slate-200 rounded-lg p-2.5 text-sm outline-none focus:border-emerald-500" placeholder="R$ Venda"></div>
+                        <div class="w-24"><input type="number" id="exp-estoque" class="w-full bg-white border border-slate-200 rounded-lg p-2.5 text-sm outline-none focus:border-emerald-500" placeholder="Estoque"></div>
+                        <button class="bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-lg hover:bg-emerald-700 shadow-md transition uppercase text-xs tracking-widest" onclick="cadastroExpresso()">Gravar</button>
+                    </div>
+
+                    <div class="overflow-x-auto bg-white rounded-xl border border-slate-200 shadow-sm">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead class="bg-slate-50 border-b border-slate-200"><tr><th class="p-4 uppercase text-slate-500 tracking-widest">Item</th><th class="p-4 uppercase text-slate-500 tracking-widest">SKU</th><th class="p-4 uppercase text-slate-500 tracking-widest">Custo</th><th class="p-4 uppercase text-slate-500 tracking-widest">Venda</th><th class="p-4 uppercase text-slate-500 tracking-widest">Categoria</th><th class="p-4 uppercase text-slate-500 tracking-widest">Estoque</th><th class="p-4 uppercase text-slate-500 tracking-widest text-right">Opções</th></tr></thead>
+                            <tbody id="tabela-estoque-admin" class="font-medium text-slate-700 divide-y divide-slate-100"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ABA: LOJAS -->
+                <div id="aba-lojas" class="aba-conteudo bg-white rounded-2xl border border-slate-200 p-6 md:p-8 shadow-sm" style="display:none;">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="font-montserrat text-2xl font-black uppercase text-slate-800"><i class="fas fa-store text-brand-500 mr-2"></i> Unidades Físicas</h3>
+                        <button class="btn btn-primary text-xs shadow-hard-sm" onclick="abrirModalLoja()"><i class="fas fa-plus"></i> Nova Loja</button>
+                    </div>
+                    <div id="lista-adm-lojas" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                </div>
+
+                <!-- ABA: DEPOIMENTOS -->
+                <div id="aba-depoimentos" class="aba-conteudo bg-white rounded-2xl border border-slate-200 p-6 md:p-8 shadow-sm" style="display:none;">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="font-montserrat text-2xl font-black uppercase text-slate-800"><i class="fas fa-star text-brand-yellow mr-2"></i> Avaliações</h3>
+                        <button class="btn btn-primary text-xs shadow-hard-sm" onclick="abrirModalDepoimento()"><i class="fas fa-plus"></i> Nova</button>
+                    </div>
+                    <div id="lista-adm-deps" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                </div>
+
+                <!-- ABA: CONFIGURAÇÕES -->
+                <div id="aba-config" class="aba-conteudo bg-white rounded-2xl border border-slate-200 p-6 md:p-8 shadow-sm" style="display:none;">
+                    <h3 class="font-montserrat text-2xl font-black uppercase text-slate-800 mb-6">Configurações Gerais da Loja</h3>
+                    
+                    <div class="bg-slate-50 border border-slate-200 p-6 rounded-xl mb-6 shadow-sm">
+                        <h4 class="font-bold text-slate-800 uppercase tracking-widest text-sm mb-4 border-b-2 border-slate-200 pb-2"><i class="fas fa-paint-roller text-brand-500 mr-2"></i> Identidade Visual e API</h4>
+                        
+                        <div class="form-group"><label>URL API (Google Script / Nuvem)</label><input type="text" id="cfg-gas-url" class="form-input" placeholder="https://script.google.com/..."></div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="form-group"><label>Nome Fantasia</label><input type="text" id="cfg-nome" class="form-input"></div>
+                            <div class="form-group"><label>WhatsApp de Pedidos</label><input type="tel" id="cfg-zap" class="form-input" placeholder="Ex: 5584999999999"></div>
+                        </div>
+
+                        <!-- Editor de Cores -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2 mb-4">
+                            <div class="form-group">
+                                <label>Cor Primária (Principal)</label>
+                                <div class="flex items-center gap-2 bg-white border-2 border-slate-200 rounded-lg p-1 pr-3">
+                                    <input type="color" id="cfg-cor-pri" class="w-10 h-10 rounded border-none cursor-pointer p-0 bg-transparent">
+                                    <span class="text-xs font-bold text-slate-500 uppercase">Cabeçalhos / Botões</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Cor Secundária (Destaques)</label>
+                                <div class="flex items-center gap-2 bg-white border-2 border-slate-200 rounded-lg p-1 pr-3">
+                                    <input type="color" id="cfg-cor-sec" class="w-10 h-10 rounded border-none cursor-pointer p-0 bg-transparent">
+                                    <span class="text-xs font-bold text-slate-500 uppercase">Textos Logo / Ícones</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Editor de Logo (Com upload) -->
+                        <div class="form-group">
+                            <label>Logotipo da Loja (Recomendado 400x100px PNG Transparente)</label>
+                            <div class="flex flex-col md:flex-row items-start md:items-center gap-4">
+                                <div class="flex flex-1 gap-2 w-full">
+                                    <input type="text" id="cfg-logo-b64" class="form-input flex-1" placeholder="URL da Logo ou faça upload...">
+                                    <label class="btn bg-slate-800 text-white cursor-pointer hover:bg-slate-700 px-4 py-2 w-auto shadow-hard-sm">
+                                        <i class="fas fa-upload"></i> Arquivo
+                                        <input type="file" class="hidden" accept="image/*" onchange="processarImagem(this, 'preview-logo', 'cfg-logo-b64')">
+                                    </label>
+                                </div>
+                                <button class="btn bg-red-50 text-red-500 border border-red-200 hover:bg-red-500 hover:text-white px-4 py-2 text-xs" onclick="removerLogo()"><i class="fas fa-trash"></i> Remover</button>
+                            </div>
+                            <div class="mt-4 p-4 bg-slate-900 rounded-xl inline-block border-4 border-slate-800 shadow-hard w-full md:w-auto text-center">
+                                <img id="preview-logo" class="h-16 mx-auto object-contain" style="display:none;">
+                            </div>
+                        </div>
+
+                        <h4 class="font-bold text-slate-800 uppercase tracking-widest text-sm mb-4 mt-8 border-b-2 border-slate-200 pb-2"><i class="fas fa-align-left text-brand-500 mr-2"></i> Textos da Página Inicial</h4>
+                        <div class="form-group"><label>Barra Fixa Superior (Aviso Pisca-Pisca)</label><input type="text" id="cfg-topbar" class="form-input"></div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div class="form-group mb-0"><label>Título "Sobre a Loja"</label><input type="text" id="cfg-about-title" class="form-input"></div>
+                            <div class="form-group mb-0"><label>Subtítulo Curto</label><input type="text" id="cfg-about-p1" class="form-input"></div>
+                        </div>
+                        <div class="form-group mb-0"><label>Texto Descritivo "Sobre a Loja"</label><textarea id="cfg-about-p2" rows="3" class="form-input"></textarea></div>
+                        
+                        <button class="btn btn-success w-full mt-6 shadow-hard" onclick="salvarConfiguracoesGlobais()"><i class="fas fa-save mr-2"></i> Gravar Configurações Gerais</button>
+                    </div>
+
+                    <!-- Gestão de Banners -->
+                    <div class="bg-white border border-slate-200 p-6 rounded-xl shadow-sm mt-8">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="font-bold uppercase text-slate-800 tracking-widest border-b-2 border-slate-200 pb-2 flex-grow mr-4"><i class="fas fa-images text-brand-500 mr-2"></i> Banners do Carrossel Principal</h3>
+                            <button class="btn bg-slate-900 text-white py-2 text-xs shadow-hard-sm" onclick="abrirModalBanner()"><i class="fas fa-plus mr-1"></i> Novo Banner</button>
+                        </div>
+                        <div id="lista-adm-banners" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+         MODAIS ERP COM UPLOAD DE IMAGEM FÁCIL
+         ========================================================================== -->
+    
+    <!-- Modal: Produto -->
+    <div class="modal-overlay" id="erp-prod-modal-overlay">
+        <div class="bg-white w-full max-w-2xl rounded-2xl shadow-hard border-4 border-slate-900 p-6 relative max-h-[90vh] overflow-y-auto custom-scrollbar">
+            <button class="absolute top-4 right-4 bg-slate-200 w-8 h-8 rounded text-slate-600 font-bold hover:bg-slate-900 hover:text-white transition" onclick="fecharModalProduto()">X</button>
+            <h3 id="erp-modal-title" class="font-montserrat text-xl font-black uppercase text-slate-900 mb-6 border-b-2 border-slate-200 pb-2">Produto</h3>
+            
+            <input type="hidden" id="erp-prod-id">
+            <div class="form-group"><label>Nome do Produto</label><input type="text" id="erp-prod-nome" class="form-input"></div>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <div class="form-group"><label>SKU / Código</label><input type="text" id="erp-prod-sku" class="form-input" placeholder="Gerado Automático"></div>
+                <div class="form-group">
+                    <label>Categoria</label>
+                    <select id="erp-prod-cat" class="form-input">
+                        <option value="Todos">Nenhuma</option>
+                        <option value="Presentes">Presentes</option>
+                        <option value="Dia das Mães">Dia das Mães</option>
+                        <option value="Eletrodomésticos">Eletrodomésticos</option>
+                        <option value="Beleza">Beleza</option>
+                        <option value="Crianças">Crianças</option>
+                        <option value="Ferramentas">Ferramentas</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div class="form-group"><label>Custo de Compra (R$)</label><input type="number" id="erp-prod-custo" class="form-input" step="0.01"></div>
+                <div class="form-group"><label>Preço de Venda (R$) *</label><input type="number" id="erp-prod-preco" class="form-input" step="0.01"></div>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200 mb-4">
+                <div class="form-group mb-0"><label>Estoque Atual *</label><input type="number" id="erp-prod-estoque" class="form-input font-black text-brand-500"></div>
+                <div class="form-group mb-0"><label>Alerta Mínimo</label><input type="number" id="erp-prod-min" class="form-input text-slate-500"></div>
+            </div>
+            
+            <!-- Upload Imagem Produto -->
+            <div class="form-group">
+                <label>Fotografia (URL ou Enviar Arquivo) *</label>
+                <div class="flex gap-2">
+                    <input type="text" id="erp-prod-img-b64" class="form-input flex-1" placeholder="Colar link ou enviar arquivo...">
+                    <label class="btn bg-slate-800 text-white cursor-pointer px-4 py-2 w-auto flex items-center justify-center rounded-lg hover:bg-slate-700 transition shadow-hard-sm">
+                        <i class="fas fa-camera"></i>
+                        <input type="file" class="hidden" accept="image/*" onchange="processarImagem(this, 'erp-preview-img', 'erp-prod-img-b64')">
+                    </label>
+                </div>
+                <img id="erp-preview-img" class="h-32 mt-3 rounded-xl object-contain border-2 border-slate-200 bg-slate-50 p-2 hidden">
+            </div>
+
+            <div class="form-group mb-0"><label>Descrição Detalhada</label><textarea id="erp-prod-desc" rows="3" class="form-input"></textarea></div>
+            
+            <div class="flex gap-2 pt-2 border-t-2 border-slate-100 mt-6">
+                <button class="btn btn-outline flex-1" onclick="fecharModalProduto()">Cancelar</button>
+                <button class="btn btn-primary flex-1 shadow-hard-sm" onclick="salvarEdicaoProdutoERP()">Salvar Produto</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Loja -->
+    <div class="modal-overlay" id="erp-loja-modal-overlay">
+        <div class="bg-white w-full max-w-md rounded-2xl shadow-hard border-4 border-slate-900 p-6 relative">
+            <button class="absolute top-4 right-4 bg-slate-200 w-8 h-8 rounded font-bold hover:bg-slate-900 hover:text-white transition" onclick="fecharModalLoja()">X</button>
+            <h3 id="erp-modal-loja-title" class="font-montserrat text-xl font-black uppercase mb-6 border-b-2 border-slate-200 pb-2">Unidade / Loja</h3>
+            
+            <input type="hidden" id="erp-loja-id">
+            <div class="form-group"><label>Nome da Unidade *</label><input type="text" id="erp-loja-nome" class="form-input"></div>
+            <div class="form-group"><label>Endereço Completo *</label><textarea id="erp-loja-end" rows="2" class="form-input"></textarea></div>
+            
+            <!-- Upload Imagem Loja -->
+            <div class="form-group">
+                <label>Foto da Fachada</label>
+                <div class="flex gap-2">
+                    <input type="text" id="erp-loja-img-b64" class="form-input flex-1" placeholder="URL ou Arquivo">
+                    <label class="btn bg-slate-800 text-white cursor-pointer px-4 py-2 w-auto rounded-lg shadow-hard-sm">
+                        <i class="fas fa-upload"></i>
+                        <input type="file" class="hidden" accept="image/*" onchange="processarImagem(this, 'erp-preview-loja-img', 'erp-loja-img-b64')">
+                    </label>
+                </div>
+                <img id="erp-preview-loja-img" class="h-24 w-full mt-3 object-cover rounded-xl border-2 border-slate-200 hidden">
+            </div>
+            
+            <button class="btn btn-primary w-full shadow-hard-sm mt-4" onclick="salvarLojaERP()">Salvar Unidade</button>
+        </div>
+    </div>
+
+    <!-- Modal Depoimento -->
+    <div class="modal-overlay" id="erp-dep-modal-overlay">
+        <div class="bg-white w-full max-w-md rounded-2xl shadow-hard border-4 border-slate-900 p-6 relative">
+            <button class="absolute top-4 right-4 bg-slate-200 w-8 h-8 rounded font-bold hover:bg-slate-900 hover:text-white transition" onclick="fecharModalDepoimento()">X</button>
+            <h3 id="erp-modal-dep-title" class="font-montserrat text-xl font-black uppercase mb-6 border-b-2 border-slate-200 pb-2">Avaliação de Cliente</h3>
+            
+            <input type="hidden" id="erp-dep-id">
+            <div class="form-group"><label>Nome do Cliente *</label><input type="text" id="erp-dep-nome" class="form-input"></div>
+            <div class="form-group"><label>O que o cliente disse? *</label><textarea id="erp-dep-texto" rows="3" class="form-input"></textarea></div>
+            
+            <!-- Upload Avatar Depoimento -->
+            <div class="form-group">
+                <label>Foto do Cliente (Vazio = Avatar automático)</label>
+                <div class="flex gap-2">
+                    <input type="text" id="erp-dep-img-b64" class="form-input flex-1" placeholder="URL ou Upload">
+                    <label class="btn bg-slate-800 text-white cursor-pointer px-4 py-2 w-auto rounded-lg shadow-hard-sm">
+                        <i class="fas fa-user-circle"></i>
+                        <input type="file" class="hidden" accept="image/*" onchange="processarImagem(this, 'erp-preview-dep-img', 'erp-dep-img-b64')">
+                    </label>
+                </div>
+                <img id="erp-preview-dep-img" class="h-16 w-16 mx-auto mt-3 object-cover rounded-full border-4 border-slate-200 hidden">
+            </div>
+            
+            <button class="btn btn-primary w-full shadow-hard-sm mt-4" onclick="salvarDepoimentoERP()">Publicar Avaliação</button>
+        </div>
+    </div>
+
+    <!-- Modal Banner -->
+    <div class="modal-overlay" id="erp-banner-modal-overlay">
+        <div class="bg-white w-full max-w-md rounded-2xl shadow-hard border-4 border-slate-900 p-6 relative">
+            <button class="absolute top-4 right-4 bg-slate-200 w-8 h-8 rounded font-bold hover:bg-slate-900 hover:text-white transition" onclick="fecharModalBanner()">X</button>
+            <h3 id="erp-modal-banner-title" class="font-montserrat text-xl font-black uppercase mb-6 border-b-2 border-slate-200 pb-2">Banner Principal</h3>
+            
+            <input type="hidden" id="erp-banner-id">
+            <div class="form-group"><label>Título Maior (Destaque)</label><input type="text" id="erp-banner-title" class="form-input"></div>
+            <div class="form-group"><label>Texto Menor (Subtítulo)</label><input type="text" id="erp-banner-text" class="form-input"></div>
+            
+            <!-- Upload Banner -->
+            <div class="form-group">
+                <label>Imagem de Fundo (Deite/Horizontal) *</label>
+                <div class="flex gap-2">
+                    <input type="text" id="erp-banner-img-b64" class="form-input flex-1" placeholder="URL ou Upload">
+                    <label class="btn bg-slate-800 text-white cursor-pointer px-4 py-2 w-auto rounded-lg shadow-hard-sm">
+                        <i class="fas fa-image"></i>
+                        <input type="file" class="hidden" accept="image/*" onchange="processarImagem(this, 'erp-preview-banner-img', 'erp-banner-img-b64')">
+                    </label>
+                </div>
+                <img id="erp-preview-banner-img" class="w-full h-32 mt-3 object-cover rounded-xl border-2 border-slate-200 hidden">
+            </div>
+            
+            <button class="btn btn-primary w-full shadow-hard-sm mt-4" onclick="salvarBannerERP()">Gravar no Carrossel</button>
+        </div>
+    </div>
+
+    <div id="toast">Mensagem</div>
+
+    <!-- JAVASCRIPT UNIVERSAL (Robusto e com Acesso Global) -->
+    <script>
+        function showLoader(show) { document.getElementById('global-loader').style.display = show ? 'flex' : 'none'; }
+        function showToast(m, isErr) { 
+            var t = document.getElementById("toast"); 
+            if(!t) return; 
+            t.innerText = m; 
+            t.className = isErr ? "show error" : "show"; 
+            setTimeout(function() { t.className = t.className.replace("show", "").replace("error", ""); }, 3000); 
+        }
+
+        var API = {
+            TOKEN: 'multi-coisas-2026',
+            getUrl: function() { return window.state.config.gasUrl || null; },
+            get: async function() {
+                var url = this.getUrl(); if(!url) return null;
+                try { var req = await fetch(url); return await req.json(); } catch(e) { return null; }
+            },
+            post: async function(payload) {
+                var url = this.getUrl(); if(!url) return { success: true, local: true };
+                try { payload.token = this.TOKEN; var req = await fetch(url, { method: 'POST', body: JSON.stringify(payload) }); return await req.json(); } catch(e) { return { success: false }; }
+            }
+        };
+
+        var state = { 
+            isLogged: false, cliente: null, produtos: [], vendas: [], carrinho: [], lojas: [], pdvCart: [], depoimentos: [], currentFilter: 'Todos',
+            config: {
+                gasUrl: "", nomeLoja: "Multi Coisa's", telefone: "5584999999999", corPrimaria: "#E3000F", corSecundaria: "#FFCC00",
+                topBar: "❤️ MÊS DAS MÃES: O PRESENTE PERFEITO COM DESCONTO E RETIRADA NA HORA! ❤️",
+                aboutTitle: "TUDO PARA SUA CASA", aboutP1: "A maior variedade de São Miguel/RN num só lugar.", aboutP2: "Compre online com segurança e retire rapidamente na nossa unidade central.",
+                banners: [], 
+                logoUrl: "https://raw.githubusercontent.com/gilneilaurindo/multicoisas/main/Multcoisas%20(1).png"
+            }
+        };
+
+        function formatarMoeda(v) { return parseFloat(v||0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); }
+        function escapeHTML(s) { return (s||'').toString().replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+        function processarImagem(input, previewId, hiddenId) {
+            const file = input.files[0]; if (!file) return;
+            const reader = new FileReader();
+            reader.onload = e => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    let w = img.width, h = img.height; const maxW = 1000, maxH = 1000; 
+                    if (w > h) { if (w > maxW) { h *= maxW / w; w = maxW; } } else { if (h > maxH) { w *= maxH / h; h = maxH; } }
+                    canvas.width = w; canvas.height = h;
+                    canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                    const b64 = canvas.toDataURL('image/jpeg', 0.8);
+                    
+                    const hiddenEl = document.getElementById(hiddenId); if(hiddenEl) hiddenEl.value = b64;
+                    const prevEl = document.getElementById(previewId); 
+                    if(prevEl) { 
+                        prevEl.src = b64; 
+                        prevEl.style.display = 'block'; 
+                        prevEl.classList.remove('hidden'); 
+                    }
+                }
+                img.src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
+
+        function sincronizarStorage() { 
+            localStorage.setItem('mc_erp_produtos', JSON.stringify(window.state.produtos)); 
+            localStorage.setItem('mc_carrinho', JSON.stringify(window.state.carrinho)); 
+            localStorage.setItem('mc_config', JSON.stringify(window.state.config));
+            localStorage.setItem('mc_cliente', JSON.stringify(window.state.cliente));
+            localStorage.setItem('mc_erp_vendas', JSON.stringify(window.state.vendas));
+            localStorage.setItem('mc_lojas', JSON.stringify(window.state.lojas));
+            localStorage.setItem('mc_depoimentos', JSON.stringify(window.state.depoimentos));
+        }
+
+        async function syncDataFromCloud() {
+            showLoader(true);
+            var data = await API.get();
+            if(data && data.success && data.data) {
+                if(data.data.produtos) window.state.produtos = data.data.produtos;
+                if(data.data.vendas) window.state.vendas = data.data.vendas;
+                sincronizarStorage(); showToast("Nuvem Sincronizada!");
+            } else {
+                showToast("Modo Offline Ativo.");
+            }
+            renderizarVitrine();
+            if(document.getElementById('view-admin').classList.contains('active')) { renderERP_Dashboard(); renderERP_Produtos(); }
+            showLoader(false);
+        }
+
+        function baixarRelatorioCSV() {
+            var csv = "ID,SKU,Nome,Custo,Venda,Estoque,Minimo\n";
+            window.state.produtos.forEach(function(p){ csv += p.id+',"'+(p.sku||'')+'","'+(p.nome||'').replace(/"/g, '""')+'",'+(p.precoCusto||0)+','+(p.preco||0)+','+(p.estoque||0)+','+(p.estoqueMinimo||0)+'\n'; });
+            var blob = new Blob(["\ufeff", csv], { type: 'text/csv;charset=utf-8;' });
+            var link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = 'estoque_multi.csv'; link.click();
+        }
+
+        window.onload = async function() {
+            var VERSION = "v57_mothers_day_admin_fix"; 
+            if(localStorage.getItem('mc_version') !== VERSION) {
+                window.state.produtos = [
+                    { id: 1, sku: "ELT-01", nome: "Airfryer Mondial 4L Preta", categoria: "Eletrodomésticos", precoCusto: 200, preco: 399.90, estoque: 15, estoqueMinimo: 3, imagem: "https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=400", descricao: "Fritadeira elétrica sem óleo. Potência e rapidez." },
+                    { id: 2, sku: "FRR-01", nome: "Parafusadeira Bivolt 12V", categoria: "Ferramentas", precoCusto: 110, preco: 189.90, estoque: 8, estoqueMinimo: 2, imagem: "https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=400", descricao: "Ferramenta essencial com bateria de lítio." },
+                    { id: 3, sku: "UTL-01", nome: "Jogo de Panelas 5 Peças", categoria: "Dia das Mães", precoCusto: 150, preco: 279.90, estoque: 12, estoqueMinimo: 4, imagem: "https://images.unsplash.com/photo-1584990347449-a6a5d419b165?auto=format&fit=crop&w=400", descricao: "Não gruda nada. Presente ideal para o Dia das Mães." },
+                    { id: 4, sku: "BEL-02", nome: "Escova Secadora Oval", categoria: "Dia das Mães", precoCusto: 90, preco: 169.90, estoque: 25, estoqueMinimo: 5, imagem: "https://images.unsplash.com/photo-1599305090598-fe179d501227?auto=format&fit=crop&w=400", descricao: "Seca, alisa e modela. O presente que ela vai amar." },
+                    { id: 5, sku: "ELT-02", nome: "Cafeteira Expresso Premium", categoria: "Dia das Mães", precoCusto: 250, preco: 450.00, estoque: 10, estoqueMinimo: 3, imagem: "https://images.unsplash.com/photo-1517668808822-9ebb02f2a0e6?auto=format&fit=crop&w=400", descricao: "Café expresso perfeito todas as manhãs." },
+                    { id: 6, sku: "BEL-01", nome: "Kit Spa em Casa (Skin Care)", categoria: "Dia das Mães", precoCusto: 60, preco: 119.90, estoque: 30, estoqueMinimo: 5, imagem: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=400", descricao: "Kit completo para relaxamento e cuidado." },
+                    { id: 7, sku: "UTL-02", nome: "Conjunto de Taças de Cristal", categoria: "Dia das Mães", precoCusto: 85, preco: 150.00, estoque: 20, estoqueMinimo: 5, imagem: "https://images.unsplash.com/photo-1599598425947-330040409f87?auto=format&fit=crop&w=400", descricao: "Taças sofisticadas para brindes especiais." },
+                    { id: 8, sku: "FRR-03", nome: "Jogo de Chaves 40 Peças", categoria: "Ferramentas", precoCusto: 45, preco: 89.90, estoque: 25, estoqueMinimo: 5, imagem: "https://images.unsplash.com/photo-1586864387967-d02ef85d93e8?auto=format&fit=crop&w=400", descricao: "Kit completo com catraca e soquetes variados." },
+                    { id: 9, sku: "CRI-01", nome: "Carro RC Off-Road", categoria: "Crianças", precoCusto: 80, preco: 149.90, estoque: 15, estoqueMinimo: 3, imagem: "https://images.unsplash.com/photo-1594787318286-3d835c1d207f?auto=format&fit=crop&w=400", descricao: "Suspensão independente e pneus de borracha." },
+                    { id: 10, sku: "ELT-03", nome: "Aspirador de Pó Vertical", categoria: "Eletrodomésticos", precoCusto: 130, preco: 229.90, estoque: 18, estoqueMinimo: 5, imagem: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&w=400", descricao: "Prático, potente e fácil de guardar." }
+                ];
+                window.state.lojas = [ 
+                    {id: 1, nome: "Matriz Centro", endereco: "Rua Cel. Nunes, 118\nCentro - São Miguel/RN", imagem: "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?auto=format&fit=crop&w=600"},
+                    {id: 2, nome: "Filial Hesíquio", endereco: "Rua Dep. Hesíquio Fernandes, 271\nSão Miguel/RN", imagem: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=600"}
+                ];
+                window.state.depoimentos = [ 
+                    {id: 1, nome: "Carlos Henrique", texto: "Melhor preço da cidade nas ferramentas. Recomendo muito!", foto: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100"},
+                    {id: 2, nome: "Fernanda Costa", texto: "Comprei o presente da minha mãe e ela amou. Qualidade absurda!", foto: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=100"},
+                    {id: 3, nome: "Roberto Alves", texto: "Comprei o carro de controle para o meu filho e chegou perfeito.", foto: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=100"},
+                    {id: 4, nome: "Amanda Souza", texto: "Facilidade de comprar online e já retirar na loja me ajudou muito.", foto: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=100"},
+                    {id: 5, nome: "Juliana Nogueira", texto: "O kit spa em casa salvou meu domingo de Dia das Mães.", foto: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100"},
+                    {id: 6, nome: "Carla Mendes", texto: "Tudo o que procurei para casa encontrei aqui.", foto: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100"}
+                ];
+                window.state.config.banners = [ 
+                    { img: "https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=1200", title: "ESPECIAL DIA DAS MÃES", text: "O presente que ela merece está aqui!" },
+                    { img: "https://images.unsplash.com/photo-1586864387967-d02ef85d93e8?auto=format&fit=crop&w=1200", title: "FERRAMENTAS PRO", text: "Qualidade para o seu trabalho" }
+                ];
+                localStorage.setItem('mc_version', VERSION);
+                sincronizarStorage();
+            } else {
+                window.state.produtos = JSON.parse(localStorage.getItem('mc_erp_produtos')) || [];
+                window.state.carrinho = JSON.parse(localStorage.getItem('mc_carrinho')) || [];
+                window.state.config = Object.assign({}, window.state.config, JSON.parse(localStorage.getItem('mc_config')) || {});
+                window.state.cliente = JSON.parse(localStorage.getItem('mc_cliente')) || null;
+                window.state.vendas = JSON.parse(localStorage.getItem('mc_erp_vendas')) || [];
+                window.state.lojas = JSON.parse(localStorage.getItem('mc_lojas')) || [];
+                window.state.depoimentos = JSON.parse(localStorage.getItem('mc_depoimentos')) || [];
+            }
+
+            aplicarTemaEConfiguracoes(); 
+            atualizarBadgeCarrinho(); 
+            navigate('vitrine'); 
+            
+            var btnSecret = document.getElementById('btn-secret-admin');
+            if(btnSecret) { btnSecret.addEventListener('click', function(e) { e.preventDefault(); navigate('login'); }); }
+
+            setTimeout(function() {
+                var loader = document.getElementById('preloader');
+                if(loader) { loader.style.opacity = '0'; setTimeout(function() { loader.style.display = 'none'; }, 500); }
+            }, 800);
+
+            if(window.state.config.gasUrl) await syncDataFromCloud();
+        };
+
+        /* --- CONFIGURAÇÕES VISUAIS --- */
+        function aplicarTemaEConfiguracoes() {
+            var c = window.state.config;
+            document.documentElement.style.setProperty('--primary', c.corPrimaria || '#E3000F'); 
+            document.documentElement.style.setProperty('--secondary', c.corSecundaria || '#FFCC00');
+            
+            if(document.getElementById('ui-top-bar-text')) document.getElementById('ui-top-bar-text').innerText = c.topBar;
+            if(document.getElementById('ui-about-title')) document.getElementById('ui-about-title').innerText = c.aboutTitle;
+            if(document.getElementById('ui-about-text1')) document.getElementById('ui-about-text1').innerText = c.aboutP1;
+            if(document.getElementById('ui-about-text2')) document.getElementById('ui-about-text2').innerHTML = c.aboutP2;
+            
+            var logoHTML = c.logoUrl ? '<img src="'+c.logoUrl+'" style="height:48px; object-fit:contain;">' : '<span style="color:var(--secondary)">Multi Coisa\'s</span>';
+            if(document.getElementById('ui-main-logo')) document.getElementById('ui-main-logo').innerHTML = logoHTML;
+            if(document.getElementById('footer-logo-container')) document.getElementById('footer-logo-container').innerHTML = logoHTML;
+
+            var wapp = document.getElementById('footer-whatsapp-link');
+            if(wapp && c.telefone) wapp.href = "https://wa.me/" + c.telefone.replace(/\D/g,'');
+
+            var slider = document.getElementById('hero-slider');
+            if (slider) {
+                if(!c.banners || c.banners.length === 0) { 
+                    slider.innerHTML = '<div class="slide active"><div class="slide-bg" style="background:#0F172A;"></div><div class="slide-content"><h2 class="font-montserrat text-white text-2xl">SEM BANNERS</h2></div></div>'; 
+                } else { 
+                    var h = '';
+                    c.banners.forEach(function(b, idx) { h += '<div class="slide '+(idx===0?'active':'')+'"><div class="slide-bg" style="background-image: url(\''+b.img+'\');"></div><div class="slide-content"><h2 class="font-montserrat font-black uppercase text-2xl md:text-5xl tracking-tighter shadow-black drop-shadow-md" style="color:var(--secondary);">'+escapeHTML(b.title)+'</h2><p class="font-bold text-lg drop-shadow">'+escapeHTML(b.text)+'</p></div></div>'; }); 
+                    slider.innerHTML = h;
+                }
+            }
+            iniciarCarrossel();
+        }
+
+        var sliderInterval;
+        function iniciarCarrossel() {
+            clearInterval(sliderInterval); 
+            var s = document.querySelectorAll('.slide'); if(s.length <= 1) return;
+            sliderInterval = setInterval(function() { 
+                var act = document.querySelector('.slide.active'); if(!act) return; 
+                act.classList.remove('active'); 
+                var next = act.nextElementSibling; if(!next || !next.classList.contains('slide')) next = s[0];
+                next.classList.add('active'); 
+            }, 6000); 
+        }
+
+        /* --- NAVEGAÇÃO --- */
+        function toggleCart() {
+            var s = document.getElementById('cart-sidebar');
+            var o = document.getElementById('cart-overlay');
+            if(!s || !o) return;
+            if(s.classList.contains('translate-x-full')) {
+                s.classList.remove('translate-x-full'); o.classList.remove('hidden'); setTimeout(function(){o.classList.remove('opacity-0');},10);
+                renderizarCarrinho();
+            } else {
+                s.classList.add('translate-x-full'); o.classList.add('opacity-0'); setTimeout(function(){o.classList.add('hidden');},300);
+            }
+        }
+
+        function navigate(viewId) {
+            var isAdm = viewId === 'admin';
+            var publicEls = ['app-banner', 'public-topbar', 'public-header', 'public-bottom-nav', 'public-footer'];
+            
+            publicEls.forEach(function(id) { 
+                var el = document.getElementById(id); 
+                if(el) {
+                    if(isAdm) {
+                        el.style.display = 'none';
+                    } else {
+                        if(id === 'public-bottom-nav') el.style.display = 'flex';
+                        else if(id === 'app-banner') el.style.display = 'none'; // mantem escondido ate validacao PWA
+                        else el.style.display = 'block';
+                    }
+                }
+            });
+            
+            if (isAdm && !window.state.isLogged) { 
+                viewId = 'login'; 
+                document.getElementById('public-header').style.display = 'block'; 
+            }
+            
+            document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
+            var vEl = document.getElementById('view-' + viewId); if(vEl) vEl.classList.add('active');
+            
+            if (viewId === 'vitrine') renderizarVitrine();
+            else if (viewId === 'admin') abrirAbaAdmin('dashboard');
+            else if (viewId === 'perfil') atualizarUICliente();
+            else if (viewId === 'checkout') renderizarCheckout();
+            
+            window.scrollTo(0,0);
+        }
+
+        function filtrarPorCategoria(cat, btn) {
+            window.state.currentFilter = cat;
+            document.querySelectorAll('.cat-pill').forEach(function(b) { b.classList.remove('active'); });
+            if(btn) btn.classList.add('active');
+            renderizarVitrine();
+        }
+
+        function filtrarVitrine() {
+            window.state.currentFilter = 'Todos';
+            document.querySelectorAll('.cat-pill').forEach(function(b) { b.classList.remove('active'); });
+            var fp = document.querySelector('.cat-pill'); if(fp) fp.classList.add('active');
+            renderizarVitrine();
+        }
+
+        function renderizarVitrine() {
+            var grid = document.getElementById('grid-produtos');
+            if (grid) {
+                var inp = document.getElementById('inputBusca');
+                var termo = inp ? inp.value.toLowerCase() : '';
+                var filtrados = window.state.produtos.filter(function(p) {
+                    var mBusca = p.nome.toLowerCase().includes(termo) || (p.sku||'').toLowerCase().includes(termo);
+                    var mCat = window.state.currentFilter === 'Todos' || p.categoria === window.state.currentFilter;
+                    return mBusca && mCat;
+                });
+
+                var h = '';
+                filtrados.forEach(function(p) {
+                    var noCart = window.state.carrinho.find(function(i){ return String(i.id) === String(p.id); });
+                    var isDisp = p.estoque > 0;
+                    var badge = isDisp ? (noCart ? '<span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-[9px] font-black uppercase shadow-sm absolute top-2 left-2 border border-blue-200">NA SACOLA</span>' : '<span class="bg-green-100 text-green-700 px-2 py-1 rounded text-[9px] font-black uppercase shadow-sm absolute top-2 left-2 border border-green-200">EM ESTOQUE</span>') : '<span class="bg-red-100 text-red-700 px-2 py-1 rounded text-[9px] font-black uppercase shadow-sm absolute top-2 left-2 border border-red-200">ESGOTADO</span>';
+                    
+                    var btnHtml = isDisp ? 
+                        (noCart ? '<button class="w-10 h-10 rounded-lg bg-blue-500 text-white flex items-center justify-center shadow-hard-sm hover:translate-y-[-2px] transition absolute bottom-3 right-3" onclick="event.stopPropagation(); toggleCart()" title="Ver carrinho"><i class="fas fa-check"></i></button>' : 
+                                  '<button class="w-10 h-10 rounded-lg bg-slate-900 text-brand-yellow flex items-center justify-center shadow-hard-sm hover:bg-brand-500 hover:text-white transition absolute bottom-3 right-3 border-2 border-slate-900" onclick="event.stopPropagation(); addItemCarrinho(\''+p.id+'\')" title="Comprar"><i class="fas fa-cart-plus"></i></button>') : '';
+                    
+                    h += '<div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-hard transition-all duration-300 border-2 border-slate-200 flex flex-col cursor-pointer group '+(isDisp?'':'opacity-60')+'" onclick="abrirProduto(\''+p.id+'\')">' +
+                            '<div class="relative aspect-square overflow-hidden bg-slate-100 p-4">' + badge +
+                            '<img src="'+p.imagem+'" class="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform"></div>' +
+                            '<div class="p-4 flex flex-col flex-grow relative">' +
+                                '<h3 class="font-bold text-slate-800 text-xs md:text-sm uppercase tracking-tight mb-2 leading-snug line-clamp-2">'+escapeHTML(p.nome)+'</h3>' +
+                                '<div class="mt-auto pt-2">' +
+                                    '<span class="font-montserrat font-black text-xl text-brand-500">R$ '+parseFloat(p.preco).toFixed(2).replace('.', ',')+'</span>' +
+                                '</div>' + btnHtml +
+                            '</div>' +
+                         '</div>';
+                });
+                grid.innerHTML = h;
+                var msg = document.getElementById('msg-sem-produto'); if (msg) msg.style.display = filtrados.length === 0 ? 'block' : 'none';
+            }
+            
+            var elLojas = document.getElementById('scroll-lojas');
+            if (elLojas) {
+                var hL = '';
+                window.state.lojas.forEach(function(d) {
+                    var mapLink = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(d.endereco);
+                    hL += '<div class="bg-white rounded-2xl border-4 border-slate-900 overflow-hidden shadow-hard flex flex-col group">' +
+                            '<div class="h-40 overflow-hidden relative">' +
+                                '<img src="'+(d.imagem||'')+'" class="w-full h-full object-cover">' +
+                                '<div class="absolute inset-0 bg-slate-900/40"></div>' +
+                                '<h3 class="absolute bottom-3 left-3 font-montserrat font-black text-brand-yellow uppercase text-lg"><i class="fas fa-store mr-1"></i> '+escapeHTML(d.nome)+'</h3>' +
+                            '</div>' +
+                            '<div class="p-5 flex flex-col flex-grow bg-slate-50">' +
+                                '<p class="text-sm font-bold text-slate-600 mb-4 whitespace-pre-line leading-tight">'+escapeHTML(d.endereco)+'</p>' +
+                                '<a href="'+mapLink+'" target="_blank" class="w-full bg-slate-900 text-white font-bold py-3 rounded-lg text-center text-xs uppercase tracking-widest hover:bg-brand-500 transition mt-auto"><i class="fas fa-map-pin"></i> Abrir Mapa</a>' +
+                            '</div>' +
+                        '</div>';
+                });
+                elLojas.innerHTML = hL;
+            }
+
+            var elDeps = document.getElementById('track-depoimentos');
+            if (elDeps) {
+                if (window.state.depoimentos && window.state.depoimentos.length > 0) {
+                    var cD = '';
+                    window.state.depoimentos.forEach(function(d) { 
+                        cD += '<div class="bg-white p-6 rounded-2xl shadow-hard-sm border-2 border-slate-900 w-[300px] shrink-0 relative hover:-translate-y-2 transition-transform duration-300">' +
+                                '<i class="fas fa-quote-right absolute top-4 right-4 text-4xl text-slate-100"></i>' +
+                                '<p class="text-slate-700 text-sm font-bold mb-4 relative z-10 leading-relaxed">"'+escapeHTML(d.texto)+'"</p>' +
+                                '<div class="flex items-center gap-3 border-t-2 border-slate-100 pt-4">' +
+                                    '<img src="'+d.foto+'" class="w-12 h-12 rounded-full object-cover border-2 border-brand-500">' +
+                                    '<div><h4 class="font-black text-slate-900 text-[11px] uppercase tracking-widest">'+escapeHTML(d.nome)+'</h4>' +
+                                    '<div class="text-brand-yellow text-[10px] mt-1" style="color:var(--secondary);"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div></div>' +
+                                '</div></div>'; 
+                    });
+                    // Duplica os depoimentos para criar o efeito de loop infinito
+                    elDeps.innerHTML = cD + cD; 
+                } else { elDeps.innerHTML = '<p class="text-slate-400 text-sm font-bold uppercase w-full">Sem avaliações.</p>'; }
+            }
+        }
+
+        function abrirProduto(id) { 
+            var p = window.state.produtos.find(function(x){ return String(x.id) === String(id); }); 
+            if(p) { renderizarDetalheProduto(p.id); navigate('produto'); }
+        }
+        
+        function renderizarDetalheProduto(id) {
+            var p = window.state.produtos.find(function(x){ return String(x.id) === String(id); }); if(!p) return;
+            var isDisp = p.estoque > 0; var noCart = window.state.carrinho.find(function(i){ return String(i.id)===String(p.id); });
+            
+            var btnA = isDisp ? (noCart ? '<button class="w-full bg-slate-900 text-brand-yellow font-black py-4 rounded-xl uppercase tracking-widest text-sm shadow-hard-sm" onclick="toggleCart()"><i class="fas fa-check"></i> Ver no Carrinho</button>' : '<button class="w-full bg-brand-500 text-white font-black py-4 rounded-xl uppercase tracking-widest text-sm shadow-hard-sm hover:bg-brand-600 transition" onclick="addItemCarrinho(\''+p.id+'\')"><i class="fas fa-cart-plus"></i> Adicionar</button>') : '<button class="w-full bg-slate-200 text-slate-500 font-black py-4 rounded-xl uppercase tracking-widest text-sm cursor-not-allowed" disabled>ESGOTADO</button>';
+            
+            var c = document.getElementById('container-produto');
+            if (c) {
+                c.innerHTML = '<div class="w-full md:w-1/2 bg-slate-100 rounded-2xl flex items-center justify-center p-6 border-4 border-slate-900 relative">' +
+                                (isDisp ? '' : '<span class="absolute top-4 left-4 bg-red-500 text-white px-3 py-1 rounded text-xs font-black uppercase">Esgotado</span>') +
+                                '<img src="'+p.imagem+'" class="w-full max-w-[400px] object-contain mix-blend-multiply '+(isDisp?'':'opacity-50 grayscale')+'">' +
+                              '</div>' +
+                              '<div class="w-full md:w-1/2 flex flex-col">' +
+                                '<span class="bg-slate-900 text-brand-yellow px-3 py-1 rounded text-[10px] font-black uppercase tracking-widest w-max mb-4 border border-brand-yellow">'+escapeHTML(p.categoria||'Catálogo')+'</span>' +
+                                '<h1 class="font-montserrat font-black text-2xl md:text-4xl text-slate-900 mb-4 uppercase tracking-tight">'+escapeHTML(p.nome)+'</h1>' +
+                                '<div class="font-montserrat font-black text-4xl text-brand-500 mb-6">R$ '+parseFloat(p.preco).toFixed(2).replace('.', ',')+'</div>' +
+                                '<div class="bg-slate-50 p-4 rounded-xl border-2 border-slate-200 mb-6">' +
+                                    '<p class="text-xs font-bold text-slate-500 uppercase mb-1">Status de Estoque</p>' +
+                                    (isDisp ? '<p class="text-emerald-600 font-black text-sm"><i class="fas fa-check-circle"></i> Disponível ('+p.estoque+' UN)</p>' : '<p class="text-red-500 font-black text-sm"><i class="fas fa-times-circle"></i> Indisponível</p>') +
+                                '</div>' +
+                                '<div class="mb-8">' + btnA + '</div>' +
+                                '<div class="border-t-2 border-slate-200 pt-6">' +
+                                    '<h4 class="font-bold text-slate-900 uppercase tracking-widest text-sm mb-2"><i class="fas fa-info-circle text-brand-500"></i> Ficha Técnica</h4>' +
+                                    '<p class="text-slate-600 text-sm font-medium leading-relaxed whitespace-pre-line">'+escapeHTML(p.descricao)+'</p>' +
+                                '</div>' +
+                              '</div>';
+            }
+        }
+
+        function addItemCarrinho(id) {
+            var p = window.state.produtos.find(function(x){ return String(x.id) === String(id); }); if(!p || p.estoque <= 0) return;
+            var i = window.state.carrinho.find(function(x){ return String(x.id) === String(id); });
+            if(i) { if(i.qtd < p.estoque) i.qtd++; } else { window.state.carrinho.push({id: p.id, nome: p.nome, preco: p.preco, imagem: p.imagem, est: p.estoque, qtd: 1}); }
+            sincronizarStorage(); atualizarBadgeCarrinho(); 
+            
+            if(document.getElementById('view-vitrine').classList.contains('active')) renderizarVitrine();
+            if(document.getElementById('view-produto').classList.contains('active')) renderizarDetalheProduto(id);
+            
+            showToast("Item no Carrinho!");
+        }
+
+        function atualizarBadgeCarrinho() {
+            var tot = window.state.carrinho.reduce(function(a,c){ return a+c.qtd; }, 0);
+            document.querySelectorAll('.cart-badge').forEach(function(b) { 
+                b.innerText = tot; b.style.display = tot > 0 ? 'flex' : 'none'; 
+            });
+        }
+
+        function renderizarCarrinho() {
+            var list = document.getElementById('cart-items'); if(!list) return;
+            if(window.state.carrinho.length === 0) {
+                list.innerHTML = '<div class="text-center py-10"><i class="fas fa-box-open text-4xl text-slate-300 mb-4"></i><p class="font-bold text-slate-400 uppercase text-xs tracking-widest">Carrinho Vazio</p></div>';
+                document.getElementById('cart-total-val').innerText = 'R$ 0,00';
+                document.getElementById('checkout-btn').disabled = true;
+                return;
+            }
+            document.getElementById('checkout-btn').disabled = false;
+            var t = 0;
+            var h = '';
+            window.state.carrinho.forEach(function(i) {
+                t += i.preco * i.qtd;
+                h += '<div class="flex gap-4 bg-white p-3 rounded-xl border-2 border-slate-200 shadow-sm items-center relative">' +
+                        '<div class="w-20 h-20 bg-slate-100 rounded-lg flex-shrink-0 p-1"><img src="'+i.imagem+'" class="w-full h-full object-contain mix-blend-multiply"></div>' +
+                        '<div class="flex-grow pr-6">' +
+                            '<h4 class="font-bold text-slate-900 text-[10px] uppercase truncate mb-1">'+escapeHTML(i.nome)+'</h4>' +
+                            '<div class="font-montserrat font-black text-brand-500 text-sm mb-2">R$ '+formatarMoeda(i.preco).replace('R$','')+'</div>' +
+                            '<div class="flex items-center bg-slate-100 w-max rounded border border-slate-300">' +
+                                '<button onclick="mudarQtd(\''+i.id+'\', -1)" class="w-6 h-6 font-black text-slate-600">-</button>' +
+                                '<span class="text-[10px] font-black text-slate-900 w-6 text-center">'+i.qtd+'</span>' +
+                                '<button onclick="mudarQtd(\''+i.id+'\', 1)" class="w-6 h-6 font-black text-slate-600">+</button>' +
+                            '</div>' +
+                        '</div>' +
+                        '<button onclick="mudarQtd(\''+i.id+'\', -999)" class="absolute top-2 right-2 text-slate-300 hover:text-red-500 transition"><i class="fas fa-trash text-xs"></i></button>' +
+                    '</div>';
+            });
+            list.innerHTML = h;
+            document.getElementById('cart-total-val').innerText = formatarMoeda(t);
+        }
+
+        function mudarQtd(id, delta) {
+            var i = window.state.carrinho.find(function(x){ return String(x.id)===String(id); }); if(!i) return;
+            i.qtd += delta; 
+            if(i.qtd > i.est) { i.qtd = i.est; showToast("Máximo: "+i.est, true); }
+            else if(i.qtd <= 0) window.state.carrinho = window.state.carrinho.filter(function(x){ return String(x.id)!==String(id); });
+            sincronizarStorage(); atualizarBadgeCarrinho(); renderizarCarrinho();
+        }
+
+        /* --- CHECKOUT --- */
+        function renderizarCheckout() {
+            var list = document.getElementById('checkout-items-list'); if(!list) return;
+            var t = 0; var h = '';
+            window.state.carrinho.forEach(function(i) { t += i.preco * i.qtd; h += '<div class="flex justify-between text-xs font-bold text-slate-300 border-b border-slate-700 pb-2"><span class="truncate pr-2">'+i.qtd+'x '+escapeHTML(i.nome)+'</span><span class="text-white shrink-0">R$ '+formatarMoeda(i.preco*i.qtd).replace('R$','')+'</span></div>'; });
+            list.innerHTML = h;
+            document.getElementById('checkout-total-val').innerText = formatarMoeda(t);
+            
+            var sel = document.getElementById('checkout-loja');
+            if(sel) { sel.innerHTML = '<option value="">-- Unidade --</option>' + (window.state.lojas||[]).map(function(l){ return '<option value="'+escapeHTML(l.nome)+'">'+escapeHTML(l.nome)+'</option>'; }).join(''); }
+            var dI = document.getElementById('checkout-data'); if(dI) dI.min = new Date().toISOString().split('T')[0];
+        }
+
+        function finalizarPedido() {
+            if(!window.state.cliente) { showToast("Faça Login Primeiro!", true); return navigate('perfil'); }
+            var loja = document.getElementById('checkout-loja').value, data = document.getElementById('checkout-data').value, hora = document.getElementById('checkout-hora').value;
+            var pgto = document.getElementById('checkout-pgto') ? document.getElementById('checkout-pgto').value : 'ND';
+            
+            if(!loja || !data || !hora) return showToast("Preencha todos os campos com *", true);
+            
+            var id = 'PED-' + Date.now().toString().slice(-4);
+            var m = '⚡ *NOVO PEDIDO ('+id+')* ⚡%0A%0A👤 *'+window.state.cliente.nome+'*%0A📱 '+window.state.cliente.zap+'%0A%0A*ITENS:*%0A';
+            var t = 0;
+            window.state.carrinho.forEach(function(i){ t += i.preco*i.qtd; m += '▪ '+i.qtd+'x '+i.nome+'%0A'; });
+            m += '%0A💰 *TOTAL: '+formatarMoeda(t)+'*%0A💳 Pgto: '+pgto+'%0A📍 Retirar: '+loja+'%0A⏰ Dia '+data.split('-').reverse().join('/')+' às '+hora;
+            
+            window.open('https://wa.me/'+(window.state.config.telefone.replace(/\D/g,''))+'?text='+m, '_blank');
+            window.state.carrinho = []; sincronizarStorage(); atualizarBadgeCarrinho(); navigate('vitrine'); showToast("Concluído!");
+        }
+
+        /* --- PERFIL --- */
+        function salvarPerfil() {
+            var e = document.getElementById('cli-email').value.trim(), n = document.getElementById('cli-nome').value.trim(), z = document.getElementById('cli-zap').value.trim();
+            if(!n || !z) return showToast("Nome e WhatsApp são obrigatórios.", true);
+            window.state.cliente = { email: e, nome: n, zap: z, foto: 'https://ui-avatars.com/api/?name='+encodeURIComponent(n)+'&background=E3000F&color=fff' };
+            sincronizarStorage(); showToast("Conta Criada!"); atualizarUICliente(); 
+            if(window.state.carrinho.length > 0) { navigate('checkout'); }
+        }
+        function deslogarPerfil() { window.state.cliente = null; sincronizarStorage(); atualizarUICliente(); showToast("Deslogado."); }
+        function atualizarUICliente() {
+            var s1 = document.getElementById('perfil-step-1'), s2 = document.getElementById('perfil-step-2'), ls = document.getElementById('perfil-logged-state');
+            if (window.state.cliente) {
+                if(document.getElementById('cli-email')) document.getElementById('cli-email').value = window.state.cliente.email || '';
+                if(document.getElementById('cli-nome')) document.getElementById('cli-nome').value = window.state.cliente.nome || '';
+                if(document.getElementById('cli-zap')) document.getElementById('cli-zap').value = window.state.cliente.zap || '';
+                
+                if(document.getElementById('logged-name')) document.getElementById('logged-name').innerText = window.state.cliente.nome;
+                if(document.getElementById('logged-zap')) document.getElementById('logged-zap').innerText = window.state.cliente.zap;
+                if(document.getElementById('avatar-logged')) document.getElementById('avatar-logged').src = window.state.cliente.foto;
+                
+                if(s1) s1.style.display='none'; if(s2) s2.style.display='none'; if(ls) ls.style.display='block';
+            } else {
+                if(s1) s1.style.display='block'; if(s2) s2.style.display='none'; if(ls) ls.style.display='none';
+            }
+        }
+
+        /* --- ERP ADMIN GESTÃO DE DADOS --- */
+        function efetuarLogin() {
+            if(document.getElementById('login-user').value==='admin' && document.getElementById('login-pass').value==='123') { window.state.isLogged = true; navigate('admin'); } else showToast("Dados incorretos.", true);
+        }
+        function efetuarLogout() { window.state.isLogged = false; navigate('vitrine'); }
+        
+        function abrirAbaAdmin(aba) {
+            document.querySelectorAll('.aba-conteudo').forEach(function(el){ el.style.display = 'none'; }); 
+            document.querySelectorAll('.erp-nav-btn').forEach(function(btn){ btn.classList.remove('active'); });
+            var aEl = document.getElementById('aba-'+aba), tEl = document.getElementById('tab-'+aba);
+            if (aEl) aEl.style.display = 'block'; if (tEl) tEl.classList.add('active');
+            
+            if(aba === 'dashboard') renderERP_Dashboard(); 
+            else if(aba === 'pdv') renderERP_PDV(); 
+            else if(aba === 'produtos') renderERP_Produtos(); 
+            else if(aba === 'lojas') renderERP_Lojas(); 
+            else if(aba === 'depoimentos') renderERP_Depoimentos(); 
+            else if(aba === 'config') renderERP_Config();
+        }
+        
+        function renderERP_Dashboard() {
+            if(document.getElementById('kpi-receita')) document.getElementById('kpi-receita').innerText = formatarMoeda(window.state.vendas.reduce(function(a, v){ return a + v.total; }, 0)); 
+            if(document.getElementById('kpi-itens')) document.getElementById('kpi-itens').innerText = window.state.vendas.reduce(function(a, v){ return a + v.qtd; }, 0);
+            if(document.getElementById('kpi-custo-est')) document.getElementById('kpi-custo-est').innerText = formatarMoeda(window.state.produtos.reduce(function(a,p){ return a+(p.estoque * (p.precoCusto||0)); }, 0));
+            
+            var tb = document.getElementById('tabela-vendas'); if(tb) {
+                tb.innerHTML = window.state.vendas.length === 0 ? '<tr><td colspan="4" class="p-4 text-center text-slate-400 font-bold">Nenhuma venda registada</td></tr>' : window.state.vendas.slice(0,10).map(function(v){ return '<tr class="border-b border-slate-100 hover:bg-slate-50 transition"><td class="p-4"><small>'+v.data+'</small></td><td class="p-4 font-bold text-slate-800">'+escapeHTML(v.produtoNome||v.nome)+'</td><td class="p-4 font-black">'+v.qtd+'</td><td class="p-4 text-emerald-600 font-bold font-montserrat">'+formatarMoeda(v.total)+'</td></tr>'; }).join('');
+            }
+        }
+
+        /* ERP PRODUTOS */
+        async function cadastroExpresso() {
+            var n = document.getElementById('exp-nome').value, p = parseFloat(document.getElementById('exp-preco').value), e = parseInt(document.getElementById('exp-estoque').value), c = document.getElementById('exp-cat') ? document.getElementById('exp-cat').value : 'Todos';
+            if(!n || isNaN(p) || isNaN(e)) return showToast('Preencha Nome, Preço e Qtd', true);
+            var np = { id: Date.now(), nome: n, sku: 'MC'+Date.now().toString().slice(-4), preco: p, precoCusto: p*0.5, estoque: e, estoqueMinimo: 2, categoria: c, imagem: 'https://via.placeholder.com/400?text=Sem+Foto', descricao: '' };
+            showLoader(true);
+            var res = await API.post({ action: 'cadastrar_produto', ...np });
+            if (res && res.success) { if(res.data && res.data.id) np.id = res.data.id; showToast('Salvo (Nuvem)'); } else { showToast("Salvo Local"); }
+            window.state.produtos.unshift(np); sincronizarStorage(); showLoader(false); renderERP_Produtos();
+            document.getElementById('exp-nome').value = ''; document.getElementById('exp-preco').value = ''; document.getElementById('exp-estoque').value = '';
+        }
+
+        function abrirModalProduto(id) {
+            document.querySelectorAll('#erp-prod-modal-overlay input, #erp-prod-modal-overlay textarea').forEach(function(i){ i.value=''; }); 
+            document.getElementById('erp-preview-img').style.display='none';
+            document.getElementById('erp-preview-img').classList.add('hidden');
+
+            if(id) {
+                var p = window.state.produtos.find(function(x){ return String(x.id) === String(id); }); 
+                if(p) {
+                    document.getElementById('erp-modal-title').innerText = "Editar Produto";
+                    document.getElementById('erp-prod-id').value = p.id; document.getElementById('erp-prod-nome').value = p.nome; 
+                    document.getElementById('erp-prod-sku').value = p.sku || ''; document.getElementById('erp-prod-custo').value = p.precoCusto || ''; 
+                    document.getElementById('erp-prod-preco').value = p.preco; document.getElementById('erp-prod-estoque').value = p.estoque; 
+                    document.getElementById('erp-prod-min').value = p.estoqueMinimo || 2; document.getElementById('erp-prod-img-b64').value = p.imagem || ''; 
+                    document.getElementById('erp-prod-desc').value = p.descricao || '';
+                    if(document.getElementById('erp-prod-cat')) document.getElementById('erp-prod-cat').value = p.categoria || 'Todos';
+                    if(p.imagem) { 
+                        document.getElementById('erp-preview-img').src = p.imagem; 
+                        document.getElementById('erp-preview-img').style.display='block'; 
+                        document.getElementById('erp-preview-img').classList.remove('hidden');
+                    }
+                }
+            } else { document.getElementById('erp-modal-title').innerText = "Novo Produto"; document.getElementById('erp-prod-id').value = ''; }
+            document.getElementById('erp-prod-modal-overlay').style.display = 'flex';
+        }
+        function fecharModalProduto() { document.getElementById('erp-prod-modal-overlay').style.display = 'none'; }
+        
+        async function salvarEdicaoProdutoERP() {
+            var id = document.getElementById('erp-prod-id').value, n = document.getElementById('erp-prod-nome').value, p = parseFloat(document.getElementById('erp-prod-preco').value);
+            if(!n || isNaN(p)) return showToast("Nome e Preço obrigatórios!", true);
+            var pData = { nome: n, sku: document.getElementById('erp-prod-sku').value || 'MC'+Date.now().toString().slice(-4), precoCusto: parseFloat(document.getElementById('erp-prod-custo').value||0), preco: p, categoria: document.getElementById('erp-prod-cat').value, estoque: parseInt(document.getElementById('erp-prod-estoque').value||0), estoqueMinimo: parseInt(document.getElementById('erp-prod-min').value||2), descricao: document.getElementById('erp-prod-desc').value, imagem: document.getElementById('erp-prod-img-b64').value || 'https://via.placeholder.com/400?text=Sem+Foto' };
+            showLoader(true);
+            if(id) { var idx = window.state.produtos.findIndex(function(x){ return String(x.id)===String(id); }); if (idx !== -1) window.state.produtos[idx] = Object.assign({}, window.state.produtos[idx], pData); showToast("Atualizado!"); } 
+            else { pData.id = Date.now(); await API.post({ action: 'cadastrar_produto', ...pData }); window.state.produtos.unshift(pData); showToast("Criado!"); }
+            sincronizarStorage(); showLoader(false); fecharModalProduto(); renderERP_Produtos();
+        }
+
+        function renderERP_Produtos() {
+            var tb = document.getElementById('tabela-estoque-admin'); if(!tb) return;
+            if(window.state.produtos.length === 0) { tb.innerHTML = '<tr><td colspan="7" class="p-6 text-center text-slate-400 font-bold">Vazio</td></tr>'; return; }
+            var h = '';
+            window.state.produtos.forEach(function(p) {
+                var isBaixo = p.estoque <= (p.estoqueMinimo || 2);
+                var st = p.estoque > 0 ? '<span class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded font-bold uppercase '+(isBaixo?'bg-amber-100 text-amber-700':'')+'">'+p.estoque+' UN</span>' : '<span class="bg-red-100 text-red-700 px-2 py-1 rounded font-bold uppercase">ZERO</span>';
+                h += '<tr class="border-b border-slate-100 hover:bg-slate-50 transition"><td class="p-3 flex items-center gap-3"><img src="'+p.imagem+'" class="w-10 h-10 object-contain rounded border border-slate-200 bg-white"><div><b class="text-slate-800">'+escapeHTML(p.nome).substring(0,30)+'</b></div></td><td class="p-3 text-slate-500 font-mono text-[10px] bg-slate-100 px-2 rounded">'+escapeHTML(p.sku)+'</td><td class="p-3 text-slate-400">'+formatarMoeda(p.precoCusto||0)+'</td><td class="p-3 font-montserrat font-black text-brand-900">'+formatarMoeda(p.preco)+'</td><td class="p-3 text-slate-500 text-[10px] uppercase font-bold">'+escapeHTML(p.categoria)+'</td><td class="p-3">'+st+'</td><td class="p-3 text-right"><button class="btn bg-blue-50 text-blue-600 px-2 py-1 mr-1" onclick="abrirModalProduto(\''+p.id+'\')"><i class="fas fa-pen"></i></button><button class="btn bg-red-50 text-red-600 px-2 py-1" onclick="apagarItemState(\'produtos\', \''+p.id+'\', renderERP_Produtos)"><i class="fas fa-trash"></i></button></td></tr>';
+            });
+            tb.innerHTML = h;
+        }
+
+        /* --- ERP PDV --- */
+        function renderERP_PDV() { atualizarTabelaPDV(); }
+        function buscarProdutoPDV() {
+            var termo = document.getElementById('pdv-busca').value.trim().toLowerCase(); if(!termo) return;
+            var prod = window.state.produtos.find(function(p){ return (p.sku||'').toLowerCase()===termo || p.nome.toLowerCase().includes(termo); });
+            if(!prod) return showToast("Não encontrado", true); if(prod.estoque <= 0) return showToast("Sem estoque", true);
+            var item = window.state.pdvCart.find(function(i){ return String(i.id)===String(prod.id); });
+            if(item) { if(item.qtd < prod.estoque) item.qtd++; else showToast("Limite de estoque", true); } else { window.state.pdvCart.push(Object.assign({}, prod, {qtd: 1})); }
+            document.getElementById('pdv-busca').value = ''; atualizarTabelaPDV();
+        }
+        function removerItemPDV(id) { window.state.pdvCart = window.state.pdvCart.filter(function(i){ return String(i.id) !== String(id); }); atualizarTabelaPDV(); }
+        function atualizarTabelaPDV() {
+            var tb = document.getElementById('tabela-pdv-itens'); if(!tb) return; var tot = 0; var h = '';
+            if(window.state.pdvCart.length === 0) { tb.innerHTML = '<tr><td colspan="4" class="p-6 text-center text-slate-400 font-bold uppercase">Caixa Livre</td></tr>'; document.getElementById('pdv-total-valor').innerText = 'R$ 0,00'; return; }
+            window.state.pdvCart.forEach(function(i){ var sub = i.preco*i.qtd; tot += sub; h += '<tr class="border-b border-slate-100"><td class="p-3 font-bold text-slate-800">'+escapeHTML(i.nome)+'</td><td class="p-3 font-black">'+i.qtd+'</td><td class="p-3 font-montserrat font-black text-brand-500">'+formatarMoeda(sub)+'</td><td class="p-3 text-right"><button class="btn bg-red-50 text-red-500 px-2 py-1" onclick="removerItemPDV(\''+i.id+'\')"><i class="fas fa-trash text-xs"></i></button></td></tr>'; });
+            tb.innerHTML = h; document.getElementById('pdv-total-valor').innerText = formatarMoeda(tot);
+        }
+        function limparPDV() { window.state.pdvCart = []; atualizarTabelaPDV(); }
+        async function finalizarVendaPDV() {
+            if(window.state.pdvCart.length === 0) return; showLoader(true); var tv = 0, ti = 0;
+            for (var i = 0; i < window.state.pdvCart.length; i++) {
+                var item = window.state.pdvCart[i]; var pReal = window.state.produtos.find(function(p){ return String(p.id)===String(item.id); });
+                if(pReal) { pReal.estoque -= item.qtd; await API.post({ action: 'registrar_venda', produtoId: item.id, produtoNome: item.nome, qtd: item.qtd, total: (item.preco*item.qtd), data: new Date().toLocaleString('pt-BR') }); }
+                tv += (item.preco * item.qtd); ti += item.qtd;
+            }
+            window.state.vendas.unshift({ id: Date.now(), data: new Date().toLocaleString('pt-BR'), nome: "Venda PDV", qtd: ti, total: tv });
+            sincronizarStorage(); showLoader(false); showToast("Venda PDV Efetuada!"); limparPDV();
+        }
+
+        /* --- Lojas, Depo, Config & Helpers --- */
+        function renderERP_Lojas() {
+            var c = document.getElementById('lista-adm-lojas'); if(!c) return; var h='';
+            window.state.lojas.forEach(function(l){ h += '<div class="bg-white border-2 border-slate-200 p-4 rounded-xl flex justify-between items-center shadow-sm hover:border-slate-400 transition"><div class="flex items-center gap-4">'+(l.imagem?'<img src="'+l.imagem+'" class="w-16 h-16 rounded-lg object-cover">':'')+'<div><b class="text-slate-800 text-lg">'+escapeHTML(l.nome)+'</b><br><small class="text-slate-500 font-medium">'+escapeHTML(l.endereco).replace(/\n/g, ', ')+'</small></div></div><div class="flex gap-2"><button class="btn bg-slate-100 text-slate-600 px-3 py-2" onclick="abrirModalLoja(\''+l.id+'\')"><i class="fas fa-pen"></i></button> <button class="btn bg-red-50 text-red-500 px-3 py-2" onclick="apagarItemState(\'lojas\', \''+l.id+'\', renderERP_Lojas)"><i class="fas fa-trash"></i></button></div></div>'; }); c.innerHTML = h;
+        }
+        function abrirModalLoja(id) { 
+            document.querySelectorAll('#erp-loja-modal-overlay input, #erp-loja-modal-overlay textarea').forEach(function(i){i.value=''}); 
+            document.getElementById('erp-preview-loja-img').style.display='none';
+            document.getElementById('erp-preview-loja-img').classList.add('hidden');
+            if(id){ 
+                var l = window.state.lojas.find(function(x){return String(x.id)===String(id)}); 
+                if(l){ 
+                    document.getElementById('erp-loja-id').value=l.id; document.getElementById('erp-loja-nome').value=l.nome; 
+                    document.getElementById('erp-loja-end').value=l.endereco; document.getElementById('erp-loja-img-b64').value=l.imagem||''; 
+                    if(l.imagem){ document.getElementById('erp-preview-loja-img').src=l.imagem; document.getElementById('erp-preview-loja-img').style.display='block'; document.getElementById('erp-preview-loja-img').classList.remove('hidden'); }
+                } 
+            } 
+            document.getElementById('erp-loja-modal-overlay').style.display='flex'; 
+        }
+        function fecharModalLoja() { document.getElementById('erp-loja-modal-overlay').style.display='none'; }
+        function salvarLojaERP() { var id = document.getElementById('erp-loja-id').value, n = document.getElementById('erp-loja-nome').value, e = document.getElementById('erp-loja-end').value; if(!n || !e) return showToast("Faltam dados!", true); var d = { nome: n, endereco: e, imagem: document.getElementById('erp-loja-img-b64').value }; if(id){ var ix = window.state.lojas.findIndex(function(x){return String(x.id)===String(id)}); window.state.lojas[ix]=Object.assign({}, window.state.lojas[ix], d); } else { d.id = Date.now(); window.state.lojas.push(d); } sincronizarStorage(); fecharModalLoja(); renderERP_Lojas(); showToast("Loja Salva!"); }
+
+        function renderERP_Depoimentos() {
+            var c = document.getElementById('lista-adm-deps'); if(!c) return; var h='';
+            window.state.depoimentos.forEach(function(d){ h += '<div class="bg-white border-2 border-slate-200 p-4 rounded-xl flex justify-between items-center shadow-sm hover:border-slate-400 transition"><div class="flex items-center gap-4"><img src="'+d.foto+'" class="w-12 h-12 rounded-full object-cover border border-slate-200"><div><b class="text-slate-800 font-bold uppercase tracking-widest text-[10px]">'+escapeHTML(d.nome)+'</b><br><small class="text-slate-600 font-medium italic">"'+escapeHTML(d.texto).substring(0,40)+'..."</small></div></div><div class="flex gap-2"><button class="btn bg-slate-100 text-slate-600 px-3 py-2" onclick="abrirModalDepoimento(\''+d.id+'\')"><i class="fas fa-pen"></i></button> <button class="btn bg-red-50 text-red-500 px-3 py-2" onclick="apagarItemState(\'depoimentos\', \''+d.id+'\', renderERP_Depoimentos)"><i class="fas fa-trash"></i></button></div></div>'; }); c.innerHTML = h;
+        }
+        function abrirModalDepoimento(id) { 
+            document.querySelectorAll('#erp-dep-modal-overlay input, #erp-dep-modal-overlay textarea').forEach(function(i){i.value=''}); 
+            document.getElementById('erp-preview-dep-img').style.display='none';
+            document.getElementById('erp-preview-dep-img').classList.add('hidden');
+            if(id){ 
+                var d = window.state.depoimentos.find(function(x){return String(x.id)===String(id)}); 
+                if(d){ 
+                    document.getElementById('erp-dep-id').value=d.id; document.getElementById('erp-dep-nome').value=d.nome; 
+                    document.getElementById('erp-dep-texto').value=d.texto; document.getElementById('erp-dep-img-b64').value=d.foto||''; 
+                    if(d.foto){ document.getElementById('erp-preview-dep-img').src=d.foto; document.getElementById('erp-preview-dep-img').style.display='block'; document.getElementById('erp-preview-dep-img').classList.remove('hidden'); }
+                } 
+            } 
+            document.getElementById('erp-dep-modal-overlay').style.display='flex'; 
+        }
+        function fecharModalDepoimento() { document.getElementById('erp-dep-modal-overlay').style.display='none'; }
+        function salvarDepoimentoERP() { var id = document.getElementById('erp-dep-id').value, n = document.getElementById('erp-dep-nome').value, t = document.getElementById('erp-dep-texto').value; if(!n || !t) return showToast("Faltam dados!", true); var d = { nome: n, texto: t, foto: document.getElementById('erp-dep-img-b64').value||'https://ui-avatars.com/api/?name='+encodeURIComponent(n)+'&background=E3000F&color=fff' }; if(id){ var ix = window.state.depoimentos.findIndex(function(x){return String(x.id)===String(id)}); window.state.depoimentos[ix]=Object.assign({}, window.state.depoimentos[ix], d); } else { d.id = Date.now(); window.state.depoimentos.unshift(d); } sincronizarStorage(); fecharModalDepoimento(); renderERP_Depoimentos(); showToast("Publicado!"); }
+
+        function renderERP_Config() {
+            var c = window.state.config; 
+            document.getElementById('cfg-gas-url').value = c.gasUrl || ''; 
+            document.getElementById('cfg-nome').value = c.nomeLoja || ''; 
+            document.getElementById('cfg-zap').value = c.telefone || ''; 
+            
+            document.getElementById('cfg-cor-pri').value = c.corPrimaria || '#E3000F';
+            document.getElementById('cfg-cor-sec').value = c.corSecundaria || '#FFCC00';
+            
+            document.getElementById('cfg-logo-b64').value = c.logoUrl || '';
+            if (c.logoUrl) {
+                document.getElementById('preview-logo').src = c.logoUrl;
+                document.getElementById('preview-logo').style.display = 'block';
+                document.getElementById('preview-logo').classList.remove('hidden');
+            } else {
+                document.getElementById('preview-logo').style.display = 'none';
+                document.getElementById('preview-logo').classList.add('hidden');
+            }
+
+            document.getElementById('cfg-topbar').value = c.topBar || ''; 
+            document.getElementById('cfg-about-title').value = c.aboutTitle || ''; 
+            document.getElementById('cfg-about-p1').value = c.aboutP1 || ''; 
+            document.getElementById('cfg-about-p2').value = c.aboutP2 || ''; 
+            
+            renderListaBannersAdmin();
+        }
+        function salvarConfiguracoesGlobais() {
+            var c = window.state.config; 
+            c.gasUrl = document.getElementById('cfg-gas-url').value; 
+            c.nomeLoja = document.getElementById('cfg-nome').value; 
+            c.telefone = document.getElementById('cfg-zap').value; 
+            c.corPrimaria = document.getElementById('cfg-cor-pri').value;
+            c.corSecundaria = document.getElementById('cfg-cor-sec').value;
+            c.logoUrl = document.getElementById('cfg-logo-b64').value;
+            c.topBar = document.getElementById('cfg-topbar').value; 
+            c.aboutTitle = document.getElementById('cfg-about-title').value; 
+            c.aboutP1 = document.getElementById('cfg-about-p1').value; 
+            c.aboutP2 = document.getElementById('cfg-about-p2').value; 
+            
+            sincronizarStorage(); aplicarTemaEConfiguracoes(); showToast("Configurações Guardadas!");
+        }
+
+        function removerLogo() {
+            document.getElementById('cfg-logo-b64').value = '';
+            document.getElementById('preview-logo').style.display = 'none';
+            document.getElementById('preview-logo').classList.add('hidden');
+            window.state.config.logoUrl = '';
+            sincronizarStorage(); aplicarTemaEConfiguracoes(); showToast("Logotipo Removido!");
+        }
+
+        function renderListaBannersAdmin() {
+            var c = document.getElementById('lista-adm-banners'); if(!c) return; var h='';
+            window.state.config.banners.forEach(function(b, i){ h += '<div class="bg-white border-2 border-slate-200 p-4 rounded-xl flex justify-between items-center shadow-sm hover:border-slate-400 transition"><div class="flex items-center gap-4"><img src="'+b.img+'" class="w-24 h-12 object-cover rounded border border-slate-200"><div><b class="text-slate-800 text-sm font-bold uppercase">'+escapeHTML(b.title)+'</b></div></div><div class="flex gap-2"><button class="btn bg-slate-100 text-slate-600 px-3 py-2" onclick="abrirModalBanner('+i+')"><i class="fas fa-pen"></i></button><button class="btn bg-red-50 text-red-500 px-3 py-2" onclick="apagarBanner('+i+')"><i class="fas fa-trash"></i></button></div></div>'; }); c.innerHTML = h;
+        }
+        function abrirModalBanner(idx) { 
+            document.querySelectorAll('#erp-banner-modal-overlay input').forEach(function(i){i.value=''}); 
+            document.getElementById('erp-preview-banner-img').style.display='none';
+            document.getElementById('erp-preview-banner-img').classList.add('hidden');
+            if(idx!=null){ 
+                var b = window.state.config.banners[idx]; 
+                if(b){ 
+                    document.getElementById('erp-banner-id').value=idx; document.getElementById('erp-banner-title').value=b.title; 
+                    document.getElementById('erp-banner-text').value=b.text; document.getElementById('erp-banner-img-b64').value=b.img; 
+                    if(b.img) { document.getElementById('erp-preview-banner-img').src=b.img; document.getElementById('erp-preview-banner-img').style.display='block'; document.getElementById('erp-preview-banner-img').classList.remove('hidden'); }
+                } 
+            } 
+            document.getElementById('erp-banner-modal-overlay').style.display='flex'; 
+        }
+        function fecharModalBanner() { document.getElementById('erp-banner-modal-overlay').style.display='none'; }
+        function salvarBannerERP() { var idx = document.getElementById('erp-banner-id').value, b = { title: document.getElementById('erp-banner-title').value, text: document.getElementById('erp-banner-text').value, img: document.getElementById('erp-banner-img-b64').value }; if(!b.img) return showToast("Imagem Obrigatória!", true); if(idx!=='') window.state.config.banners[parseInt(idx)] = b; else window.state.config.banners.push(b); sincronizarStorage(); aplicarTemaEConfiguracoes(); fecharModalBanner(); renderListaBannersAdmin(); showToast("Banner Salvo!"); }
+
+        function apagarItemState(col, id, cb) { if(confirm("Remover este item para sempre?")) { window.state[col] = window.state[col].filter(function(i){return String(i.id)!=String(id)}); sincronizarStorage(); cb(); showToast("Removido."); } }
+        function apagarBanner(idx) { if(confirm("Remover este banner?")) { window.state.config.banners.splice(idx, 1); sincronizarStorage(); aplicarTemaEConfiguracoes(); renderListaBannersAdmin(); showToast("Removido."); } }
+
+    </script>
+</body>
+</html>
